@@ -48,13 +48,13 @@ listTypeSpecifier
     ;
 
 aExp
-    :   IntegerLiteral
-    |   FloatLiteral
-    |   Identifier
-    |   listElementExpression
-    |   aExp ('*'|'/') aExp
-    |   aExp ('+'|'-') aExp
-    |   '(' aExp ')'
+    :   IntegerLiteral # aExp_IntergerLiteral
+    |   FloatLiteral # aExp_FloatLiteral
+    |   Identifier # aExp_Identifier
+    |   listElementExpression # aExp_listElementExpression
+    |   aExp ('*'|'/') aExp # aExp_multiplicativeExpression
+    |   aExp ('+'|'-') aExp # aExp_additiveExpression
+    |   '(' aExp ')' # aExp_bracketExpression
     ;
 
 aExpList
