@@ -1,0 +1,62 @@
+a int
+b = 1
+c, cc = 0.0, 1
+d = func(d [][]int) ([]float, int) {
+    e = list([][]int, (d1, d2))
+    e[0] = d[0]
+    e[1] = d[1]
+}
+
+func function(d [][]int) ([]float, int) {
+    f = func(d [][]int) ([]float, int) {
+        e = list([][]int, (d1, d2))
+        e[0] = d[0]
+        e[1] = d[1]
+    }
+
+    c = func() {
+        for {
+            if i == 4 {
+
+            } else {
+
+            }
+
+            if i == 5 {
+
+            }
+
+            return nil, 0
+        }
+    }
+
+    d = func(a int) (int) {
+        for i = 1; i < 10; i = i + 1 {
+            if i == 4 {
+                i = 8
+
+                return c, d, 0, nil
+            } elsif i == 5 {
+                i = 6
+            } elsif i == 0 {
+
+            } else {
+
+            }
+        }
+        return a
+    }
+}
+
+class Class {
+    a int
+    A int
+
+    func b() {
+
+    }
+
+    func B() {
+
+    }
+}
