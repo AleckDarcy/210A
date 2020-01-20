@@ -40,30 +40,34 @@ simpleTypeSpecifier
 
 listElementTypeSpecifier
     :   simpleTypeSpecifier
+    |   '[' ']' listElementTypeSpecifier
     ;
 
 listTypeSpecifier
-    :   listElementTypeSpecifier
-    |   '[' ']' listTypeSpecifier
+    :   '[' ']' listElementTypeSpecifier
     ;
 
-aExp
+listInitExpression
+    :   'list' '(' listTypeSpecifier ',' '(' aExpr ')' ')'
+    ;
+
+aExpr
     :   IntegerLiteral # aExp_IntergerLiteral
     |   FloatLiteral # aExp_FloatLiteral
     |   Identifier # aExp_Identifier
     |   listElementExpression # aExp_listElementExpression
-    |   aExp ('*'|'/') aExp # aExp_multiplicativeExpression
-    |   aExp ('+'|'-') aExp # aExp_additiveExpression
-    |   '(' aExp ')' # aExp_bracketExpression
+    |   aExpr ('*'|'/') aExpr # aExp_multiplicativeExpression
+    |   aExpr ('+'|'-') aExpr # aExp_additiveExpression
+    |   '(' aExpr ')' # aExp_bracketExpression
     ;
 
-aExpList
-    :   aExp
-    |   aExpList ',' aExp
+aExprList
+    :   aExpr
+    |   aExprList ',' aExpr
     ;
 
 bExp
-    :   aExp ('=='|'<'|'>'|'>='|'<='|'!=') aExp
+    :   aExpr ('=='|'<'|'>'|'>='|'<='|'!=') aExpr
     |   bExp ('=='|'&&'|'||'|'!=') bExp
     |   '!' bExp
     |   '(' bExp ')'
@@ -74,29 +78,32 @@ integerExpression
     |   Identifier
     ;
 
-listElement
-    :   '[' IntegerLiteral ']'
+listElementIndex
+    :   '[' aExpr ']'
     ;
 
-listElements
-    :   listElement
-    |   listElements listElement
+listElementIndexList
+    :   listElementIndex
+    |   listElementIndexList listElementIndex
     ;
 
 listElementExpression
-    :   Identifier listElements
+    :   Identifier listElementIndexList
     ;
 
-tupleSizes
-    :   integerExpression
-    |   tupleSizes ',' integerExpression
+assignInit
+    :   aExpr
+    |   listInitExpression
+    |   funcInitExpression
+    ;
+
+assignInitList
+    :   assignInit
+    |   assignInitList ',' assignInit
     ;
 
 assignStatement
-    :   declaratorList simpleTypeSpecifier
-    |   declaratorList '=' aExpList
-    |   declarator '=' 'list' '(' listTypeSpecifier ',' '(' tupleSizes ')' ')'
-    |   declarator '=' funcExpression
+    :   declaratorList '=' assignInitList
     ;
 
 selectionStatement
@@ -111,7 +118,7 @@ iterationStatement
 
 entry
     :   assignStatement
-    |   funcExpressionWithName
+    |   funcExpression
     ;
 
 entryList
@@ -122,7 +129,7 @@ entryList
 typeSpecifier
     :   simpleTypeSpecifier
     |   listTypeSpecifier
-    |   funcSpecifier
+    |   funcTypeSpecifier
     ;
 
 typeSpecifierList
@@ -130,25 +137,30 @@ typeSpecifierList
     |   typeSpecifierList ',' typeSpecifier
     ;
 
-typeSpecifierWithIdentity // todo: rename
+paraDeclaratorList
+    :   Identifier
+    |   paraDeclaratorList ',' Identifier
+    ;
+
+paraDeclaratorWithIdentity // todo: rename
     :   declaratorList typeSpecifier
     ;
 
-typeSpecifierWithIdentityList
-    :   typeSpecifierWithIdentity
-    |   typeSpecifierWithIdentityList ',' typeSpecifierWithIdentity
+paraDeclaratorWithIdentityList
+    :   paraDeclaratorWithIdentity
+    |   paraDeclaratorWithIdentityList ',' paraDeclaratorWithIdentity
     ;
 
-funcSpecifier
-    :   'func' '(' typeSpecifierWithIdentityList? ')' ('(' typeSpecifierList? ')')?
+funcTypeSpecifier
+    :   'func' '(' paraDeclaratorWithIdentityList? ')' ('(' typeSpecifierList? ')')?
     ;
 
-funcSpecifierWithName
-    :   'func' Identifier '(' typeSpecifierWithIdentityList? ')' ('(' typeSpecifierList? ')')?
+funcTypeSpecifierWithName
+    :   'func' Identifier '(' paraDeclaratorWithIdentityList? ')' ('(' typeSpecifierList? ')')?
     ;
 
 funcReturnPara
-    :   aExp
+    :   aExpr
     |   bExp
     |   Identifier
     |   'nil'
@@ -175,12 +187,12 @@ funcBody
     :   funcStatementList?
     ;
 
-funcExpression // when assign to a varient: function = func() {}
-    :   funcSpecifier '{' funcBody? '}'
+funcInitExpression // when assign to a varient: function = func() {}
+    :   funcTypeSpecifier '{' funcBody? '}'
     ;
 
-funcExpressionWithName // when define a method for a class or a static function: func function() {}
-    :   funcSpecifierWithName '{' funcBody? '}'
+funcExpression // when define a method for a class or a static function: func function() {}
+    :   funcTypeSpecifierWithName '{' funcBody? '}'
     ;
 
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
