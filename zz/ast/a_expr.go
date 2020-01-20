@@ -36,12 +36,7 @@ func (t AExprArithOpType) toString(ident string) string {
 }
 
 func (t AExprArithOpType) String() string {
-	switch t {
-	case AExprArithAdd:
-		return "Add"
-	default:
-		return "undefined"
-	}
+	return t.toString("")
 }
 
 type AExprArith struct {
@@ -50,6 +45,8 @@ type AExprArith struct {
 }
 
 func (e *AExprArith) aExpr() {}
+
+func (e *AExprArith) assignIniter() {}
 
 func (e *AExprArith) toString(ident string) string {
 	return fmt.Sprintf("" +
