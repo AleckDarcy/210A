@@ -1,7 +1,7 @@
-a int
+a = 1
 b = 1
 c, cc = 0.0, 1
-d = func(d [][]int) ([]float, int) {
+d = func(c, d [][]int, e float) ([]float, int) {
     e = list([][]int, (d1, d2))
     e[0] = d[0]
     e[1] = d[1]

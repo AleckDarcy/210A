@@ -2,24 +2,6 @@ package ast
 
 import "fmt"
 
-type IntegerLiteral struct {
-	value int64
-}
-
-func (l *IntegerLiteral) aExpr() {}
-
-func (l *IntegerLiteral) toString(ident string) string {
-	return fmt.Sprintf("%sInt(%d)", ident, l.value)
-}
-
-func (l *IntegerLiteral) String() string {
-	return l.toString("")
-}
-
-func (l *IntegerLiteral) Value() int64 {
-	return l.value
-}
-
 type AExprArithOpType int64
 
 const (
@@ -36,12 +18,7 @@ func (t AExprArithOpType) toString(ident string) string {
 }
 
 func (t AExprArithOpType) String() string {
-	switch t {
-	case AExprArithAdd:
-		return "Add"
-	default:
-		return "undefined"
-	}
+	return t.toString("")
 }
 
 type AExprArith struct {
@@ -50,6 +27,8 @@ type AExprArith struct {
 }
 
 func (e *AExprArith) aExpr() {}
+
+func (e *AExprArith) assignIniter() {}
 
 func (e *AExprArith) toString(ident string) string {
 	return fmt.Sprintf("" +
