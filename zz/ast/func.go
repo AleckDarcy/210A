@@ -57,13 +57,13 @@ func (e *FuncInitExpr) assignIniter() {}
 
 func (e *FuncInitExpr) toString(ident string) string {
 	return fmt.Sprintf(""+
-		"%sFuncInitExpr\n"+
+		"%sFuncInitExpression:\n"+
 		"%s..FuncTypeSpecifier:\n"+
 		"%s\n"+
 		"%s..FuncBody:\n"+
 		"%s",
 		ident, ident, e.typeSpecifier.toString(ident+"...."),
-		ident, IterableToString(ident+"....", IteratableFuncStatementer(e.stmtList)),
+		ident, IterableToString(ident+"....", IteratableFuncStatementerList(e.stmtList)),
 	)
 }
 

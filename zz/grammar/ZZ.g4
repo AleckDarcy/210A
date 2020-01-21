@@ -113,7 +113,7 @@ selectionStatement
 
 iterationStatement
     :   'for' bExp? '{' funcStatementList '}'
-    |   'for' assignStatement ';' bExp? ';' assignStatement '{' funcStatementList '}' // todo
+    |   'for' assignStatement? ';' bExp? ';' assignStatement? '{' funcStatementList '}' // todo
     ;
 
 entry

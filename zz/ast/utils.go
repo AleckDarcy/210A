@@ -47,17 +47,33 @@ func (it IteratableParaDeclaratorWithIdentityList) Get(i int) BasicNoder {
 	return it[i]
 }
 
-type IteratableFuncStatementer []FuncStatementer
+type IteratableFuncStatementerList []FuncStatementer
 
-func (it IteratableFuncStatementer) Len() int {
+func (it IteratableFuncStatementerList) Len() int {
 	return len(it)
 }
 
-func (it IteratableFuncStatementer) Get(i int) BasicNoder {
+func (it IteratableFuncStatementerList) Get(i int) BasicNoder {
+	return it[i]
+}
+
+type IteratableIfExprList []*IfExpr
+
+func (it IteratableIfExprList) Len() int {
+	return len(it)
+}
+
+func (it IteratableIfExprList) Get(i int) BasicNoder {
 	return it[i]
 }
 
 func IterableToString(ident string, list Iteraterable) string {
+	if list == nil {
+		return ident + "Null"
+	} else if list.Len() == 0 {
+		return ident + "..Empty"
+	}
+
 	result := ""
 	for i := 0; i < list.Len(); i++ {
 		elem := list.Get(i)

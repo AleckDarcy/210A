@@ -33,3 +33,17 @@ func (l *IntegerLiteral) String() string {
 func (l *IntegerLiteral) Value() int64 {
 	return l.value
 }
+
+type BinaryLiteral struct {
+	value bool
+}
+
+func (l *BinaryLiteral) bExpr() {}
+
+func (l *BinaryLiteral) toString(ident string) string {
+	return fmt.Sprintf("%sBool(%v)", ident, l.value)
+}
+
+func (l *BinaryLiteral) String() string {
+	return l.toString("")
+}
