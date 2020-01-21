@@ -29,6 +29,21 @@ const (
 	ListElementTypeSpecifierNested
 )
 
+func (t ListElementTypeSpecifierType) toString(ident string) string {
+	switch t {
+	case ListElementTypeSpecifierSimple:
+		return ident + "Simple"
+	case ListElementTypeSpecifierNested:
+		return ident + "Nested"
+	default:
+		return ident + "undefined"
+	}
+}
+
+func (t ListElementTypeSpecifierType) String() string {
+	return t.toString("")
+}
+
 type ListElementTypeSpecifier struct {
 	elem TypeSpecifier
 	typ  ListElementTypeSpecifierType

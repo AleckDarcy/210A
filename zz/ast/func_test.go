@@ -5,16 +5,6 @@ import (
 	"testing"
 )
 
-var ListTypeSpecifier1 = &ListTypeSpecifier{
-	elem: &ListElementTypeSpecifier{
-		elem: &ListElementTypeSpecifier{
-			elem: &SimpleTypeSpecifier{name: "int"},
-			typ:  ListElementTypeSpecifierSimple,
-		},
-		typ: ListElementTypeSpecifierNested,
-	},
-}
-
 var ParaDeclaratorWithIdentity1 = &ParaDeclaratorWithIdentity{
 	declList: []*Identifier{
 		{name: "a"}, {name: "b"},
@@ -42,14 +32,13 @@ var FuncTypeSpecifier1 = &FuncTypeSpecifier{
 
 func TestParaDeclaratorWithIdentity_String(t *testing.T) {
 	d := ParaDeclaratorWithIdentity1
-
-	fmt.Println(d.String())
+	fmt.Println(d)
 }
 
 func TestFuncTypeSpecifier_String(t *testing.T) {
 	s := FuncTypeSpecifier1
-
-	fmt.Println(s.String())
+	s.typeSpecifier()
+	fmt.Println(s)
 }
 
 func TestFuncInitExpr_String(t *testing.T) {
@@ -59,6 +48,6 @@ func TestFuncInitExpr_String(t *testing.T) {
 			AssignStmt1,
 		},
 	}
-
-	fmt.Println(e.String())
+	e.assignIniter()
+	fmt.Println(e)
 }

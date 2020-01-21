@@ -2,11 +2,11 @@ package ast
 
 import "fmt"
 
-type listElementIndex struct {
+type ListElementIndex struct {
 	e AExpr
 }
 
-func (i *listElementIndex) toString(ident string) string {
+func (i *ListElementIndex) toString(ident string) string {
 	//panic("")
 	return fmt.Sprintf(""+
 		"%sListElementIndex:\n"+
@@ -14,18 +14,18 @@ func (i *listElementIndex) toString(ident string) string {
 		ident, i.e.toString(ident+".."))
 }
 
-func (i *listElementIndex) String() string {
+func (i *ListElementIndex) String() string {
 	return i.toString("")
 }
 
-type listElementExpr struct {
+type ListElementExpr struct {
 	name *Identifier
-	list []*listElementIndex
+	list []*ListElementIndex
 }
 
-func (e *listElementExpr) declaratorer() {}
+func (e *ListElementExpr) declaratorer() {}
 
-func (e *listElementExpr) toString(ident string) string {
+func (e *ListElementExpr) toString(ident string) string {
 	list := ""
 	for i, elem := range e.list {
 		if i == len(e.list)-1 {
@@ -46,7 +46,7 @@ func (e *listElementExpr) toString(ident string) string {
 		"%s", ident, ident, e.name.String(), ident, list)
 }
 
-func (e *listElementExpr) String() string {
+func (e *ListElementExpr) String() string {
 	return e.toString("")
 }
 

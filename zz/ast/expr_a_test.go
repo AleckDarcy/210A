@@ -17,8 +17,17 @@ var aExprAdd2 = &AExprArith{
 	op: AExprArithAdd,
 }
 
+func TestAExprArithOpType_String(t *testing.T) {
+	fmt.Println(AExprArithAdd)
+	fmt.Println(AExprArithOpType(-1))
+}
+
 func TestAExprArith_String(t *testing.T) {
 	e := aExprAdd1
-
-	fmt.Println(e.String())
+	e.aExpr()
+	e.assignIniter()
+	e.E1()
+	e.E2()
+	e.Op()
+	fmt.Println(e)
 }
