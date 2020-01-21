@@ -17,3 +17,9 @@ func TestIntegerLiteral_String(t *testing.T) {
 	l.Value()
 	fmt.Println(l)
 }
+
+func TestBinaryLiteral_String(t *testing.T) {
+	l := &BinaryLiteral{value: true}
+	l.bExpr()
+	fmt.Println(l)
+}

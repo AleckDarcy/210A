@@ -9,7 +9,7 @@ type AssignStmt struct {
 
 func (s *AssignStmt) statementer() {}
 
-func (s *AssignStmt) funcStatementer()() {}
+func (s *AssignStmt) funcStatementer() {}
 
 func (s *AssignStmt) toString(ident string) string {
 	initList := ""

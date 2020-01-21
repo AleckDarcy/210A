@@ -12,6 +12,13 @@ type AExpr interface {
 	aExpr()
 }
 
+// BExpr is an interface of bExp
+type BExpr interface {
+	BasicNoder
+
+	bExpr()
+}
+
 // Statementer is an interface of statement
 type Statementer interface {
 	BasicNoder
@@ -45,3 +52,5 @@ type FuncStatementer interface {
 
 	funcStatementer()
 }
+
+

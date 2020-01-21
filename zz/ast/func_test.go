@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+var FuncStmtList1 = []FuncStatementer{
+	AssignStmt1,
+}
+
 var ParaDeclaratorWithIdentity1 = &ParaDeclaratorWithIdentity{
 	declList: []*Identifier{
 		{name: "a"}, {name: "b"},
@@ -44,9 +48,7 @@ func TestFuncTypeSpecifier_String(t *testing.T) {
 func TestFuncInitExpr_String(t *testing.T) {
 	e := &FuncInitExpr{
 		typeSpecifier: FuncTypeSpecifier1,
-		stmtList: []FuncStatementer{
-			AssignStmt1,
-		},
+		stmtList:      FuncStmtList1,
 	}
 	e.assignIniter()
 	fmt.Println(e)
