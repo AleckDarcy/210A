@@ -62,7 +62,7 @@ func (e *FuncInitExpr) toString(ident string) string {
 		"%s\n"+
 		"%s..FuncBody:\n"+
 		"%s",
-		ident, ident, e.typeSpecifier.toString(ident+".."),
+		ident, ident, e.typeSpecifier.toString(ident+"...."),
 		ident, IterableToString(ident+"....", IteratableFuncStatementer(e.stmtList)),
 	)
 }
