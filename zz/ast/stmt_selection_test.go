@@ -6,12 +6,12 @@ import (
 )
 
 var IFExpr1 = &IfExpr{
-	e:        bExprBinary1,
+	binExpr:  bExprBinary1,
 	stmtList: FuncStmtList1,
 }
 
 var IFExpr2 = &IfExpr{
-	e:        bExprBinary2,
+	binExpr:  bExprBinary2,
 	stmtList: nil,
 }
 
@@ -47,7 +47,6 @@ func TestElseExpr_String(t *testing.T) {
 
 func TestSelectionStmt_String(t *testing.T) {
 	s := SelectionStmt1
-	s.statementer()
 	s.funcStatementer()
 	fmt.Println(s)
 

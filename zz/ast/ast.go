@@ -19,13 +19,6 @@ type BExpr interface {
 	bExpr()
 }
 
-// Statementer is an interface of statement
-type Statementer interface {
-	BasicNoder
-
-	statementer()
-}
-
 // TypeSpecifier is an interface of typeSpecifier
 type TypeSpecifier interface {
 	BasicNoder
@@ -47,10 +40,16 @@ type AssignIniter interface {
 	assignIniter()
 }
 
+// FuncStatementer is an interface of functionStatement
 type FuncStatementer interface {
 	BasicNoder
 
 	funcStatementer()
 }
 
+// Definitioner is an interface of definition
+type Definitioner interface {
+	BasicNoder
 
+	definitioner()
+}

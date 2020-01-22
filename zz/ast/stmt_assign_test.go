@@ -21,6 +21,6 @@ var AssignStmt1 = &AssignStmt{
 func TestAssignStmt_String(t *testing.T) {
 	s := AssignStmt1
 	s.funcStatementer()
-	s.statementer()
+	s.definitioner()
 	fmt.Println(s.String())
 }

@@ -30,16 +30,18 @@ func (e *BExprCompare) bExpr() {}
 
 func (e *BExprCompare) toString(ident string) string {
 	return fmt.Sprintf(""+
-		"%sBExprCompare\n"+
+		"%sBExprCompare {\n"+
 		"%s..E1:\n"+
 		"%s\n"+
 		"%s..E2:\n"+
 		"%s\n"+
-		"%s..Op: %s",
+		"%s..Op: %s\n"+
+		"%s}",
 
 		ident, ident, e.e1.toString("...."+ident),
 		ident, e.e2.toString("...."+ident),
-		ident, e.op)
+		ident, e.op,
+		ident)
 }
 
 func (e *BExprCompare) String() string {
@@ -78,16 +80,18 @@ func (e *BExprBinary) bExpr() {}
 
 func (e *BExprBinary) toString(ident string) string {
 	return fmt.Sprintf(""+
-		"%sBExprBinary\n"+
+		"%sBExprBinary {\n"+
 		"%s..E1:\n"+
 		"%s\n"+
 		"%s..E2:\n"+
 		"%s\n"+
-		"%s..Op: %s",
-
+		"%s..Op: %s\n"+
+		"%s}",
 		ident, ident, e.e1.toString("...."+ident),
 		ident, e.e2.toString("...."+ident),
-		ident, e.op)
+		ident, e.op,
+		ident,
+	)
 }
 
 func (e *BExprBinary) String() string {
