@@ -79,11 +79,14 @@ type ZZListener interface {
 	// EnterIterationStatement is called when entering the iterationStatement production.
 	EnterIterationStatement(c *IterationStatementContext)
 
-	// EnterEntry is called when entering the entry production.
-	EnterEntry(c *EntryContext)
+	// EnterDefinition is called when entering the definition production.
+	EnterDefinition(c *DefinitionContext)
 
-	// EnterEntryList is called when entering the entryList production.
-	EnterEntryList(c *EntryListContext)
+	// EnterDefinitionList is called when entering the definitionList production.
+	EnterDefinitionList(c *DefinitionListContext)
+
+	// EnterFile is called when entering the file production.
+	EnterFile(c *FileContext)
 
 	// EnterTypeSpecifier is called when entering the typeSpecifier production.
 	EnterTypeSpecifier(c *TypeSpecifierContext)
@@ -124,8 +127,8 @@ type ZZListener interface {
 	// EnterFuncInitExpression is called when entering the funcInitExpression production.
 	EnterFuncInitExpression(c *FuncInitExpressionContext)
 
-	// EnterFuncExpression is called when entering the funcExpression production.
-	EnterFuncExpression(c *FuncExpressionContext)
+	// EnterFuncDefinition is called when entering the funcDefinition production.
+	EnterFuncDefinition(c *FuncDefinitionContext)
 
 	// ExitDeclarator is called when exiting the declarator production.
 	ExitDeclarator(c *DeclaratorContext)
@@ -199,11 +202,14 @@ type ZZListener interface {
 	// ExitIterationStatement is called when exiting the iterationStatement production.
 	ExitIterationStatement(c *IterationStatementContext)
 
-	// ExitEntry is called when exiting the entry production.
-	ExitEntry(c *EntryContext)
+	// ExitDefinition is called when exiting the definition production.
+	ExitDefinition(c *DefinitionContext)
 
-	// ExitEntryList is called when exiting the entryList production.
-	ExitEntryList(c *EntryListContext)
+	// ExitDefinitionList is called when exiting the definitionList production.
+	ExitDefinitionList(c *DefinitionListContext)
+
+	// ExitFile is called when exiting the file production.
+	ExitFile(c *FileContext)
 
 	// ExitTypeSpecifier is called when exiting the typeSpecifier production.
 	ExitTypeSpecifier(c *TypeSpecifierContext)
@@ -244,6 +250,6 @@ type ZZListener interface {
 	// ExitFuncInitExpression is called when exiting the funcInitExpression production.
 	ExitFuncInitExpression(c *FuncInitExpressionContext)
 
-	// ExitFuncExpression is called when exiting the funcExpression production.
-	ExitFuncExpression(c *FuncExpressionContext)
+	// ExitFuncDefinition is called when exiting the funcDefinition production.
+	ExitFuncDefinition(c *FuncDefinitionContext)
 }

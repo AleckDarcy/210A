@@ -7,11 +7,13 @@ type ListElementIndex struct {
 }
 
 func (i *ListElementIndex) toString(ident string) string {
-	//panic("")
 	return fmt.Sprintf(""+
-		"%sListElementIndex:\n"+
-		"%s",
-		ident, i.e.toString(ident+".."))
+		"%sListElementIndex {\n"+
+		"%s\n"+
+		"%s}",
+		ident, i.e.toString(ident+".."),
+		ident,
+	)
 }
 
 func (i *ListElementIndex) String() string {
@@ -26,24 +28,16 @@ type ListElementExpr struct {
 func (e *ListElementExpr) declaratorer() {}
 
 func (e *ListElementExpr) toString(ident string) string {
-	list := ""
-	for i, elem := range e.list {
-		if i == len(e.list)-1 {
-			list += fmt.Sprintf(""+
-				"%s[%d]:\n"+
-				"%s", ident+"....", i, elem.toString(ident+"......"))
-		} else {
-			list += fmt.Sprintf(""+
-				"%s[%d]:\n"+
-				"%s\n", ident+"....", i, elem.toString(ident+"......"))
-		}
-	}
-
 	return fmt.Sprintf(""+
-		"%sListElementExpression:\n"+
+		"%sListElementExpression {\n"+
 		"%s..Name: %s\n"+
 		"%s..List:\n"+
-		"%s", ident, ident, e.name.String(), ident, list)
+		"%s\n"+
+		"%s}",
+		ident, ident, e.name,
+		ident, IterableToString(ident+"....", IteratableListElementIndexList(e.list)),
+		ident,
+	)
 }
 
 func (e *ListElementExpr) String() string {
@@ -62,13 +56,17 @@ type ListInitExpr struct {
 func (e *ListInitExpr) assignIniter() {}
 
 func (e *ListInitExpr) toString(ident string) string {
-	return fmt.Sprintf("" +
-		"%sListInitExpression:\n"+
-		"%s..TypeSepcifier:\n" +
-		"%s\n" +
+	return fmt.Sprintf(""+
+		"%sListInitExpression {\n"+
+		"%s..TypeSepcifier:\n"+
+		"%s\n"+
 		"%s..Size:\n"+
-		"%s", ident, ident, e.typeSpecifier.toString(ident+"...."),
-		ident, e.size.toString(ident+"...."))
+		"%s\n"+
+		"%s}",
+		ident, ident, e.typeSpecifier.toString(ident+"...."),
+		ident, e.size.toString(ident+"...."),
+		ident,
+	)
 }
 
 func (e *ListInitExpr) String() string {

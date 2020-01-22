@@ -31,17 +31,20 @@ func (e *AExprArith) aExpr() {}
 func (e *AExprArith) assignIniter() {}
 
 func (e *AExprArith) toString(ident string) string {
-	return fmt.Sprintf("" +
-		"%sAExprArith\n" +
-		"%s..E1:\n" +
-		"%s\n" +
-		"%s..E2:\n" +
-		"%s\n" +
-		"%s..Op: %s",
+	return fmt.Sprintf(""+
+		"%sAExprArith {\n"+
+		"%s..E1:\n"+
+		"%s\n"+
+		"%s..E2:\n"+
+		"%s\n"+
+		"%s..Op: %s\n"+
+		"%s}",
 
 		ident, ident, e.e1.toString("...."+ident),
 		ident, e.e2.toString("...."+ident),
-		ident, e.op)
+		ident, e.op,
+		ident,
+	)
 }
 
 func (e *AExprArith) String() string {
@@ -59,4 +62,3 @@ func (e *AExprArith) E2() AExpr {
 func (e *AExprArith) Op() AExprArithOpType {
 	return e.op
 }
-

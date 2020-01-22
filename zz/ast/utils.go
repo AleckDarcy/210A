@@ -7,6 +7,26 @@ type Iteraterable interface {
 	Get(i int) BasicNoder
 }
 
+type IteratableAssignIniterList []AssignIniter
+
+func (it IteratableAssignIniterList) Len() int {
+	return len(it)
+}
+
+func (it IteratableAssignIniterList) Get(i int) BasicNoder {
+	return it[i]
+}
+
+type IteratableListElementIndexList []*ListElementIndex
+
+func (it IteratableListElementIndexList) Len() int {
+	return len(it)
+}
+
+func (it IteratableListElementIndexList) Get(i int) BasicNoder {
+	return it[i]
+}
+
 type IteratableTypeSpecifierList []TypeSpecifier
 
 func (it IteratableTypeSpecifierList) Len() int {
@@ -67,6 +87,16 @@ func (it IteratableIfExprList) Get(i int) BasicNoder {
 	return it[i]
 }
 
+type IteratableDefinitioner []Definitioner
+
+func (it IteratableDefinitioner) Len() int {
+	return len(it)
+}
+
+func (it IteratableDefinitioner) Get(i int) BasicNoder {
+	return it[i]
+}
+
 func IterableToString(ident string, list Iteraterable) string {
 	if list == nil {
 		return ident + "Null"
@@ -80,11 +110,15 @@ func IterableToString(ident string, list Iteraterable) string {
 		if i == list.Len()-1 {
 			result += fmt.Sprintf(""+
 				"%s[%d]:\n"+
-				"%s", ident, i, elem.toString(ident+".."))
+				"%s",
+				ident, i, elem.toString(ident+".."),
+			)
 		} else {
 			result += fmt.Sprintf(""+
 				"%s[%d]:\n"+
-				"%s\n", ident, i, elem.toString(ident+".."))
+				"%s\n",
+				ident, i, elem.toString(ident+".."),
+			)
 		}
 	}
 

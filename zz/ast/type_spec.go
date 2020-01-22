@@ -9,8 +9,8 @@ type SimpleTypeSpecifier struct {
 func (s *SimpleTypeSpecifier) typeSpecifier() {}
 
 func (s *SimpleTypeSpecifier) toString(ident string) string {
-	return fmt.Sprintf("" +
-		"%sSimpleTypeSpecifier:\n" +
+	return fmt.Sprintf(""+
+		"%sSimpleTypeSpecifier:\n"+
 		"%s..%s", ident, ident, s.name)
 }
 
@@ -52,9 +52,9 @@ type ListElementTypeSpecifier struct {
 func (s *ListElementTypeSpecifier) typeSpecifier() {}
 
 func (s *ListElementTypeSpecifier) toString(ident string) string {
-	return fmt.Sprintf("" +
-		"%sListElementTypeSpecifier:\n" +
-		"%s", ident,  s.elem.toString(ident + ".."))
+	return fmt.Sprintf(""+
+		"%sListElementTypeSpecifier:\n"+
+		"%s", ident, s.elem.toString(ident+".."))
 }
 
 func (s *ListElementTypeSpecifier) String() string {
@@ -68,11 +68,14 @@ type ListTypeSpecifier struct {
 func (s *ListTypeSpecifier) typeSpecifier() {}
 
 func (s *ListTypeSpecifier) toString(ident string) string {
-	return fmt.Sprintf("" +
-		"%sListTypeSpecifier:\n" +
-		"%s..Element:\n" +
-		"%s",
-		ident, ident, s.elem.toString(ident + "...."))
+	return fmt.Sprintf(""+
+		"%sListTypeSpecifier {\n"+
+		"%s..Element:\n"+
+		"%s\n"+
+		"%s}",
+		ident, ident, s.elem.toString(ident+"...."),
+		ident,
+	)
 }
 
 func (s *ListTypeSpecifier) String() string {

@@ -7,32 +7,26 @@ type AssignStmt struct {
 	initList []AssignIniter
 }
 
-func (s *AssignStmt) statementer() {}
-
 func (s *AssignStmt) funcStatementer() {}
 
-func (s *AssignStmt) toString(ident string) string {
-	initList := ""
+func (s *AssignStmt) definitioner() {}
 
-	for i, init := range s.initList {
-		if i == len(s.initList) - 1 {
-			initList += fmt.Sprintf(""+
-				"%s....[%d]:\n"+
-				"%s", ident, i, init.toString(ident+"......"))
-		} else {
-			initList += fmt.Sprintf(""+
-				"%s....[%d]:\n"+
-				"%s\n", ident, i, init.toString(ident+"......"))
-		}
+func (s *AssignStmt) toString(ident string) string {
+	if s == nil {
+		return ident + "Null"
 	}
 
-	return fmt.Sprintf("" +
-		"%sAssignStatement\n" +
-		"%s..DeclaratorList:\n" +
-		"%s\n" +
-		"%s..InitializerList:\n" +
-		"%s", ident, ident,
-		IterableToString(ident+"....", IteratableDeclaratorerList(s.declList)), ident, initList)
+	return fmt.Sprintf(""+
+		"%sAssignStatement {\n"+
+		"%s..DeclaratorList:\n"+
+		"%s\n"+
+		"%s..InitializerList:\n"+
+		"%s\n"+
+		"%s}",
+		ident, ident, IterableToString(ident+"....", IteratableDeclaratorerList(s.declList)),
+		ident, IterableToString(ident+"....", IteratableAssignIniterList(s.initList)),
+		ident,
+	)
 }
 
 func (s *AssignStmt) String() string {

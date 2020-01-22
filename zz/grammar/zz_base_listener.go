@@ -166,17 +166,23 @@ func (s *BaseZZListener) EnterIterationStatement(ctx *IterationStatementContext)
 // ExitIterationStatement is called when production iterationStatement is exited.
 func (s *BaseZZListener) ExitIterationStatement(ctx *IterationStatementContext) {}
 
-// EnterEntry is called when production entry is entered.
-func (s *BaseZZListener) EnterEntry(ctx *EntryContext) {}
+// EnterDefinition is called when production definition is entered.
+func (s *BaseZZListener) EnterDefinition(ctx *DefinitionContext) {}
 
-// ExitEntry is called when production entry is exited.
-func (s *BaseZZListener) ExitEntry(ctx *EntryContext) {}
+// ExitDefinition is called when production definition is exited.
+func (s *BaseZZListener) ExitDefinition(ctx *DefinitionContext) {}
 
-// EnterEntryList is called when production entryList is entered.
-func (s *BaseZZListener) EnterEntryList(ctx *EntryListContext) {}
+// EnterDefinitionList is called when production definitionList is entered.
+func (s *BaseZZListener) EnterDefinitionList(ctx *DefinitionListContext) {}
 
-// ExitEntryList is called when production entryList is exited.
-func (s *BaseZZListener) ExitEntryList(ctx *EntryListContext) {}
+// ExitDefinitionList is called when production definitionList is exited.
+func (s *BaseZZListener) ExitDefinitionList(ctx *DefinitionListContext) {}
+
+// EnterFile is called when production file is entered.
+func (s *BaseZZListener) EnterFile(ctx *FileContext) {}
+
+// ExitFile is called when production file is exited.
+func (s *BaseZZListener) ExitFile(ctx *FileContext) {}
 
 // EnterTypeSpecifier is called when production typeSpecifier is entered.
 func (s *BaseZZListener) EnterTypeSpecifier(ctx *TypeSpecifierContext) {}
@@ -258,8 +264,8 @@ func (s *BaseZZListener) EnterFuncInitExpression(ctx *FuncInitExpressionContext)
 // ExitFuncInitExpression is called when production funcInitExpression is exited.
 func (s *BaseZZListener) ExitFuncInitExpression(ctx *FuncInitExpressionContext) {}
 
-// EnterFuncExpression is called when production funcExpression is entered.
-func (s *BaseZZListener) EnterFuncExpression(ctx *FuncExpressionContext) {}
+// EnterFuncDefinition is called when production funcDefinition is entered.
+func (s *BaseZZListener) EnterFuncDefinition(ctx *FuncDefinitionContext) {}
 
-// ExitFuncExpression is called when production funcExpression is exited.
-func (s *BaseZZListener) ExitFuncExpression(ctx *FuncExpressionContext) {}
+// ExitFuncDefinition is called when production funcDefinition is exited.
+func (s *BaseZZListener) ExitFuncDefinition(ctx *FuncDefinitionContext) {}

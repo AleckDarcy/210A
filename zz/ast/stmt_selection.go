@@ -3,19 +3,22 @@ package ast
 import "fmt"
 
 type IfExpr struct {
-	e        BExpr
+	binExpr  BExpr
 	stmtList []FuncStatementer
 }
 
 func (e *IfExpr) toString(ident string) string {
 	return fmt.Sprintf(""+
-		"%sIfExpression:\n"+
+		"%sIfExpression {\n"+
 		"%s..BinaryExpression:\n"+
 		"%s\n"+
 		"%s..IfBody:\n"+
-		"%s",
-		ident, ident, e.e.toString(ident+"...."),
-		ident, IterableToString(ident+"....", IteratableFuncStatementerList(e.stmtList)))
+		"%s\n"+
+		"%s}",
+		ident, ident, e.binExpr.toString(ident+"...."),
+		ident, IterableToString(ident+"....", IteratableFuncStatementerList(e.stmtList)),
+		ident,
+	)
 }
 
 func (e *IfExpr) String() string {
@@ -29,17 +32,22 @@ type ElseExpr struct {
 func (e *ElseExpr) toString(ident string) string {
 	if e == nil {
 		return fmt.Sprintf(""+
-			"%sElseExpression:\n"+
+			"%sElseExpression {\n"+
 			"%s..ElseBody:\n"+
-			"%s",
-			ident, ident, IterableToString(ident+"....", nil))
+			"%s\n"+
+			"%s}",
+			ident, ident, IterableToString(ident+"....", nil),
+			ident)
 	}
 
 	return fmt.Sprintf(""+
-		"%sElseExpression:\n"+
+		"%sElseExpression {\n"+
 		"%s..ElseBody:\n"+
-		"%s",
-		ident, ident, IterableToString(ident+"....", IteratableFuncStatementerList(e.stmtList)))
+		"%s\n"+
+		"%s}",
+		ident, ident, IterableToString(ident+"....", IteratableFuncStatementerList(e.stmtList)),
+		ident,
+	)
 }
 
 func (e *ElseExpr) String() string {
@@ -51,19 +59,20 @@ type SelectionStmt struct {
 	elseExpr   *ElseExpr
 }
 
-func (s *SelectionStmt) statementer() {}
-
 func (s *SelectionStmt) funcStatementer() {}
 
 func (s *SelectionStmt) toString(ident string) string {
 	return fmt.Sprintf(""+
-		"%sSelectionExpression:\n"+
+		"%sSelectionExpression {\n"+
 		"%s..IfExpressionList:\n"+
 		"%s\n"+
 		"%s..ElseExpression:\n"+
-		"%s",
+		"%s\n"+
+		"%s}",
 		ident, ident, IterableToString(ident+"....", IteratableIfExprList(s.ifExprList)),
-		ident, s.elseExpr.toString(ident+"...."))
+		ident, s.elseExpr.toString(ident+"...."),
+		ident,
+	)
 }
 
 func (s *SelectionStmt) String() string {
