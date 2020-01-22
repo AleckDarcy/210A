@@ -116,14 +116,18 @@ iterationStatement
     |   'for' assignStatement? ';' bExp? ';' assignStatement? '{' funcStatementList '}' // todo
     ;
 
-entry
+definition
     :   assignStatement
-    |   funcExpression
+    |   funcDefinition
     ;
 
-entryList
-    :   entry
-    |   entryList entry
+definitionList
+    :   definition
+    |   definitionList definition
+    ;
+
+file // todo: package import
+    :   declaratorList
     ;
 
 typeSpecifier
@@ -191,7 +195,7 @@ funcInitExpression // when assign to a varient: function = func() {}
     :   funcTypeSpecifier '{' funcBody? '}'
     ;
 
-funcExpression // when define a method for a class or a static function: func function() {}
+funcDefinition // when define a method for a class or a static function: func function() {}
     :   funcTypeSpecifierWithName '{' funcBody? '}'
     ;
 
