@@ -3,7 +3,7 @@ plugins {
 }
 
 golang {
-    packagePath = '210A/hw1' // go import path of project to be built, NOT local file system path!
+    packagePath = 'github.com/AleckDarcy/210A' // go import path of project to be built, NOT local file system path!
 }
 
 dependencies {

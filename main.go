@@ -1,3 +1,5 @@
-package _10A
+package main
 
-// cheat gradlew
+func main() {
+
+}
