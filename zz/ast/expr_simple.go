@@ -78,6 +78,12 @@ type BinaryLiteral struct {
 	value bool
 }
 
+var BinaryLiteralHelper *BinaryLiteral
+
+func (l *BinaryLiteral) New(value bool) *BinaryLiteral {
+	return &BinaryLiteral{value: value}
+}
+
 func (l *BinaryLiteral) bExpr() {}
 
 func (l *BinaryLiteral) toString(ident string) string {

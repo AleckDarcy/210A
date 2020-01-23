@@ -37,35 +37,23 @@ func (p *ParseTreeListener) EnterListTypeSpecifier(c *grammar.ListTypeSpecifierC
 
 func (p *ParseTreeListener) EnterListInitExpression(c *grammar.ListInitExpressionContext) {}
 
-func (p *ParseTreeListener) EnterAExp_bracketExpression(c *grammar.AExp_bracketExpressionContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterAExp_bracketExpression(c *grammar.AExp_bracketExpressionContext) {}
 
-func (p *ParseTreeListener) EnterAExp_FloatLiteral(c *grammar.AExp_FloatLiteralContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterAExp_FloatLiteral(c *grammar.AExp_FloatLiteralContext) {}
 
 func (p *ParseTreeListener) EnterAExp_multiplicativeExpression(c *grammar.AExp_multiplicativeExpressionContext) {
-	panic("implement me")
 }
 
 func (p *ParseTreeListener) EnterAExp_additiveExpression(c *grammar.AExp_additiveExpressionContext) {}
 
-func (p *ParseTreeListener) EnterAExp_identifier(c *grammar.AExp_identifierContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterAExp_identifier(c *grammar.AExp_identifierContext) {}
 
-func (p *ParseTreeListener) EnterAExp_IntergerLiteral(c *grammar.AExp_IntergerLiteralContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterAExp_IntergerLiteral(c *grammar.AExp_IntergerLiteralContext) {}
 
 func (p *ParseTreeListener) EnterAExp_listElementExpression(c *grammar.AExp_listElementExpressionContext) {
-	panic("implement me")
 }
 
-func (p *ParseTreeListener) EnterAExprList(c *grammar.AExprListContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterAExprList(c *grammar.AExprListContext) {}
 
 func (p *ParseTreeListener) EnterBExpr_aExpr(c *grammar.BExpr_aExprContext) {}
 
@@ -75,9 +63,7 @@ func (p *ParseTreeListener) EnterBExpr_bang(c *grammar.BExpr_bangContext) {}
 
 func (p *ParseTreeListener) EnterBExpr_bracketExpression(c *grammar.BExpr_bracketExpressionContext) {}
 
-func (p *ParseTreeListener) EnterIntegerExpression(c *grammar.IntegerExpressionContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterIntegerExpression(c *grammar.IntegerExpressionContext) {}
 
 func (p *ParseTreeListener) EnterListElementIndex(c *grammar.ListElementIndexContext) {}
 
@@ -109,29 +95,22 @@ func (p *ParseTreeListener) EnterTernaryElseExpr(c *grammar.TernaryElseExprConte
 
 func (p *ParseTreeListener) EnterSelectionStatement(c *grammar.SelectionStatementContext) {}
 
-func (p *ParseTreeListener) EnterIterationStatement(c *grammar.IterationStatementContext) {
-	panic("implement me")
+func (p *ParseTreeListener) EnterIterationAssignStatement(c *grammar.IterationAssignStatementContext) {
 }
 
-func (p *ParseTreeListener) EnterDefinition(c *grammar.DefinitionContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterIterationStatement(c *grammar.IterationStatementContext) {}
 
-func (p *ParseTreeListener) EnterDefinitionList(c *grammar.DefinitionListContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterDefinition(c *grammar.DefinitionContext) {}
 
-func (p *ParseTreeListener) EnterFile(c *grammar.FileContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterDefinitionList(c *grammar.DefinitionListContext) {}
+
+func (p *ParseTreeListener) EnterFile(c *grammar.FileContext) {}
 
 func (p *ParseTreeListener) EnterTypeSpecifier(c *grammar.TypeSpecifierContext) {}
 
 func (p *ParseTreeListener) EnterTypeSpecifierList(c *grammar.TypeSpecifierListContext) {}
 
-func (p *ParseTreeListener) EnterParaDeclaratorList(c *grammar.ParaDeclaratorListContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterParaDeclaratorList(c *grammar.ParaDeclaratorListContext) {}
 
 func (p *ParseTreeListener) EnterParaDeclaratorWithIdentity(c *grammar.ParaDeclaratorWithIdentityContext) {
 }
@@ -139,9 +118,7 @@ func (p *ParseTreeListener) EnterParaDeclaratorWithIdentity(c *grammar.ParaDecla
 func (p *ParseTreeListener) EnterParaDeclaratorWithIdentityList(c *grammar.ParaDeclaratorWithIdentityListContext) {
 }
 
-func (p *ParseTreeListener) EnterFuncTypeSpecifier(c *grammar.FuncTypeSpecifierContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterFuncTypeSpecifier(c *grammar.FuncTypeSpecifierContext) {}
 
 func (p *ParseTreeListener) EnterFuncIdentifier(c *grammar.FuncIdentifierContext) {}
 
@@ -160,9 +137,7 @@ func (p *ParseTreeListener) EnterFuncStatementList(c *grammar.FuncStatementListC
 
 func (p *ParseTreeListener) EnterFuncBody(c *grammar.FuncBodyContext) {}
 
-func (p *ParseTreeListener) EnterFuncInitExpression(c *grammar.FuncInitExpressionContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) EnterFuncInitExpression(c *grammar.FuncInitExpressionContext) {}
 
 func (p *ParseTreeListener) EnterFuncDefinition(c *grammar.FuncDefinitionContext) {}
 
@@ -249,13 +224,14 @@ func (p *ParseTreeListener) ExitAExprList(c *grammar.AExprListContext) {
 }
 
 func (p *ParseTreeListener) ExitBExpr_aExpr(c *grammar.BExpr_aExprContext) {
-	fmt.Println("c:", c.GetText())
 	e2, _ := p.stack.PopByType(ast.NoderAExpr)
 	e1, _ := p.stack.PopByType(ast.NoderAExpr)
 
 	switch c.GetChild(1).(antlr.TerminalNode).GetText() {
 	case "==":
 		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareEQ))
+	case "<":
+		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareLT))
 	default:
 		fmt.Println("todo ExitBExpr_aExpr: < > <= >= !=")
 	}
@@ -381,8 +357,41 @@ func (p *ParseTreeListener) ExitSelectionStatement(c *grammar.SelectionStatement
 	}
 }
 
+func (p *ParseTreeListener) ExitIterationAssignStatement(c *grammar.IterationAssignStatementContext) {
+	stmt, _ := p.stack.PopByType(ast.NoderAssignStatment)
+	if stmt != nil {
+		p.stack.Push(ast.IterationAssignStmtHelper.New(stmt.(*ast.AssignStmt)))
+	} else {
+		p.stack.Push(ast.IterationAssignStmtHelper.New(nil))
+	}
+}
+
 func (p *ParseTreeListener) ExitIterationStatement(c *grammar.IterationStatementContext) {
-	panic("implement me")
+	fmt.Println("todo ExitIterationStatement")
+	stmtList := p.readFuncStatementerList()
+	increStmt, _ := p.stack.PopByType(ast.NoderIterationAssignStatement)
+	binExprItf, _ := p.stack.PopByType(ast.NoderBExpr)
+	initStmt, _ := p.stack.PopByType(ast.NoderIterationAssignStatement)
+
+	if binExprItf != nil {
+		p.stack.Push(
+			ast.IterationStmtHelper.New(
+				initStmt.(*ast.IterationAssignStmt).AssignStmt(),
+				binExprItf.(ast.BExpr),
+				increStmt.(*ast.IterationAssignStmt).AssignStmt(),
+				stmtList,
+			),
+		)
+	} else {
+		p.stack.Push(
+			ast.IterationStmtHelper.New(
+				initStmt.(*ast.IterationAssignStmt).AssignStmt(),
+				ast.BinaryLiteralHelper.New(true),
+				increStmt.(*ast.IterationAssignStmt).AssignStmt(),
+				stmtList,
+			),
+		)
+	}
 }
 
 func (p *ParseTreeListener) ExitDefinition(c *grammar.DefinitionContext) {

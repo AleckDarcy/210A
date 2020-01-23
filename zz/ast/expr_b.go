@@ -6,14 +6,17 @@ type BExprCompareOpType int64
 
 const (
 	BExprCompareEQ BExprCompareOpType = iota
+	BExprCompareLT
 )
 
-func (t BExprCompareOpType) toString(ident string) string {
+func (t BExprCompareOpType) toString(indent string) string {
 	switch t {
 	case BExprCompareEQ:
-		return ident + "Equals"
+		return indent + "Equals"
+	case BExprCompareLT:
+		return indent + "Less Than"
 	default:
-		return ident + "undefined"
+		return indent + "undefined"
 	}
 }
 
@@ -60,12 +63,12 @@ const (
 	BExprBinaryEQ BExprBinaryOpType = iota
 )
 
-func (t BExprBinaryOpType) toString(ident string) string {
+func (t BExprBinaryOpType) toString(indent string) string {
 	switch t {
 	case BExprBinaryEQ:
-		return ident + "Equals"
+		return indent + "Equals"
 	default:
-		return ident + "undefined"
+		return indent + "undefined"
 	}
 }
 

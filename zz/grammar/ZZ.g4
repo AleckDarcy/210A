@@ -135,9 +135,12 @@ selectionStatement
     |   ternaryIfExpr ':' ternaryElseExpr
     ;
 
+iterationAssignStatement:
+    |   assignStatement
+    ;
+
 iterationStatement
-    :   'for' bExpr? '{' funcStatementList '}'
-    |   'for' assignStatement? ';' bExpr? ';' assignStatement? '{' funcStatementList '}' // todo
+    :   'for' iterationAssignStatement? ';' bExpr? ';' iterationAssignStatement? '{' funcStatementList? '}' // todo
     ;
 
 definition

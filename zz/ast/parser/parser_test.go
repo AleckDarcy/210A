@@ -114,6 +114,20 @@ func TestParseTreeListener_SelectionStatement(t *testing.T) {
 	}
 }
 
+func TestParseTreeListener_IterationStatement(t *testing.T) {
+	testCases := []TestCase{
+		{input: "for ;; {}", expect: ast.IterationStmt1},
+		{input: "for i = 1; i < 5; i = i + 1 {}", expect: ast.IterationStmt2},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.IterationStatement()
+		_, _ = JudgeResult(t, parser, testCase.expect)
+	}
+}
+
 func TestParseTreeListener_FuncDefinition(t *testing.T) {
 	testCases := []TestCase{
 		{input: "func function() {}", expect: ast.FuncDefinition1},

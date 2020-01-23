@@ -238,6 +238,12 @@ func (s *BaseZZListener) EnterSelectionStatement(ctx *SelectionStatementContext)
 // ExitSelectionStatement is called when production selectionStatement is exited.
 func (s *BaseZZListener) ExitSelectionStatement(ctx *SelectionStatementContext) {}
 
+// EnterIterationAssignStatement is called when production iterationAssignStatement is entered.
+func (s *BaseZZListener) EnterIterationAssignStatement(ctx *IterationAssignStatementContext) {}
+
+// ExitIterationAssignStatement is called when production iterationAssignStatement is exited.
+func (s *BaseZZListener) ExitIterationAssignStatement(ctx *IterationAssignStatementContext) {}
+
 // EnterIterationStatement is called when production iterationStatement is entered.
 func (s *BaseZZListener) EnterIterationStatement(ctx *IterationStatementContext) {}
 

@@ -72,6 +72,10 @@ func (s *Stack) PopByType(typ ast.NoderType) (ast.BasicNoder, error) {
 		if _, ok := item.(*ast.Identifier); !ok {
 			return nil, errors.New("item is not a Identifier")
 		}
+	case ast.NoderAssignStatment:
+		if _, ok := item.(*ast.AssignStmt); !ok {
+			return nil, errors.New("item is not a AssignStmt")
+		}
 	case ast.NoderListElementIndex:
 		if _, ok := item.(*ast.ListElementIndex); !ok {
 			return nil, errors.New("item is not a ListElementIndex")
@@ -87,6 +91,10 @@ func (s *Stack) PopByType(typ ast.NoderType) (ast.BasicNoder, error) {
 	case ast.NoderIfExpr:
 		if _, ok := item.(*ast.IfExpr); !ok {
 			return nil, errors.New("item is not a IfExpr")
+		}
+	case ast.NoderIterationAssignStatement:
+		if _, ok := item.(*ast.IterationAssignStmt); !ok {
+			return nil, errors.New("item is not a IterationAssignStmt")
 		}
 	case ast.NoderElseExpr:
 		if _, ok := item.(*ast.ElseExpr); !ok {

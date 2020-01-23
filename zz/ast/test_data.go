@@ -1,8 +1,8 @@
 package ast
 
-var SimpleTypeSpecifier1 = &SimpleTypeSpecifier{name: "int"}
+var SimpleTypeSpecifier1 = &SimpleTypeSpecifier{name: "int"} // int
 
-var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float"}
+var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float"} // float
 
 var ListTypeSpecifier1 = &ListTypeSpecifier{ // []int
 	elem: &ListElementTypeSpecifier{
@@ -61,6 +61,11 @@ var AssignStmt3 = &AssignStmt{ // b = x + y
 	},
 }
 
+/*
+	if a[1] == b {
+		a[1] = a[1] + 1
+	}
+*/
 var IFExpr1 = &IfExpr{
 	binExpr: &BExprCompare{ // a[1] == b
 		e1: ListElementExpr1,
@@ -83,6 +88,11 @@ var IFExpr1 = &IfExpr{
 	},
 }
 
+/*
+	if a[1] == b + 1 {
+		a[1] = a[1] + 2
+	}
+*/
 var IFExpr2 = &IfExpr{
 	binExpr: &BExprCompare{ // a[1] == b + 1
 		e1: ListElementExpr1,
@@ -107,6 +117,11 @@ var IFExpr2 = &IfExpr{
 	},
 }
 
+/*
+	else {
+		a[1] = 0
+	}
+*/
 var ElseExpr1 = &ElseExpr{
 	stmtList: []FuncStatementer{ // a[1] = 0
 		&AssignStmt{
@@ -143,6 +158,9 @@ var SelectionStmt1 = &SelectionStmt{
 	} else {
 		a[1] = 0
 	}
+
+or
+	a[1] == b ? a[1] = a[1] + 1 : a[1] = 0
 */
 var SelectionStmt2 = &SelectionStmt{
 	ifExprList: []*IfExpr{
@@ -159,6 +177,38 @@ var SelectionStmt2 = &SelectionStmt{
 var SelectionStmt3 = &SelectionStmt{
 	ifExprList: []*IfExpr{
 		IFExpr1,
+	},
+}
+
+/*
+	for ;; {}
+*/
+var IterationStmt1 = &IterationStmt{
+	binExpr: &BinaryLiteral{value: true},
+}
+
+/*
+	for i = 1; i < 5; i = i + 1 {}
+*/
+var IterationStmt2 = &IterationStmt{
+	initStmt: &AssignStmt{
+		declList: []Declaratorer{&Identifier{name: "i"}},
+		initList: []AssignIniter{&AExprSimple{e: &IntegerLiteral{value: 1}}},
+	},
+	binExpr: &BExprCompare{
+		e1: &AExprSimple{e: &Identifier{name: "i"}},
+		e2: &AExprSimple{e: &IntegerLiteral{value: 5}},
+		op: BExprCompareLT,
+	},
+	increStmt: &AssignStmt{
+		declList: []Declaratorer{&Identifier{name: "i"}},
+		initList: []AssignIniter{
+			&AExprArith{
+				e1: &AExprSimple{e: &Identifier{name: "i"}},
+				e2: &AExprSimple{e: &IntegerLiteral{value: 1}},
+				op: AExprArithAdd,
+			},
+		},
 	},
 }
 

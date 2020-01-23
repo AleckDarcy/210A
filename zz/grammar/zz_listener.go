@@ -112,6 +112,9 @@ type ZZListener interface {
 	// EnterSelectionStatement is called when entering the selectionStatement production.
 	EnterSelectionStatement(c *SelectionStatementContext)
 
+	// EnterIterationAssignStatement is called when entering the iterationAssignStatement production.
+	EnterIterationAssignStatement(c *IterationAssignStatementContext)
+
 	// EnterIterationStatement is called when entering the iterationStatement production.
 	EnterIterationStatement(c *IterationStatementContext)
 
@@ -276,6 +279,9 @@ type ZZListener interface {
 
 	// ExitSelectionStatement is called when exiting the selectionStatement production.
 	ExitSelectionStatement(c *SelectionStatementContext)
+
+	// ExitIterationAssignStatement is called when exiting the iterationAssignStatement production.
+	ExitIterationAssignStatement(c *IterationAssignStatementContext)
 
 	// ExitIterationStatement is called when exiting the iterationStatement production.
 	ExitIterationStatement(c *IterationStatementContext)

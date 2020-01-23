@@ -15,12 +15,17 @@ const (
 	NoderDefinitioner
 
 	NoderIdentifier
+
+	NoderAssignStatment
+
 	NoderListElementIndex
 	NoderListElementTypeSpecifier
 	NoderListTypeSpecifier
 
 	NoderIfExpr
 	NoderElseExpr
+
+	NoderIterationAssignStatement
 
 	NoderParaDeclaratorWithIdentity
 	NoderFuncIdentifier
