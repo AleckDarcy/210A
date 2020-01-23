@@ -6,7 +6,17 @@ type Identifier struct {
 	name string
 }
 
+var IdentifierHelper *Identifier
+
+func (l *Identifier) New(name string) *Identifier {
+	return &Identifier{name: name}
+}
+
+func (l *Identifier) aExpr() {}
+
 func (i *Identifier) declaratorer() {}
+
+func (i *Identifier) funcReturnParaer() {}
 
 func (i *Identifier) toString(ident string) string {
 	return fmt.Sprintf("%sIdentifier(%s)", ident, i.name)
@@ -20,7 +30,15 @@ type IntegerLiteral struct {
 	value int64
 }
 
+var IntegerLiteralHelper *IntegerLiteral
+
+func (l *IntegerLiteral) New(value int64) *IntegerLiteral {
+	return &IntegerLiteral{value: value}
+}
+
 func (l *IntegerLiteral) aExpr() {}
+
+func (l *IntegerLiteral) assignIniter() {}
 
 func (l *IntegerLiteral) toString(ident string) string {
 	return fmt.Sprintf("%sInt(%d)", ident, l.value)
@@ -32,6 +50,28 @@ func (l *IntegerLiteral) String() string {
 
 func (l *IntegerLiteral) Value() int64 {
 	return l.value
+}
+
+type FloatLiteral struct {
+	value float64
+}
+
+var FloatLiteralHelper *FloatLiteral
+
+func (l *FloatLiteral) New(value float64) *FloatLiteral {
+	return &FloatLiteral{value: value}
+}
+
+func (l *FloatLiteral) aExpr() {}
+
+func (l *FloatLiteral) assignIniter() {}
+
+func (l *FloatLiteral) toString(ident string) string {
+	return fmt.Sprintf("%sFloat(%f)", ident, l.value)
+}
+
+func (l *FloatLiteral) String() string {
+	return l.toString("")
 }
 
 type BinaryLiteral struct {

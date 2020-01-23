@@ -26,6 +26,12 @@ type BExprCompare struct {
 	op     BExprCompareOpType
 }
 
+var BExprCompareHelper *BExprCompare
+
+func (e *BExprCompare) New(e1, e2 AExpr, op BExprCompareOpType) *BExprCompare {
+	return &BExprCompare{e1: e1, e2: e2, op: op}
+}
+
 func (e *BExprCompare) bExpr() {}
 
 func (e *BExprCompare) toString(ident string) string {
@@ -67,16 +73,20 @@ func (t BExprBinaryOpType) String() string {
 	return t.toString("")
 }
 
-type BExprBinaryBool struct {
-	value bool
-}
-
 type BExprBinary struct {
 	e1, e2 BExpr
 	op     BExprBinaryOpType
 }
 
+var BExprBinaryHelper *BExprBinary
+
+func (e *BExprBinary) New(e1, e2 BExpr, op BExprBinaryOpType) *BExprBinary {
+	return &BExprBinary{e1: e1, e2: e2, op: op}
+}
+
 func (e *BExprBinary) bExpr() {}
+
+func (e *BExprBinary) funcReturnParaer() {}
 
 func (e *BExprBinary) toString(ident string) string {
 	return fmt.Sprintf(""+

@@ -28,7 +28,7 @@ var FuncTypeSpecifier1 = &FuncTypeSpecifier{
 		ParaDeclaratorWithIdentity1,
 		ParaDeclaratorWithIdentity2,
 	},
-	typeSpecifierList: []TypeSpecifier{
+	returnList: []TypeSpecifierer{
 		ListTypeSpecifier1,
 		&SimpleTypeSpecifier{name: "int"},
 	},
@@ -39,20 +39,20 @@ var FuncInitExpr1 = &FuncInitExpr{
 	stmtList:      FuncStmtList1,
 }
 
-var FuncTypeSpecifierWithName1 = &FuncTypeSpecifierWithName{
+var FuncTypeSpecifierWithName2 = &FuncTypeSpecifierWithName{
 	name: &Identifier{name: "function"},
 	paraList: []*ParaDeclaratorWithIdentity{
 		ParaDeclaratorWithIdentity1,
 		ParaDeclaratorWithIdentity2,
 	},
-	typeSpecifierList: []TypeSpecifier{
+	returnList: []TypeSpecifierer{
 		ListTypeSpecifier1,
 		&SimpleTypeSpecifier{name: "int"},
 	},
 }
 
-var FuncDefinition1 = &FuncDefinition{
-	typeSpecifier: FuncTypeSpecifierWithName1,
+var FuncDefinition2 = &FuncDefinition{
+	typeSpecifier: FuncTypeSpecifierWithName2,
 	stmtList:      FuncStmtList1,
 }
 
@@ -63,7 +63,7 @@ func TestParaDeclaratorWithIdentity_String(t *testing.T) {
 
 func TestFuncTypeSpecifier_String(t *testing.T) {
 	s := FuncTypeSpecifier1
-	s.typeSpecifier()
+	s.typeSpecifierer()
 	fmt.Println(s)
 }
 
@@ -74,12 +74,12 @@ func TestFuncInitExpr_String(t *testing.T) {
 }
 
 func TestFuncTypeSpecifierWithName_String(t *testing.T) {
-	s := FuncTypeSpecifierWithName1
+	s := FuncTypeSpecifierWithName2
 	fmt.Println(s)
 }
 
 func TestFuncDefinition_String(t *testing.T) {
-	d := FuncDefinition1
+	d := FuncDefinition2
 	d.definitioner()
 	fmt.Println(d)
 }
