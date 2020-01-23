@@ -22,9 +22,13 @@ FloatLiteral // todo
     :   '0.0'
     ;
 
-declarator
+identifier
     :   Identifier
-    |   listElementExpression
+    ;
+
+declarator
+    :   identifier # declarator_identifier
+    |   listElementExpression # declarator_listElementExpression
     ;
 
 declaratorList
@@ -48,13 +52,13 @@ listTypeSpecifier
     ;
 
 listInitExpression
-    :   'list' '(' listTypeSpecifier ',' '(' aExpr ')' ')'
+    :   'list' '(' listTypeSpecifier ',' aExpr ')'
     ;
 
 aExpr
     :   IntegerLiteral # aExp_IntergerLiteral
     |   FloatLiteral # aExp_FloatLiteral
-    |   Identifier # aExp_Identifier
+    |   identifier # aExp_identifier
     |   listElementExpression # aExp_listElementExpression
     |   aExpr ('*'|'/') aExpr # aExp_multiplicativeExpression
     |   aExpr ('+'|'-') aExpr # aExp_additiveExpression
@@ -66,16 +70,16 @@ aExprList
     |   aExprList ',' aExpr
     ;
 
-bExp
-    :   aExpr ('=='|'<'|'>'|'>='|'<='|'!=') aExpr
-    |   bExp ('=='|'&&'|'||'|'!=') bExp
-    |   '!' bExp
-    |   '(' bExp ')'
+bExpr
+    :   aExpr ('=='|'<'|'>'|'<='|'>='|'!=') aExpr # bExpr_aExpr
+    |   bExpr ('=='|'&&'|'||'|'!=') bExpr # bExpr_bExpr
+    |   '!' bExpr # bExpr_bang
+    |   '(' bExpr ')' # bExpr_bracketExpression
     ;
 
 integerExpression
     :   IntegerLiteral
-    |   Identifier
+    |   identifier
     ;
 
 listElementIndex
@@ -88,13 +92,13 @@ listElementIndexList
     ;
 
 listElementExpression
-    :   Identifier listElementIndexList
+    :   identifier listElementIndexList
     ;
 
 assignInit
-    :   aExpr
-    |   listInitExpression
-    |   funcInitExpression
+    :   aExpr # assignInit_aExpr
+    |   listInitExpression # assignInit_listInitExpression
+    |   funcInitExpression # assignInit_funcInitExpression
     ;
 
 assignInitList
@@ -106,14 +110,34 @@ assignStatement
     :   declaratorList '=' assignInitList
     ;
 
+ifExpr
+    :   'if' bExpr '{' funcStatementList? '}'
+    ;
+
+elsifExpr
+    :   'elsif' bExpr '{' funcStatementList? '}'
+    ;
+
+elseExpr
+    :   'else' '{' funcStatementList? '}'
+    ;
+
+ternaryIfExpr
+    :   bExpr '?' funcStatement
+    ;
+
+ternaryElseExpr
+    :   funcStatement
+    ;
+
 selectionStatement
-    :   'if' bExp '{' funcStatementList? '}' ('elsif' bExp '{' funcStatementList? '}')* ('else' '{' funcStatementList? '}')?
-    |   bExp '?' funcStatement ':' funcStatement
+    :   ifExpr elsifExpr* elseExpr?
+    |   ternaryIfExpr ':' ternaryElseExpr
     ;
 
 iterationStatement
-    :   'for' bExp? '{' funcStatementList '}'
-    |   'for' assignStatement? ';' bExp? ';' assignStatement? '{' funcStatementList '}' // todo
+    :   'for' bExpr? '{' funcStatementList '}'
+    |   'for' assignStatement? ';' bExpr? ';' assignStatement? '{' funcStatementList '}' // todo
     ;
 
 definition
@@ -127,7 +151,7 @@ definitionList
     ;
 
 file // todo: package import
-    :   declaratorList
+    :   definitionList
     ;
 
 typeSpecifier
@@ -142,8 +166,8 @@ typeSpecifierList
     ;
 
 paraDeclaratorList
-    :   Identifier
-    |   paraDeclaratorList ',' Identifier
+    :   identifier
+    |   paraDeclaratorList ',' identifier
     ;
 
 paraDeclaratorWithIdentity // todo: rename
@@ -159,14 +183,18 @@ funcTypeSpecifier
     :   'func' '(' paraDeclaratorWithIdentityList? ')' ('(' typeSpecifierList? ')')?
     ;
 
+funcIdentifier
+    :   identifier
+    ;
+
 funcTypeSpecifierWithName
-    :   'func' Identifier '(' paraDeclaratorWithIdentityList? ')' ('(' typeSpecifierList? ')')?
+    :   'func' funcIdentifier '(' paraDeclaratorWithIdentityList? ')' ('(' typeSpecifierList? ')')?
     ;
 
 funcReturnPara
     :   aExpr
-    |   bExp
-    |   Identifier
+    |   bExpr
+    |   identifier
     |   'nil'
     ;
 
@@ -175,11 +203,15 @@ funcReturnParaList
     |   funcReturnParaList ',' funcReturnPara
     ;
 
+funcReturnStatement
+    :   'return' funcReturnParaList?
+    ;
+
 funcStatement
     :   assignStatement
     |   selectionStatement
     |   iterationStatement
-    |   'return' funcReturnParaList?
+    |   funcReturnStatement
     ;
 
 funcStatementList
