@@ -66,11 +66,11 @@ aExprList
     |   aExprList ',' aExpr
     ;
 
-bExp
+bExpr
     :   aExpr ('=='|'<'|'>'|'>='|'<='|'!=') aExpr
-    |   bExp ('=='|'&&'|'||'|'!=') bExp
-    |   '!' bExp
-    |   '(' bExp ')'
+    |   bExpr ('=='|'&&'|'||'|'!=') bExpr
+    |   '!' bExpr
+    |   '(' bExpr ')'
     ;
 
 integerExpression
@@ -95,6 +95,7 @@ assignInit
     :   aExpr
     |   listInitExpression
     |   funcInitExpression
+    |   funcExecuteExpression
     ;
 
 assignInitList
@@ -107,13 +108,13 @@ assignStatement
     ;
 
 selectionStatement
-    :   'if' bExp '{' funcStatementList? '}' ('elsif' bExp '{' funcStatementList? '}')* ('else' '{' funcStatementList? '}')?
-    |   bExp '?' funcStatement ':' funcStatement
+    :   'if' bExpr '{' funcStatementList? '}' ('elsif' bExpr '{' funcStatementList? '}')* ('else' '{' funcStatementList? '}')?
+    |   bExpr '?' funcStatement ':' funcStatement
     ;
 
 iterationStatement
-    :   'for' bExp? '{' funcStatementList '}'
-    |   'for' assignStatement? ';' bExp? ';' assignStatement? '{' funcStatementList '}' // todo
+    :   'for' bExpr? '{' funcStatementList '}'
+    |   'for' assignStatement? ';' bExpr? ';' assignStatement? '{' funcStatementList '}' // todo
     ;
 
 definition
@@ -165,7 +166,7 @@ funcTypeSpecifierWithName
 
 funcReturnPara
     :   aExpr
-    |   bExp
+    |   bExpr
     |   Identifier
     |   'nil'
     ;
@@ -175,11 +176,16 @@ funcReturnParaList
     |   funcReturnParaList ',' funcReturnPara
     ;
 
+funcReturnStatement
+    :   'return' funcReturnParaList?
+    ;
+
 funcStatement
     :   assignStatement
     |   selectionStatement
     |   iterationStatement
-    |   'return' funcReturnParaList?
+    |   funcReturnStatement
+    |   funcExecuteStatement
     ;
 
 funcStatementList
@@ -197,6 +203,24 @@ funcInitExpression // when assign to a varient: function = func() {}
 
 funcDefinition // when define a method for a class or a static function: func function() {}
     :   funcTypeSpecifierWithName '{' funcBody? '}'
+    ;
+
+funcExecutePara
+    :   aExpr
+    |   bExpr
+    ;
+
+funcExecuteParaList
+    :   funcExecutePara
+    |   funcExecuteParaList ',' funcExecutePara
+    ;
+
+funcExecuteExpression
+    :   funcIdentifier '(' funcExecuteParaList? ')'
+    ;
+
+funcExecuteStatement
+    :   funcExecuteExpression
     ;
 
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
