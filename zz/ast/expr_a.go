@@ -21,14 +21,53 @@ func (t AExprArithOpType) String() string {
 	return t.toString("")
 }
 
+type AExprSimple struct {
+	e AExpr
+}
+
+var AExprSimpleHelper *AExprSimple
+
+func (e *AExprSimple) New(exp AExpr) *AExprSimple {
+	return &AExprSimple{e: exp}
+}
+
+func (e *AExprSimple) aExpr() {}
+
+func (e *AExprSimple) assignIniter() {}
+
+func (e *AExprSimple) funcReturnParaer() {}
+
+func (e *AExprSimple) toString(ident string) string {
+	return fmt.Sprintf(""+
+		"%sAExprSimple {\n"+
+		"%s..E:\n"+
+		"%s\n"+
+		"%s}",
+		ident, ident, e.e.toString(ident+"...."),
+		ident,
+	)
+}
+
+func (e *AExprSimple) String() string {
+	return e.toString("")
+}
+
 type AExprArith struct {
 	e1, e2 AExpr
 	op     AExprArithOpType
 }
 
+var AExprArithHelper *AExprArith
+
+func (e *AExprArith) New(e1, e2 AExpr, op AExprArithOpType) *AExprArith {
+	return &AExprArith{e1: e1, e2: e2, op: op}
+}
+
 func (e *AExprArith) aExpr() {}
 
 func (e *AExprArith) assignIniter() {}
+
+func (e *AExprArith) funcReturnParaer() {}
 
 func (e *AExprArith) toString(ident string) string {
 	return fmt.Sprintf(""+
@@ -39,7 +78,6 @@ func (e *AExprArith) toString(ident string) string {
 		"%s\n"+
 		"%s..Op: %s\n"+
 		"%s}",
-
 		ident, ident, e.e1.toString("...."+ident),
 		ident, e.e2.toString("...."+ident),
 		ident, e.op,

@@ -6,6 +6,12 @@ type ListElementIndex struct {
 	e AExpr
 }
 
+var ListElementIndexHelper *ListElementIndex
+
+func (i *ListElementIndex) New(e AExpr) *ListElementIndex {
+	return &ListElementIndex{e: e}
+}
+
 func (i *ListElementIndex) toString(ident string) string {
 	return fmt.Sprintf(""+
 		"%sListElementIndex {\n"+
@@ -24,6 +30,17 @@ type ListElementExpr struct {
 	name *Identifier
 	list []*ListElementIndex
 }
+
+var ListElementExprHelper *ListElementExpr
+
+func (e *ListElementExpr) New(name *Identifier, list []*ListElementIndex) *ListElementExpr {
+	return &ListElementExpr{
+		name: name,
+		list: list,
+	}
+}
+
+func (e *ListElementExpr) aExpr() {}
 
 func (e *ListElementExpr) declaratorer() {}
 
@@ -51,6 +68,12 @@ type TupleSizeList struct {
 type ListInitExpr struct {
 	typeSpecifier *ListTypeSpecifier
 	size          AExpr
+}
+
+var ListInitExprHelper *ListInitExpr
+
+func (e *ListInitExpr) New(typeSpecifier *ListTypeSpecifier, size AExpr) *ListInitExpr {
+	return &ListInitExpr{typeSpecifier: typeSpecifier, size: size}
 }
 
 func (e *ListInitExpr) assignIniter() {}

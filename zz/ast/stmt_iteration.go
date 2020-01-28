@@ -9,6 +9,12 @@ type IterationStmt struct {
 	stmtList  []FuncStatementer
 }
 
+var IterationStmtHelper *IterationStmt
+
+func (s *IterationStmt) New(initStmt *AssignStmt, binExpr BExpr, increStmt *AssignStmt, stmtList []FuncStatementer) *IterationStmt {
+	return &IterationStmt{initStmt: initStmt, binExpr: binExpr, increStmt: increStmt, stmtList: stmtList}
+}
+
 func (s *IterationStmt) funcStatementer() {}
 
 func (s *IterationStmt) toString(ident string) string {
@@ -33,4 +39,33 @@ func (s *IterationStmt) toString(ident string) string {
 
 func (s *IterationStmt) String() string {
 	return s.toString("")
+}
+
+type IterationAssignStmt struct {
+	stmt *AssignStmt
+}
+
+var IterationAssignStmtHelper *IterationAssignStmt
+
+func (s *IterationAssignStmt) New(stmt *AssignStmt) *IterationAssignStmt {
+	return &IterationAssignStmt{stmt: stmt}
+}
+
+func (s *IterationAssignStmt) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sIterationAssignStatement {\n"+
+		"%s..AssignStatement:\n"+
+		"%s\n"+
+		"%s}",
+		indent, indent, s.stmt.toString(indent+"...."),
+		indent,
+	)
+}
+
+func (s *IterationAssignStmt) String() string {
+	return s.toString("")
+}
+
+func (s *IterationAssignStmt) AssignStmt() *AssignStmt {
+	return s.stmt
 }

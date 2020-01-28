@@ -7,6 +7,12 @@ type IfExpr struct {
 	stmtList []FuncStatementer
 }
 
+var IfExprHelper *IfExpr
+
+func (e *IfExpr) New(binExpr BExpr, stmtList []FuncStatementer) *IfExpr {
+	return &IfExpr{binExpr: binExpr, stmtList: stmtList}
+}
+
 func (e *IfExpr) toString(ident string) string {
 	return fmt.Sprintf(""+
 		"%sIfExpression {\n"+
@@ -27,6 +33,12 @@ func (e *IfExpr) String() string {
 
 type ElseExpr struct {
 	stmtList []FuncStatementer
+}
+
+var ElseExprHelper *ElseExpr
+
+func (e *ElseExpr) New(stmtList []FuncStatementer) *ElseExpr {
+	return &ElseExpr{stmtList: stmtList}
 }
 
 func (e *ElseExpr) toString(ident string) string {
@@ -57,6 +69,12 @@ func (e *ElseExpr) String() string {
 type SelectionStmt struct {
 	ifExprList []*IfExpr
 	elseExpr   *ElseExpr
+}
+
+var SelectionStmtHelper *SelectionStmt
+
+func (s *SelectionStmt) New(ifExprList []*IfExpr, elseExpr *ElseExpr) *SelectionStmt {
+	return &SelectionStmt{ifExprList: ifExprList, elseExpr: elseExpr}
 }
 
 func (s *SelectionStmt) funcStatementer() {}

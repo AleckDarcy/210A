@@ -7,6 +7,15 @@ type AssignStmt struct {
 	initList []AssignIniter
 }
 
+var AssignStmtHelper *AssignStmt
+
+func (s *AssignStmt) New(declList []Declaratorer, initList []AssignIniter) *AssignStmt {
+	return &AssignStmt{
+		declList: declList,
+		initList: initList,
+	}
+}
+
 func (s *AssignStmt) funcStatementer() {}
 
 func (s *AssignStmt) definitioner() {}

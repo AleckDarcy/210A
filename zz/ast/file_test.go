@@ -8,7 +8,7 @@ import (
 var File1 = &File{
 	defList: []Definitioner{
 		AssignStmt1,
-		FuncDefinition1,
+		FuncDefinition2,
 	},
 }
 

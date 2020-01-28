@@ -17,7 +17,7 @@ var ListTypeSpecifier1 = &ListTypeSpecifier{
 	elem: ListElementTypeSpecifier1,
 }
 
-var ListElementExpr1 = &ListElementExpr{
+var ListElementExpr2 = &ListElementExpr{
 	name: &Identifier{name: "b"},
 	list: []*ListElementIndex{
 		{e: aExprAdd1},
@@ -27,7 +27,7 @@ var ListElementExpr1 = &ListElementExpr{
 
 var ListInitExpr1 = &ListInitExpr{
 	typeSpecifier: ListTypeSpecifier1,
-	size: aExprAdd1,
+	size:          aExprAdd1,
 }
 
 var ListInitExpr2 = &ListInitExpr{
@@ -45,7 +45,7 @@ func TestListElementIndex_String(t *testing.T) {
 }
 
 func TestListElementExpr_String(t *testing.T) {
-	e := ListElementExpr1
+	e := ListElementExpr2
 	e.declaratorer()
 	fmt.Println(e)
 }

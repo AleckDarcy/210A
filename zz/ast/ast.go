@@ -1,5 +1,38 @@
 package ast
 
+type NoderType int64
+
+const (
+	NoderBasic NoderType = iota
+	NoderAExpr
+	NoderBExpr
+	NoderTypeSpecifierer
+	NoderListElementTypeSpecifierer
+	NoderDeclarator
+	NoderAssignIniter
+	NoderFuncStatementer
+	NoderFuncReturnPara
+	NoderDefinitioner
+
+	NoderIdentifier
+
+	NoderAssignStatment
+
+	NoderListElementIndex
+	NoderListElementTypeSpecifier
+	NoderListTypeSpecifier
+
+	NoderIfExpr
+	NoderElseExpr
+
+	NoderIterationAssignStatement
+	NoderParaDeclarator
+	NoderParaDeclaratorWithIdentity
+	NoderFuncIdentifier
+	NoderFuncTypeSpecifier
+	NoderFuncTypeSpecifierWithName
+)
+
 type BasicNoder interface {
 	toString(ident string) string
 	String() string
@@ -19,11 +52,17 @@ type BExpr interface {
 	bExpr()
 }
 
-// TypeSpecifier is an interface of typeSpecifier
-type TypeSpecifier interface {
+// TypeSpecifierer is an interface of typeSpecifier
+type TypeSpecifierer interface {
 	BasicNoder
 
-	typeSpecifier()
+	typeSpecifierer()
+}
+
+type ListElementTypeSpecifierer interface {
+	BasicNoder
+
+	listElementTypeSpecifierer()
 }
 
 // Declaratorer is an interface of declarator
@@ -45,6 +84,13 @@ type FuncStatementer interface {
 	BasicNoder
 
 	funcStatementer()
+}
+
+// FuncReturnParaer is an interface of funcReturnPara
+type FuncReturnParaer interface {
+	BasicNoder
+
+	funcReturnParaer()
 }
 
 // Definitioner is an interface of definition
