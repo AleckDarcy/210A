@@ -26,19 +26,11 @@ func (s *BaseZZListener) EnterIdentifier(ctx *IdentifierContext) {}
 // ExitIdentifier is called when production identifier is exited.
 func (s *BaseZZListener) ExitIdentifier(ctx *IdentifierContext) {}
 
-// EnterDeclarator_identifier is called when production declarator_identifier is entered.
-func (s *BaseZZListener) EnterDeclarator_identifier(ctx *Declarator_identifierContext) {}
+// EnterDeclarator is called when production declarator is entered.
+func (s *BaseZZListener) EnterDeclarator(ctx *DeclaratorContext) {}
 
-// ExitDeclarator_identifier is called when production declarator_identifier is exited.
-func (s *BaseZZListener) ExitDeclarator_identifier(ctx *Declarator_identifierContext) {}
-
-// EnterDeclarator_listElementExpression is called when production declarator_listElementExpression is entered.
-func (s *BaseZZListener) EnterDeclarator_listElementExpression(ctx *Declarator_listElementExpressionContext) {
-}
-
-// ExitDeclarator_listElementExpression is called when production declarator_listElementExpression is exited.
-func (s *BaseZZListener) ExitDeclarator_listElementExpression(ctx *Declarator_listElementExpressionContext) {
-}
+// ExitDeclarator is called when production declarator is exited.
+func (s *BaseZZListener) ExitDeclarator(ctx *DeclaratorContext) {}
 
 // EnterDeclaratorList is called when production declaratorList is entered.
 func (s *BaseZZListener) EnterDeclaratorList(ctx *DeclaratorListContext) {}
@@ -114,12 +106,6 @@ func (s *BaseZZListener) EnterAExp_listElementExpression(ctx *AExp_listElementEx
 // ExitAExp_listElementExpression is called when production aExp_listElementExpression is exited.
 func (s *BaseZZListener) ExitAExp_listElementExpression(ctx *AExp_listElementExpressionContext) {}
 
-// EnterAExprList is called when production aExprList is entered.
-func (s *BaseZZListener) EnterAExprList(ctx *AExprListContext) {}
-
-// ExitAExprList is called when production aExprList is exited.
-func (s *BaseZZListener) ExitAExprList(ctx *AExprListContext) {}
-
 // EnterBExpr_aExpr is called when production bExpr_aExpr is entered.
 func (s *BaseZZListener) EnterBExpr_aExpr(ctx *BExpr_aExprContext) {}
 
@@ -144,12 +130,6 @@ func (s *BaseZZListener) EnterBExpr_bracketExpression(ctx *BExpr_bracketExpressi
 // ExitBExpr_bracketExpression is called when production bExpr_bracketExpression is exited.
 func (s *BaseZZListener) ExitBExpr_bracketExpression(ctx *BExpr_bracketExpressionContext) {}
 
-// EnterIntegerExpression is called when production integerExpression is entered.
-func (s *BaseZZListener) EnterIntegerExpression(ctx *IntegerExpressionContext) {}
-
-// ExitIntegerExpression is called when production integerExpression is exited.
-func (s *BaseZZListener) ExitIntegerExpression(ctx *IntegerExpressionContext) {}
-
 // EnterListElementIndex is called when production listElementIndex is entered.
 func (s *BaseZZListener) EnterListElementIndex(ctx *ListElementIndexContext) {}
 
@@ -168,27 +148,11 @@ func (s *BaseZZListener) EnterListElementExpression(ctx *ListElementExpressionCo
 // ExitListElementExpression is called when production listElementExpression is exited.
 func (s *BaseZZListener) ExitListElementExpression(ctx *ListElementExpressionContext) {}
 
-// EnterAssignInit_aExpr is called when production assignInit_aExpr is entered.
-func (s *BaseZZListener) EnterAssignInit_aExpr(ctx *AssignInit_aExprContext) {}
+// EnterAssignInit is called when production assignInit is entered.
+func (s *BaseZZListener) EnterAssignInit(ctx *AssignInitContext) {}
 
-// ExitAssignInit_aExpr is called when production assignInit_aExpr is exited.
-func (s *BaseZZListener) ExitAssignInit_aExpr(ctx *AssignInit_aExprContext) {}
-
-// EnterAssignInit_listInitExpression is called when production assignInit_listInitExpression is entered.
-func (s *BaseZZListener) EnterAssignInit_listInitExpression(ctx *AssignInit_listInitExpressionContext) {
-}
-
-// ExitAssignInit_listInitExpression is called when production assignInit_listInitExpression is exited.
-func (s *BaseZZListener) ExitAssignInit_listInitExpression(ctx *AssignInit_listInitExpressionContext) {
-}
-
-// EnterAssignInit_funcInitExpression is called when production assignInit_funcInitExpression is entered.
-func (s *BaseZZListener) EnterAssignInit_funcInitExpression(ctx *AssignInit_funcInitExpressionContext) {
-}
-
-// ExitAssignInit_funcInitExpression is called when production assignInit_funcInitExpression is exited.
-func (s *BaseZZListener) ExitAssignInit_funcInitExpression(ctx *AssignInit_funcInitExpressionContext) {
-}
+// ExitAssignInit is called when production assignInit is exited.
+func (s *BaseZZListener) ExitAssignInit(ctx *AssignInitContext) {}
 
 // EnterAssignInitList is called when production assignInitList is entered.
 func (s *BaseZZListener) EnterAssignInitList(ctx *AssignInitListContext) {}
@@ -279,6 +243,12 @@ func (s *BaseZZListener) EnterTypeSpecifierList(ctx *TypeSpecifierListContext) {
 
 // ExitTypeSpecifierList is called when production typeSpecifierList is exited.
 func (s *BaseZZListener) ExitTypeSpecifierList(ctx *TypeSpecifierListContext) {}
+
+// EnterParaDeclarator is called when production paraDeclarator is entered.
+func (s *BaseZZListener) EnterParaDeclarator(ctx *ParaDeclaratorContext) {}
+
+// ExitParaDeclarator is called when production paraDeclarator is exited.
+func (s *BaseZZListener) ExitParaDeclarator(ctx *ParaDeclaratorContext) {}
 
 // EnterParaDeclaratorList is called when production paraDeclaratorList is entered.
 func (s *BaseZZListener) EnterParaDeclaratorList(ctx *ParaDeclaratorListContext) {}

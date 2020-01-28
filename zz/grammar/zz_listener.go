@@ -10,11 +10,8 @@ type ZZListener interface {
 	// EnterIdentifier is called when entering the identifier production.
 	EnterIdentifier(c *IdentifierContext)
 
-	// EnterDeclarator_identifier is called when entering the declarator_identifier production.
-	EnterDeclarator_identifier(c *Declarator_identifierContext)
-
-	// EnterDeclarator_listElementExpression is called when entering the declarator_listElementExpression production.
-	EnterDeclarator_listElementExpression(c *Declarator_listElementExpressionContext)
+	// EnterDeclarator is called when entering the declarator production.
+	EnterDeclarator(c *DeclaratorContext)
 
 	// EnterDeclaratorList is called when entering the declaratorList production.
 	EnterDeclaratorList(c *DeclaratorListContext)
@@ -52,9 +49,6 @@ type ZZListener interface {
 	// EnterAExp_listElementExpression is called when entering the aExp_listElementExpression production.
 	EnterAExp_listElementExpression(c *AExp_listElementExpressionContext)
 
-	// EnterAExprList is called when entering the aExprList production.
-	EnterAExprList(c *AExprListContext)
-
 	// EnterBExpr_aExpr is called when entering the bExpr_aExpr production.
 	EnterBExpr_aExpr(c *BExpr_aExprContext)
 
@@ -67,9 +61,6 @@ type ZZListener interface {
 	// EnterBExpr_bracketExpression is called when entering the bExpr_bracketExpression production.
 	EnterBExpr_bracketExpression(c *BExpr_bracketExpressionContext)
 
-	// EnterIntegerExpression is called when entering the integerExpression production.
-	EnterIntegerExpression(c *IntegerExpressionContext)
-
 	// EnterListElementIndex is called when entering the listElementIndex production.
 	EnterListElementIndex(c *ListElementIndexContext)
 
@@ -79,14 +70,8 @@ type ZZListener interface {
 	// EnterListElementExpression is called when entering the listElementExpression production.
 	EnterListElementExpression(c *ListElementExpressionContext)
 
-	// EnterAssignInit_aExpr is called when entering the assignInit_aExpr production.
-	EnterAssignInit_aExpr(c *AssignInit_aExprContext)
-
-	// EnterAssignInit_listInitExpression is called when entering the assignInit_listInitExpression production.
-	EnterAssignInit_listInitExpression(c *AssignInit_listInitExpressionContext)
-
-	// EnterAssignInit_funcInitExpression is called when entering the assignInit_funcInitExpression production.
-	EnterAssignInit_funcInitExpression(c *AssignInit_funcInitExpressionContext)
+	// EnterAssignInit is called when entering the assignInit production.
+	EnterAssignInit(c *AssignInitContext)
 
 	// EnterAssignInitList is called when entering the assignInitList production.
 	EnterAssignInitList(c *AssignInitListContext)
@@ -133,6 +118,9 @@ type ZZListener interface {
 	// EnterTypeSpecifierList is called when entering the typeSpecifierList production.
 	EnterTypeSpecifierList(c *TypeSpecifierListContext)
 
+	// EnterParaDeclarator is called when entering the paraDeclarator production.
+	EnterParaDeclarator(c *ParaDeclaratorContext)
+
 	// EnterParaDeclaratorList is called when entering the paraDeclaratorList production.
 	EnterParaDeclaratorList(c *ParaDeclaratorListContext)
 
@@ -178,11 +166,8 @@ type ZZListener interface {
 	// ExitIdentifier is called when exiting the identifier production.
 	ExitIdentifier(c *IdentifierContext)
 
-	// ExitDeclarator_identifier is called when exiting the declarator_identifier production.
-	ExitDeclarator_identifier(c *Declarator_identifierContext)
-
-	// ExitDeclarator_listElementExpression is called when exiting the declarator_listElementExpression production.
-	ExitDeclarator_listElementExpression(c *Declarator_listElementExpressionContext)
+	// ExitDeclarator is called when exiting the declarator production.
+	ExitDeclarator(c *DeclaratorContext)
 
 	// ExitDeclaratorList is called when exiting the declaratorList production.
 	ExitDeclaratorList(c *DeclaratorListContext)
@@ -220,9 +205,6 @@ type ZZListener interface {
 	// ExitAExp_listElementExpression is called when exiting the aExp_listElementExpression production.
 	ExitAExp_listElementExpression(c *AExp_listElementExpressionContext)
 
-	// ExitAExprList is called when exiting the aExprList production.
-	ExitAExprList(c *AExprListContext)
-
 	// ExitBExpr_aExpr is called when exiting the bExpr_aExpr production.
 	ExitBExpr_aExpr(c *BExpr_aExprContext)
 
@@ -235,9 +217,6 @@ type ZZListener interface {
 	// ExitBExpr_bracketExpression is called when exiting the bExpr_bracketExpression production.
 	ExitBExpr_bracketExpression(c *BExpr_bracketExpressionContext)
 
-	// ExitIntegerExpression is called when exiting the integerExpression production.
-	ExitIntegerExpression(c *IntegerExpressionContext)
-
 	// ExitListElementIndex is called when exiting the listElementIndex production.
 	ExitListElementIndex(c *ListElementIndexContext)
 
@@ -247,14 +226,8 @@ type ZZListener interface {
 	// ExitListElementExpression is called when exiting the listElementExpression production.
 	ExitListElementExpression(c *ListElementExpressionContext)
 
-	// ExitAssignInit_aExpr is called when exiting the assignInit_aExpr production.
-	ExitAssignInit_aExpr(c *AssignInit_aExprContext)
-
-	// ExitAssignInit_listInitExpression is called when exiting the assignInit_listInitExpression production.
-	ExitAssignInit_listInitExpression(c *AssignInit_listInitExpressionContext)
-
-	// ExitAssignInit_funcInitExpression is called when exiting the assignInit_funcInitExpression production.
-	ExitAssignInit_funcInitExpression(c *AssignInit_funcInitExpressionContext)
+	// ExitAssignInit is called when exiting the assignInit production.
+	ExitAssignInit(c *AssignInitContext)
 
 	// ExitAssignInitList is called when exiting the assignInitList production.
 	ExitAssignInitList(c *AssignInitListContext)
@@ -300,6 +273,9 @@ type ZZListener interface {
 
 	// ExitTypeSpecifierList is called when exiting the typeSpecifierList production.
 	ExitTypeSpecifierList(c *TypeSpecifierListContext)
+
+	// ExitParaDeclarator is called when exiting the paraDeclarator production.
+	ExitParaDeclarator(c *ParaDeclaratorContext)
 
 	// ExitParaDeclaratorList is called when exiting the paraDeclaratorList production.
 	ExitParaDeclaratorList(c *ParaDeclaratorListContext)

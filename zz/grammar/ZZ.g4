@@ -27,8 +27,8 @@ identifier
     ;
 
 declarator
-    :   identifier # declarator_identifier
-    |   listElementExpression # declarator_listElementExpression
+    :   identifier
+    |   listElementExpression
     ;
 
 declaratorList
@@ -65,21 +65,11 @@ aExpr
     |   '(' aExpr ')' # aExp_bracketExpression
     ;
 
-aExprList
-    :   aExpr
-    |   aExprList ',' aExpr
-    ;
-
 bExpr
     :   aExpr ('=='|'<'|'>'|'<='|'>='|'!=') aExpr # bExpr_aExpr
     |   bExpr ('=='|'&&'|'||'|'!=') bExpr # bExpr_bExpr
     |   '!' bExpr # bExpr_bang
     |   '(' bExpr ')' # bExpr_bracketExpression
-    ;
-
-integerExpression
-    :   IntegerLiteral
-    |   identifier
     ;
 
 listElementIndex
@@ -96,9 +86,9 @@ listElementExpression
     ;
 
 assignInit
-    :   aExpr # assignInit_aExpr
-    |   listInitExpression # assignInit_listInitExpression
-    |   funcInitExpression # assignInit_funcInitExpression
+    :   aExpr
+    |   listInitExpression
+    |   funcInitExpression
     ;
 
 assignInitList
@@ -168,13 +158,17 @@ typeSpecifierList
     |   typeSpecifierList ',' typeSpecifier
     ;
 
-paraDeclaratorList
+paraDeclarator
     :   identifier
-    |   paraDeclaratorList ',' identifier
+    ;
+
+paraDeclaratorList
+    :   paraDeclarator
+    |   paraDeclaratorList ',' paraDeclarator
     ;
 
 paraDeclaratorWithIdentity // todo: rename
-    :   declaratorList typeSpecifier
+    :   paraDeclaratorList typeSpecifier
     ;
 
 paraDeclaratorWithIdentityList
@@ -232,6 +226,10 @@ funcInitExpression // when assign to a varient: function = func() {}
 
 funcDefinition // when define a method for a class or a static function: func function() {}
     :   funcTypeSpecifierWithName '{' funcBody? '}'
+    ;
+
+funcExecuteExpr
+    :
     ;
 
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

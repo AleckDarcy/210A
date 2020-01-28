@@ -100,6 +100,10 @@ func (s *Stack) PopByType(typ ast.NoderType) (ast.BasicNoder, error) {
 		if _, ok := item.(*ast.ElseExpr); !ok {
 			return nil, errors.New("item is not a ElseExpr")
 		}
+	case ast.NoderParaDeclarator:
+		if _, ok := item.(*ast.ParaDeclarator); !ok {
+			return nil, errors.New("item is not a ParaDeclarator")
+		}
 	case ast.NoderParaDeclaratorWithIdentity:
 		if _, ok := item.(*ast.ParaDeclaratorWithIdentity); !ok {
 			return nil, errors.New("item is not a ParaDeclaratorWithIdentity")

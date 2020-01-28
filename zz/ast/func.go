@@ -2,6 +2,35 @@ package ast
 
 import "fmt"
 
+type ParaDeclarator struct {
+	name *Identifier
+}
+
+var ParaDeclaratorHelper *ParaDeclarator
+
+func (d *ParaDeclarator) New(name *Identifier) *ParaDeclarator {
+	return &ParaDeclarator{name: name}
+}
+
+func (d *ParaDeclarator) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sParaDeclarator {\n"+
+		"%s..Name:\n"+
+		"%s"+
+		"%s}",
+		indent, indent, d.name,
+		indent,
+	)
+}
+
+func (d *ParaDeclarator) String() string {
+	return d.toString("")
+}
+
+func (d *ParaDeclarator) Name() *Identifier {
+	return d.name
+}
+
 type ParaDeclaratorWithIdentity struct {
 	declList      []*Identifier
 	typeSpecifier TypeSpecifierer

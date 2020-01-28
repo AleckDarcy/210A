@@ -26,7 +26,7 @@ const (
 	NoderElseExpr
 
 	NoderIterationAssignStatement
-
+	NoderParaDeclarator
 	NoderParaDeclaratorWithIdentity
 	NoderFuncIdentifier
 	NoderFuncTypeSpecifier

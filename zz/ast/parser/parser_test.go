@@ -64,6 +64,16 @@ func TestParseTreeListener_AssignStatement(t *testing.T) {
 	testCases := []TestCase{
 		{input: "a = list([]int, 4)", expect: ast.AssignStmt1},
 		{input: "a[1], b = 2, 3", expect: ast.AssignStmt2},
+		{input: "f = func(){}", expect: ast.AssignStmt4},
+		{
+			input: "" +
+				"f = func(x, y int, z []float) ([]int, float, int) {\n" +
+				"	a = list([]int, 4)\n" +
+				"	b = x + y\n" +
+				"	return a, b + 1, 1\n" +
+				"}",
+			expect: ast.AssignStmt5,
+		},
 	}
 
 	for i, testCase := range testCases {
@@ -71,6 +81,11 @@ func TestParseTreeListener_AssignStatement(t *testing.T) {
 		zzParser, parser := GenerateParser(testCase.input)
 		zzParser.AssignStatement()
 		_, _ = JudgeResult(t, parser, testCase.expect)
+
+		zzParser, parser = GenerateParser(testCase.input)
+		zzParser.File()
+		_, _ = JudgeResult(t, parser, ast.FileHelper.New([]ast.Definitioner{testCase.expect.(*ast.AssignStmt)}))
+
 	}
 }
 
@@ -103,6 +118,13 @@ func TestParseTreeListener_SelectionStatement(t *testing.T) {
 				"	a[1] = a[1] + 1\n" +
 				"}",
 			expect: ast.SelectionStmt3,
+		},
+		{
+			input: "" +
+				"if !(a[1] == b) {\n" +
+				"	a[1] = a[1] + 1\n" +
+				"}",
+			expect: ast.SelectionStmt4,
 		},
 	}
 
@@ -147,6 +169,10 @@ func TestParseTreeListener_FuncDefinition(t *testing.T) {
 		zzParser, parser := GenerateParser(testCase.input)
 		zzParser.FuncDefinition()
 		_, _ = JudgeResult(t, parser, testCase.expect)
+
+		zzParser, parser = GenerateParser(testCase.input)
+		zzParser.File()
+		_, _ = JudgeResult(t, parser, ast.FileHelper.New([]ast.Definitioner{testCase.expect.(*ast.FuncDefinition)}))
 	}
 }
 

@@ -17,86 +17,156 @@ func (p *ParseTreeListener) printStack() {
 	}
 }
 
+func (p *ParseTreeListener) readListElementIndexList() []*ast.ListElementIndex {
+	var list []*ast.ListElementIndex
+	for {
+		item, _ := p.stack.PopByType(ast.NoderListElementIndex) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]*ast.ListElementIndex{item.(*ast.ListElementIndex)}, list...)
+	}
+
+	return list
+}
+
+func (p *ParseTreeListener) readAssignIniterList() []ast.AssignIniter {
+	var list []ast.AssignIniter
+	for {
+		item, _ := p.stack.PopByType(ast.NoderAssignIniter) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]ast.AssignIniter{item.(ast.AssignIniter)}, list...)
+	}
+
+	return list
+}
+
+func (p *ParseTreeListener) readIfExprList() []*ast.IfExpr {
+	var list []*ast.IfExpr
+	for {
+		item, _ := p.stack.PopByType(ast.NoderIfExpr) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]*ast.IfExpr{item.(*ast.IfExpr)}, list...)
+	}
+
+	return list
+}
+
 func (p *ParseTreeListener) readFuncStatementerList() []ast.FuncStatementer {
-	var List []ast.FuncStatementer
+	var list []ast.FuncStatementer
 	for {
 		item, _ := p.stack.PopByType(ast.NoderFuncStatementer) // todo: error
 		if item == nil {
 			break
 		}
 
-		List = append([]ast.FuncStatementer{item.(ast.FuncStatementer)}, List...)
+		list = append([]ast.FuncStatementer{item.(ast.FuncStatementer)}, list...)
 	}
 
-	return List
+	return list
 }
 
 func (p *ParseTreeListener) readFuncReturnParaList() []ast.FuncReturnParaer {
-	var List []ast.FuncReturnParaer
+	var list []ast.FuncReturnParaer
 	for {
 		item, _ := p.stack.PopByType(ast.NoderFuncReturnPara) // todo: error
 		if item == nil {
 			break
 		}
 
-		List = append([]ast.FuncReturnParaer{item.(ast.FuncReturnParaer)}, List...)
+		list = append([]ast.FuncReturnParaer{item.(ast.FuncReturnParaer)}, list...)
 	}
 
-	return List
+	return list
 }
 
 func (p *ParseTreeListener) readDeclaratorerList() []ast.Declaratorer {
-	var List []ast.Declaratorer
+	var list []ast.Declaratorer
 	for {
 		item, _ := p.stack.PopByType(ast.NoderDeclarator) // todo: error
 		if item == nil {
 			break
 		}
 
-		List = append([]ast.Declaratorer{item.(ast.Declaratorer)}, List...)
+		list = append([]ast.Declaratorer{item.(ast.Declaratorer)}, list...)
 	}
 
-	return List
+	return list
 }
 
 func (p *ParseTreeListener) readIdentifierList() []*ast.Identifier {
-	var List []*ast.Identifier
+	var list []*ast.Identifier
 	for {
 		item, _ := p.stack.PopByType(ast.NoderDeclarator) // todo: error
 		if item == nil {
 			break
 		}
 
-		List = append([]*ast.Identifier{item.(*ast.Identifier)}, List...)
+		list = append([]*ast.Identifier{item.(*ast.Identifier)}, list...)
 	}
 
-	return List
+	return list
 }
 
 func (p *ParseTreeListener) readTypeSpecifierList() []ast.TypeSpecifierer {
-	var List []ast.TypeSpecifierer
+	var list []ast.TypeSpecifierer
 	for {
 		item, _ := p.stack.PopByType(ast.NoderTypeSpecifierer) // todo: error
 		if item == nil {
 			break
 		}
 
-		List = append([]ast.TypeSpecifierer{item.(ast.TypeSpecifierer)}, List...)
+		list = append([]ast.TypeSpecifierer{item.(ast.TypeSpecifierer)}, list...)
 	}
 
-	return List
+	return list
+}
+
+func (p *ParseTreeListener) readParaDeclaratorListToIdentifierList() []*ast.Identifier {
+	var list []*ast.Identifier
+	for {
+		item, _ := p.stack.PopByType(ast.NoderParaDeclarator) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]*ast.Identifier{item.(*ast.ParaDeclarator).Name()}, list...)
+	}
+
+	return list
 }
 
 func (p *ParseTreeListener) readParaDeclaratorWithIdentityList() []*ast.ParaDeclaratorWithIdentity {
-	var List []*ast.ParaDeclaratorWithIdentity
+	var list []*ast.ParaDeclaratorWithIdentity
 	for {
 		item, _ := p.stack.PopByType(ast.NoderParaDeclaratorWithIdentity) // todo: error
 		if item == nil {
 			break
 		}
 
-		List = append([]*ast.ParaDeclaratorWithIdentity{item.(*ast.ParaDeclaratorWithIdentity)}, List...)
+		list = append([]*ast.ParaDeclaratorWithIdentity{item.(*ast.ParaDeclaratorWithIdentity)}, list...)
 	}
 
-	return List
+	return list
+}
+
+func (p *ParseTreeListener) readDefinitionerList() []ast.Definitioner {
+	var list []ast.Definitioner
+	for {
+		item, _ := p.stack.PopByType(ast.NoderDefinitioner) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]ast.Definitioner{item.(ast.Definitioner)}, list...)
+	}
+
+	return list
 }
