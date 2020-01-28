@@ -37,6 +37,10 @@ func (e *BExprCompare) New(e1, e2 AExpr, op BExprCompareOpType) *BExprCompare {
 
 func (e *BExprCompare) bExpr() {}
 
+func (e *BExprCompare) funcReturnParaer() {}
+
+func (e *BExprCompare) funcExecuteParaer() {}
+
 func (e *BExprCompare) toString(ident string) string {
 	return fmt.Sprintf(""+
 		"%sBExprCompare {\n"+
@@ -90,6 +94,8 @@ func (e *BExprBinary) New(e1, e2 BExpr, op BExprBinaryOpType) *BExprBinary {
 func (e *BExprBinary) bExpr() {}
 
 func (e *BExprBinary) funcReturnParaer() {}
+
+func (e *BExprBinary) funcExecuteParaer() {}
 
 func (e *BExprBinary) toString(ident string) string {
 	return fmt.Sprintf(""+

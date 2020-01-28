@@ -93,6 +93,13 @@ type FuncReturnParaer interface {
 	funcReturnParaer()
 }
 
+// FuncExecuteParaer is an interface of funcExecutePara
+type FuncExecuteParaer interface {
+	BasicNoder
+
+	funcExecuteParaer()
+}
+
 // Definitioner is an interface of definition
 type Definitioner interface {
 	BasicNoder

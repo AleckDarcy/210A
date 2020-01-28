@@ -2,18 +2,31 @@ package parser
 
 import (
 	"fmt"
+	"testing"
 
 	"github.com/AleckDarcy/210A/zz/ast"
 )
 
-func (p *ParseTreeListener) printStack() {
-	if len(p.stack.list) == 0 {
+func (p *ParseTreeListener) PrintStack() {
+	length := p.stack.Depth()
+	if length == 0 {
 		fmt.Println("Empty")
 
 		return
 	}
-	for i := len(p.stack.list) - 1; i >= 0; i-- {
+	for i := length - 1; i >= 0; i-- {
 		fmt.Println(i, p.stack.list[i])
+	}
+}
+
+func (p *ParseTreeListener) PopAll(t *testing.T) {
+	for {
+		item, _ := p.stack.PopByType(ast.NoderBasic)
+		if item == nil {
+			return
+		}
+
+		t.Log(item)
 	}
 }
 
@@ -96,20 +109,6 @@ func (p *ParseTreeListener) readDeclaratorerList() []ast.Declaratorer {
 		}
 
 		list = append([]ast.Declaratorer{item.(ast.Declaratorer)}, list...)
-	}
-
-	return list
-}
-
-func (p *ParseTreeListener) readIdentifierList() []*ast.Identifier {
-	var list []*ast.Identifier
-	for {
-		item, _ := p.stack.PopByType(ast.NoderDeclarator) // todo: error
-		if item == nil {
-			break
-		}
-
-		list = append([]*ast.Identifier{item.(*ast.Identifier)}, list...)
 	}
 
 	return list

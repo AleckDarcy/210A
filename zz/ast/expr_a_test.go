@@ -5,27 +5,26 @@ import (
 	"testing"
 )
 
-var aExprAdd1 = &AExprArith{
-	e1: &IntegerLiteral{value: 2},
-	e2: &IntegerLiteral{value: 3},
-	op: AExprArithAdd,
-}
-
-var aExprAdd2 = &AExprArith{
-	e1: &IntegerLiteral{value: 1},
-	e2: aExprAdd1,
-	op: AExprArithAdd,
-}
-
 func TestAExprArithOpType_String(t *testing.T) {
 	fmt.Println(AExprArithAdd)
 	fmt.Println(AExprArithOpType(-1))
 }
 
-func TestAExprArith_String(t *testing.T) {
-	e := aExprAdd1
+func TestAExprSimple_String(t *testing.T) {
+	e := AExprSimple1
 	e.aExpr()
 	e.assignIniter()
+	e.funcReturnParaer()
+	e.funcExecuteParaer()
+	fmt.Println(e)
+}
+
+func TestAExprArith_String(t *testing.T) {
+	e := AExprAdd1
+	e.aExpr()
+	e.assignIniter()
+	e.funcReturnParaer()
+	e.funcExecuteParaer()
 	e.E1()
 	e.E2()
 	e.Op()

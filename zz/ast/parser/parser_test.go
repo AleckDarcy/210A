@@ -49,15 +49,13 @@ func JudgeResult(t *testing.T, parser *ParseTreeListener, expect ast.BasicNoder)
 	return node, err
 }
 
-func PopAll(t *testing.T, parser *ParseTreeListener) {
-	for {
-		item, _ := parser.stack.PopByType(ast.NoderBasic)
-		if item == nil {
-			return
-		}
-
-		t.Log(item)
-	}
+func TestParseTreeListener_PrintStack(t *testing.T) {
+	testCase := &TestCase{input: "a = list([]int, 4)", expect: ast.AssignStmt1}
+	zzParser, parser := GenerateParser(testCase.input)
+	zzParser.AssignStatement()
+	parser.PrintStack()
+	parser.PopAll(t)
+	parser.PrintStack()
 }
 
 func TestParseTreeListener_AssignStatement(t *testing.T) {

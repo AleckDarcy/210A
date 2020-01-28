@@ -87,6 +87,16 @@ func (it IteratableFuncReturnParaList) Get(i int) BasicNoder {
 	return it[i]
 }
 
+type IteratableFuncExecuteParaList []*FuncExecutePara
+
+func (it IteratableFuncExecuteParaList) Len() int {
+	return len(it)
+}
+
+func (it IteratableFuncExecuteParaList) Get(i int) BasicNoder {
+	return it[i]
+}
+
 type IteratableIfExprList []*IfExpr
 
 func (it IteratableIfExprList) Len() int {

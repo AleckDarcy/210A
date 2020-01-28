@@ -37,6 +37,8 @@ func (e *AExprSimple) assignIniter() {}
 
 func (e *AExprSimple) funcReturnParaer() {}
 
+func (e *AExprSimple) funcExecuteParaer() {}
+
 func (e *AExprSimple) toString(ident string) string {
 	return fmt.Sprintf(""+
 		"%sAExprSimple {\n"+
@@ -68,6 +70,8 @@ func (e *AExprArith) aExpr() {}
 func (e *AExprArith) assignIniter() {}
 
 func (e *AExprArith) funcReturnParaer() {}
+
+func (e *AExprArith) funcExecuteParaer() {}
 
 func (e *AExprArith) toString(ident string) string {
 	return fmt.Sprintf(""+

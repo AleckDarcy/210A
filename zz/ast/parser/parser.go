@@ -262,7 +262,7 @@ func (p *ParseTreeListener) ExitFuncTypeSpecifierWithName(c *grammar.FuncTypeSpe
 	returnList := p.readTypeSpecifierList()
 	paraList := p.readParaDeclaratorWithIdentityList()
 	name, _ := p.stack.PopByType(ast.NoderFuncIdentifier) // todo: error
-	p.stack.Push(ast.FuncTypeSpecifierWithNameHelper.New(name.(*ast.FuncIdentifier), paraList, returnList))
+	p.stack.Push(ast.FuncTypeSpecifierWithNameHelper.New(name.(*ast.FuncIdentifier).Name(), paraList, returnList))
 }
 
 func (p *ParseTreeListener) ExitFuncReturnPara(c *grammar.FuncReturnParaContext) {}
@@ -290,6 +290,22 @@ func (p *ParseTreeListener) ExitFuncDefinition(c *grammar.FuncDefinitionContext)
 	stmt := p.readFuncStatementerList()
 	typeSpecifier, _ := p.stack.PopByType(ast.NoderFuncTypeSpecifierWithName)
 	p.stack.Push(ast.FuncDefinitionHelper.New(typeSpecifier.(*ast.FuncTypeSpecifierWithName), stmt))
+}
+
+func (p *ParseTreeListener) ExitFuncExecutePara(c *grammar.FuncExecuteParaContext) {
+	panic("implement me")
+}
+
+func (p *ParseTreeListener) ExitFuncExecuteParaList(c *grammar.FuncExecuteParaListContext) {
+	panic("implement me")
+}
+
+func (p *ParseTreeListener) ExitFuncExecuteExpression(c *grammar.FuncExecuteExpressionContext) {
+	panic("implement me")
+}
+
+func (p *ParseTreeListener) ExitFuncExecuteStatement(c *grammar.FuncExecuteStatementContext) {
+	panic("implement me")
 }
 
 /*
@@ -406,3 +422,11 @@ func (p *ParseTreeListener) EnterFuncBody(c *grammar.FuncBodyContext) {}
 func (p *ParseTreeListener) EnterFuncInitExpression(c *grammar.FuncInitExpressionContext) {}
 
 func (p *ParseTreeListener) EnterFuncDefinition(c *grammar.FuncDefinitionContext) {}
+
+func (p *ParseTreeListener) EnterFuncExecutePara(c *grammar.FuncExecuteParaContext) {}
+
+func (p *ParseTreeListener) EnterFuncExecuteParaList(c *grammar.FuncExecuteParaListContext) {}
+
+func (p *ParseTreeListener) EnterFuncExecuteExpression(c *grammar.FuncExecuteExpressionContext) {}
+
+func (p *ParseTreeListener) EnterFuncExecuteStatement(c *grammar.FuncExecuteStatementContext) {}
