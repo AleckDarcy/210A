@@ -6,12 +6,18 @@ type AExprArithOpType int64
 
 const (
 	AExprArithAdd AExprArithOpType = iota
+	AExprArithSub
+	AExprArithMul
 )
 
 func (t AExprArithOpType) toString(ident string) string {
 	switch t {
 	case AExprArithAdd:
 		return ident + "Add"
+	case AExprArithSub:
+		return ident + "Sub"
+	case AExprArithMul:
+		return ident + "Mul"
 	default:
 		return ident + "undefined"
 	}

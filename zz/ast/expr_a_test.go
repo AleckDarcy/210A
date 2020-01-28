@@ -19,6 +19,8 @@ var aExprAdd2 = &AExprArith{
 
 func TestAExprArithOpType_String(t *testing.T) {
 	fmt.Println(AExprArithAdd)
+	fmt.Println(AExprArithSub)
+	fmt.Println(AExprArithMul)
 	fmt.Println(AExprArithOpType(-1))
 }
 

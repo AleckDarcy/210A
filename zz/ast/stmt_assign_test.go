@@ -13,7 +13,7 @@ var AssignStmt1 = &AssignStmt{
 	},
 	initList: []AssignIniter{
 		aExprAdd1,
-		ListInitExpr1,
+		ListInitExpr1, // list([][]int, 2+3)
 		ListInitExpr2,
 	},
 }

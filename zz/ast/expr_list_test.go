@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{
-	elem: &ListElementTypeSpecifier{
+var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
+	elem: &ListElementTypeSpecifier{ // []int
 		elem: &SimpleTypeSpecifier{name: "int"},
 		typ:  ListElementTypeSpecifierSimple,
 	},
@@ -14,7 +14,7 @@ var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{
 }
 
 var ListTypeSpecifier1 = &ListTypeSpecifier{
-	elem: ListElementTypeSpecifier1,
+	elem: ListElementTypeSpecifier1, // [][]int
 }
 
 var ListElementExpr1 = &ListElementExpr{
@@ -26,8 +26,8 @@ var ListElementExpr1 = &ListElementExpr{
 }
 
 var ListInitExpr1 = &ListInitExpr{
-	typeSpecifier: ListTypeSpecifier1,
-	size: aExprAdd1,
+	typeSpecifier: ListTypeSpecifier1,// [][]int
+	size: aExprAdd1, // 2+3
 }
 
 var ListInitExpr2 = &ListInitExpr{
