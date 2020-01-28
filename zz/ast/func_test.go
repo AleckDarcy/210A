@@ -63,3 +63,9 @@ func TestFuncExecuteExpression_String(t *testing.T) {
 	e.assignIniter()
 	fmt.Println(e)
 }
+
+func TestFuncExecuteStatement_String(t *testing.T) {
+	e := FuncExecuteStatement1
+	e.funcStatementer()
+	fmt.Println(e)
+}

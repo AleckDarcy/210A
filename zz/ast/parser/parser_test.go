@@ -174,6 +174,22 @@ func TestParseTreeListener_FuncDefinition(t *testing.T) {
 	}
 }
 
+func TestParseTreeListener_FuncExecuteExpression(t *testing.T) {
+	testCases := []TestCase{
+		{
+			input:  "function2(2+3)",
+			expect: ast.FuncExecuteExpression1,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.FuncExecuteExpression()
+		_, _ = JudgeResult(t, parser, testCase.expect)
+	}
+}
+
 func TestTemplate(t *testing.T) {
 	testCases := []TestCase{
 		{input: "a = list([]int, 4)", expect: ast.AssignStmt1},

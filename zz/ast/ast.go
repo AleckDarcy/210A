@@ -31,6 +31,9 @@ const (
 	NoderFuncIdentifier
 	NoderFuncTypeSpecifier
 	NoderFuncTypeSpecifierWithName
+	NoderFuncExecuteParaer
+	NoderFuncExecutePara
+	NoderFuncExecuteExpression
 )
 
 type BasicNoder interface {

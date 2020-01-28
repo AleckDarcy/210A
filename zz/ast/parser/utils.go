@@ -169,3 +169,17 @@ func (p *ParseTreeListener) readDefinitionerList() []ast.Definitioner {
 
 	return list
 }
+
+func (p *ParseTreeListener) readFuncExecuteParaListToFuncExecuteParaerList() []ast.FuncExecuteParaer {
+	var list []ast.FuncExecuteParaer
+	for {
+		item, _ := p.stack.PopByType(ast.NoderFuncExecutePara) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]ast.FuncExecuteParaer{item.(*ast.FuncExecutePara).Para()}, list...)
+	}
+
+	return list
+}

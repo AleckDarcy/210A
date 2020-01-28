@@ -431,5 +431,10 @@ var FuncExecutePara1 = &FuncExecutePara{ // 2 + 3
 
 var FuncExecuteExpression1 = &FuncExecuteExpression{ // function2(2 + 3)
 	name:     &Identifier{"function2"},
-	paraList: []*FuncExecutePara{FuncExecutePara1},
+	paraList: []FuncExecuteParaer{FuncExecutePara1.para},
+}
+
+var FuncExecuteStatement1 = &FuncExecuteStatement{ // function2(2 + 3)
+	name:     &Identifier{"function2"},
+	paraList: []FuncExecuteParaer{FuncExecutePara1.para},
 }

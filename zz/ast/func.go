@@ -267,14 +267,18 @@ func (p *FuncExecutePara) String() string {
 	return p.toString("")
 }
 
+func (p *FuncExecutePara) Para() FuncExecuteParaer {
+	return p.para
+}
+
 type FuncExecuteExpression struct {
 	name     *Identifier
-	paraList []*FuncExecutePara
+	paraList []FuncExecuteParaer
 }
 
 var FuncExecuteExpressionHelper *FuncExecuteExpression
 
-func (e *FuncExecuteExpression) New(name *Identifier, paraList []*FuncExecutePara) *FuncExecuteExpression {
+func (e *FuncExecuteExpression) New(name *Identifier, paraList []FuncExecuteParaer) *FuncExecuteExpression {
 	return &FuncExecuteExpression{name: name, paraList: paraList}
 }
 
@@ -289,11 +293,50 @@ func (e *FuncExecuteExpression) toString(indent string) string {
 		"%s\n"+
 		"%s}",
 		indent, indent, e.name.toString(indent+"...."),
-		indent, IterableToString(indent+"....", IteratableFuncExecuteParaList(e.paraList)),
+		indent, IterableToString(indent+"....", IteratableFuncExecuteParaerList(e.paraList)),
 		indent,
 	)
 }
 
 func (e *FuncExecuteExpression) String() string {
+	return e.toString("")
+}
+
+func (e *FuncExecuteExpression) Name() *Identifier {
+	return e.name
+}
+
+func (e *FuncExecuteExpression) ParaList() []FuncExecuteParaer {
+	return e.paraList
+}
+
+type FuncExecuteStatement struct {
+	name     *Identifier
+	paraList []FuncExecuteParaer
+}
+
+var FuncExecuteStatementHelper *FuncExecuteStatement
+
+func (e *FuncExecuteStatement) New(name *Identifier, paraList []FuncExecuteParaer) *FuncExecuteStatement {
+	return &FuncExecuteStatement{name: name, paraList: paraList}
+}
+
+func (e *FuncExecuteStatement) funcStatementer() {}
+
+func (e *FuncExecuteStatement) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sFuncExecuteStatement {\n"+
+		"%s..Name:\n"+
+		"%s\n"+
+		"%s..ParaList:\n"+
+		"%s\n"+
+		"%s}",
+		indent, indent, e.name.toString(indent+"...."),
+		indent, IterableToString(indent+"....", IteratableFuncExecuteParaerList(e.paraList)),
+		indent,
+	)
+}
+
+func (e *FuncExecuteStatement) String() string {
 	return e.toString("")
 }

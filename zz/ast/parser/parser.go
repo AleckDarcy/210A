@@ -293,19 +293,22 @@ func (p *ParseTreeListener) ExitFuncDefinition(c *grammar.FuncDefinitionContext)
 }
 
 func (p *ParseTreeListener) ExitFuncExecutePara(c *grammar.FuncExecuteParaContext) {
-	panic("implement me")
+	para, _ := p.stack.PopByType(ast.NoderFuncExecuteParaer) // todo: error
+	p.stack.Push(ast.FuncExecuteParaHelper.New(para.(ast.FuncExecuteParaer)))
 }
 
-func (p *ParseTreeListener) ExitFuncExecuteParaList(c *grammar.FuncExecuteParaListContext) {
-	panic("implement me")
-}
+func (p *ParseTreeListener) ExitFuncExecuteParaList(c *grammar.FuncExecuteParaListContext) {}
 
 func (p *ParseTreeListener) ExitFuncExecuteExpression(c *grammar.FuncExecuteExpressionContext) {
-	panic("implement me")
+	paraList := p.readFuncExecuteParaListToFuncExecuteParaerList()
+	name, _ := p.stack.PopByType(ast.NoderFuncIdentifier) // todo: error
+	p.stack.Push(ast.FuncExecuteExpressionHelper.New(name.(*ast.FuncIdentifier).Name(), paraList))
 }
 
 func (p *ParseTreeListener) ExitFuncExecuteStatement(c *grammar.FuncExecuteStatementContext) {
-	panic("implement me")
+	item, _ := p.stack.PopByType(ast.NoderFuncExecuteExpression)
+	expr := item.(*ast.FuncExecuteExpression)
+	p.stack.Push(ast.FuncExecuteStatementHelper.New(expr.Name(), expr.ParaList()))
 }
 
 /*

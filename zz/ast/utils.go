@@ -87,13 +87,13 @@ func (it IteratableFuncReturnParaList) Get(i int) BasicNoder {
 	return it[i]
 }
 
-type IteratableFuncExecuteParaList []*FuncExecutePara
+type IteratableFuncExecuteParaerList []FuncExecuteParaer
 
-func (it IteratableFuncExecuteParaList) Len() int {
+func (it IteratableFuncExecuteParaerList) Len() int {
 	return len(it)
 }
 
-func (it IteratableFuncExecuteParaList) Get(i int) BasicNoder {
+func (it IteratableFuncExecuteParaerList) Get(i int) BasicNoder {
 	return it[i]
 }
 

@@ -120,6 +120,18 @@ func (s *Stack) PopByType(typ ast.NoderType) (ast.BasicNoder, error) {
 		if _, ok := item.(*ast.FuncTypeSpecifierWithName); !ok {
 			return nil, errors.New("item is not a FuncTypeSpecifierWithName")
 		}
+	case ast.NoderFuncExecuteParaer:
+		if _, ok := item.(ast.FuncExecuteParaer); !ok {
+			return nil, errors.New("item is not a FuncExecuteParaer")
+		}
+	case ast.NoderFuncExecutePara:
+		if _, ok := item.(*ast.FuncExecutePara); !ok {
+			return nil, errors.New("item is not a FuncExecutePara")
+		}
+	case ast.NoderFuncExecuteExpression:
+		if _, ok := item.(*ast.FuncExecuteExpression); !ok {
+			return nil, errors.New("item is not a FuncExecuteExpression")
+		}
 	default:
 		panic(fmt.Sprintf("undefined NodeType %v", typ))
 	}
