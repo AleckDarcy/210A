@@ -7,26 +7,26 @@ var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float"} // float
 var AExprSimple1 = &AExprSimple{e: &IntegerLiteral{value: 1}}
 
 var AExprAdd1 = &AExprArith{ // 2 + 3
-	e1: &IntegerLiteral{value: 2},
-	e2: &IntegerLiteral{value: 3},
+	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
 	op: AExprArithAdd,
 }
 
 var AExprAdd2 = &AExprArith{ // 1 + (2 + 3)
-	e1: &IntegerLiteral{value: 1},
+	e1: &AExprSimple{e: &IntegerLiteral{value: 1}},
 	e2: AExprAdd1,
 	op: AExprArithAdd,
 }
 
 var BExprCompare1 = &BExprCompare{ // 2 + 3 == 5
 	e1: AExprAdd1,
-	e2: &IntegerLiteral{value: 5},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 5}},
 	op: BExprCompareEQ,
 }
 
 var BExprCompare2 = &BExprCompare{ // 2 == 2
-	e1: &IntegerLiteral{value: 2},
-	e2: &IntegerLiteral{value: 2},
+	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 2}},
 	op: BExprCompareEQ,
 }
 
