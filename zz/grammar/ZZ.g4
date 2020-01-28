@@ -89,6 +89,7 @@ assignInit
     :   aExpr
     |   listInitExpression
     |   funcInitExpression
+    |   funcExecuteExpression
     ;
 
 assignInitList
@@ -209,6 +210,7 @@ funcStatement
     |   selectionStatement
     |   iterationStatement
     |   funcReturnStatement
+    |   funcExecuteStatement
     ;
 
 funcStatementList
@@ -228,8 +230,22 @@ funcDefinition // when define a method for a class or a static function: func fu
     :   funcTypeSpecifierWithName '{' funcBody? '}'
     ;
 
-funcExecuteExpr
-    :
+funcExecutePara
+    :   aExpr
+    |   bExpr
+    ;
+
+funcExecuteParaList
+    :   funcExecutePara
+    |   funcExecuteParaList ',' funcExecutePara
+    ;
+
+funcExecuteExpression
+    :   funcIdentifier '(' funcExecuteParaList? ')'
+    ;
+
+funcExecuteStatement
+    :   funcExecuteExpression
     ;
 
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

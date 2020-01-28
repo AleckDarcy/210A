@@ -147,15 +147,19 @@ func (i *FuncIdentifier) String() string {
 	return i.toString("")
 }
 
+func (i *FuncIdentifier) Name() *Identifier {
+	return i.name
+}
+
 type FuncTypeSpecifierWithName struct {
-	name       *FuncIdentifier
+	name       *Identifier
 	paraList   []*ParaDeclaratorWithIdentity
 	returnList []TypeSpecifierer
 }
 
 var FuncTypeSpecifierWithNameHelper *FuncTypeSpecifierWithName
 
-func (s *FuncTypeSpecifierWithName) New(name *FuncIdentifier, paraList []*ParaDeclaratorWithIdentity, returnList []TypeSpecifierer) *FuncTypeSpecifierWithName {
+func (s *FuncTypeSpecifierWithName) New(name *Identifier, paraList []*ParaDeclaratorWithIdentity, returnList []TypeSpecifierer) *FuncTypeSpecifierWithName {
 	return &FuncTypeSpecifierWithName{name: name, paraList: paraList, returnList: returnList}
 }
 
@@ -236,4 +240,103 @@ func (s *FuncReturnStatement) toString(indent string) string {
 
 func (s *FuncReturnStatement) String() string {
 	return s.toString("")
+}
+
+type FuncExecutePara struct {
+	para FuncExecuteParaer
+}
+
+var FuncExecuteParaHelper *FuncExecutePara
+
+func (p *FuncExecutePara) New(para FuncExecuteParaer) *FuncExecutePara {
+	return &FuncExecutePara{para: para}
+}
+
+func (p *FuncExecutePara) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sFuncExecutePara {\n"+
+		"%s..Para:\n"+
+		"%s\n"+
+		"%s}",
+		indent, indent, p.para.toString(indent+"...."),
+		indent,
+	)
+}
+
+func (p *FuncExecutePara) String() string {
+	return p.toString("")
+}
+
+func (p *FuncExecutePara) Para() FuncExecuteParaer {
+	return p.para
+}
+
+type FuncExecuteExpression struct {
+	name     *Identifier
+	paraList []FuncExecuteParaer
+}
+
+var FuncExecuteExpressionHelper *FuncExecuteExpression
+
+func (e *FuncExecuteExpression) New(name *Identifier, paraList []FuncExecuteParaer) *FuncExecuteExpression {
+	return &FuncExecuteExpression{name: name, paraList: paraList}
+}
+
+func (e *FuncExecuteExpression) assignIniter() {}
+
+func (e *FuncExecuteExpression) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sFuncExecuteExpression {\n"+
+		"%s..Name:\n"+
+		"%s\n"+
+		"%s..ParaList:\n"+
+		"%s\n"+
+		"%s}",
+		indent, indent, e.name.toString(indent+"...."),
+		indent, IterableToString(indent+"....", IteratableFuncExecuteParaerList(e.paraList)),
+		indent,
+	)
+}
+
+func (e *FuncExecuteExpression) String() string {
+	return e.toString("")
+}
+
+func (e *FuncExecuteExpression) Name() *Identifier {
+	return e.name
+}
+
+func (e *FuncExecuteExpression) ParaList() []FuncExecuteParaer {
+	return e.paraList
+}
+
+type FuncExecuteStatement struct {
+	name     *Identifier
+	paraList []FuncExecuteParaer
+}
+
+var FuncExecuteStatementHelper *FuncExecuteStatement
+
+func (e *FuncExecuteStatement) New(name *Identifier, paraList []FuncExecuteParaer) *FuncExecuteStatement {
+	return &FuncExecuteStatement{name: name, paraList: paraList}
+}
+
+func (e *FuncExecuteStatement) funcStatementer() {}
+
+func (e *FuncExecuteStatement) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sFuncExecuteStatement {\n"+
+		"%s..Name:\n"+
+		"%s\n"+
+		"%s..ParaList:\n"+
+		"%s\n"+
+		"%s}",
+		indent, indent, e.name.toString(indent+"...."),
+		indent, IterableToString(indent+"....", IteratableFuncExecuteParaerList(e.paraList)),
+		indent,
+	)
+}
+
+func (e *FuncExecuteStatement) String() string {
+	return e.toString("")
 }

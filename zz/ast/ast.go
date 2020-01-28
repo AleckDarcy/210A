@@ -31,6 +31,9 @@ const (
 	NoderFuncIdentifier
 	NoderFuncTypeSpecifier
 	NoderFuncTypeSpecifierWithName
+	NoderFuncExecuteParaer
+	NoderFuncExecutePara
+	NoderFuncExecuteExpression
 )
 
 type BasicNoder interface {
@@ -91,6 +94,13 @@ type FuncReturnParaer interface {
 	BasicNoder
 
 	funcReturnParaer()
+}
+
+// FuncExecuteParaer is an interface of funcExecutePara
+type FuncExecuteParaer interface {
+	BasicNoder
+
+	funcExecuteParaer()
 }
 
 // Definitioner is an interface of definition

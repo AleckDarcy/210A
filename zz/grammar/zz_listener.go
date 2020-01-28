@@ -163,6 +163,18 @@ type ZZListener interface {
 	// EnterFuncDefinition is called when entering the funcDefinition production.
 	EnterFuncDefinition(c *FuncDefinitionContext)
 
+	// EnterFuncExecutePara is called when entering the funcExecutePara production.
+	EnterFuncExecutePara(c *FuncExecuteParaContext)
+
+	// EnterFuncExecuteParaList is called when entering the funcExecuteParaList production.
+	EnterFuncExecuteParaList(c *FuncExecuteParaListContext)
+
+	// EnterFuncExecuteExpression is called when entering the funcExecuteExpression production.
+	EnterFuncExecuteExpression(c *FuncExecuteExpressionContext)
+
+	// EnterFuncExecuteStatement is called when entering the funcExecuteStatement production.
+	EnterFuncExecuteStatement(c *FuncExecuteStatementContext)
+
 	// ExitIdentifier is called when exiting the identifier production.
 	ExitIdentifier(c *IdentifierContext)
 
@@ -318,4 +330,16 @@ type ZZListener interface {
 
 	// ExitFuncDefinition is called when exiting the funcDefinition production.
 	ExitFuncDefinition(c *FuncDefinitionContext)
+
+	// ExitFuncExecutePara is called when exiting the funcExecutePara production.
+	ExitFuncExecutePara(c *FuncExecuteParaContext)
+
+	// ExitFuncExecuteParaList is called when exiting the funcExecuteParaList production.
+	ExitFuncExecuteParaList(c *FuncExecuteParaListContext)
+
+	// ExitFuncExecuteExpression is called when exiting the funcExecuteExpression production.
+	ExitFuncExecuteExpression(c *FuncExecuteExpressionContext)
+
+	// ExitFuncExecuteStatement is called when exiting the funcExecuteStatement production.
+	ExitFuncExecuteStatement(c *FuncExecuteStatementContext)
 }

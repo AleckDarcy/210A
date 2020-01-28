@@ -13,6 +13,12 @@ func main() {
     } else {
 
     }
+
+    d = GetA()
+
+    e, f = GetBC()
+
+    function(a, b, c)
 }
 
 func GetA() (int) {

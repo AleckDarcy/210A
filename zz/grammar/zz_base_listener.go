@@ -335,3 +335,27 @@ func (s *BaseZZListener) EnterFuncDefinition(ctx *FuncDefinitionContext) {}
 
 // ExitFuncDefinition is called when production funcDefinition is exited.
 func (s *BaseZZListener) ExitFuncDefinition(ctx *FuncDefinitionContext) {}
+
+// EnterFuncExecutePara is called when production funcExecutePara is entered.
+func (s *BaseZZListener) EnterFuncExecutePara(ctx *FuncExecuteParaContext) {}
+
+// ExitFuncExecutePara is called when production funcExecutePara is exited.
+func (s *BaseZZListener) ExitFuncExecutePara(ctx *FuncExecuteParaContext) {}
+
+// EnterFuncExecuteParaList is called when production funcExecuteParaList is entered.
+func (s *BaseZZListener) EnterFuncExecuteParaList(ctx *FuncExecuteParaListContext) {}
+
+// ExitFuncExecuteParaList is called when production funcExecuteParaList is exited.
+func (s *BaseZZListener) ExitFuncExecuteParaList(ctx *FuncExecuteParaListContext) {}
+
+// EnterFuncExecuteExpression is called when production funcExecuteExpression is entered.
+func (s *BaseZZListener) EnterFuncExecuteExpression(ctx *FuncExecuteExpressionContext) {}
+
+// ExitFuncExecuteExpression is called when production funcExecuteExpression is exited.
+func (s *BaseZZListener) ExitFuncExecuteExpression(ctx *FuncExecuteExpressionContext) {}
+
+// EnterFuncExecuteStatement is called when production funcExecuteStatement is entered.
+func (s *BaseZZListener) EnterFuncExecuteStatement(ctx *FuncExecuteStatementContext) {}
+
+// ExitFuncExecuteStatement is called when production funcExecuteStatement is exited.
+func (s *BaseZZListener) ExitFuncExecuteStatement(ctx *FuncExecuteStatementContext) {}
