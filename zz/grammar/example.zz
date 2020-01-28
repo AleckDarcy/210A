@@ -1,0 +1,36 @@
+a = 1
+b, c = 2, 3
+
+func main() {
+    if c == a + b {
+
+    }
+
+    if c == a - b {
+
+    } elsif c < a - b {
+
+    } else {
+
+    }
+}
+
+func GetA() (int) {
+    return 1
+}
+
+func GetBC() (int, int) {
+    return 2, 3
+}
+
+func function(p1, p2 int, p3 []float) (int, float, float) {
+    d = p1 + p2
+
+    e, f = p3[0], p3[1]
+
+    for i = 1; i < 5; i = i + 1 {
+        d = d + 1
+    }
+
+    return d, e, f
+}

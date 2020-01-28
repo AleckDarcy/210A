@@ -6,14 +6,17 @@ type BExprCompareOpType int64
 
 const (
 	BExprCompareEQ BExprCompareOpType = iota
+	BExprCompareLT
 )
 
-func (t BExprCompareOpType) toString(ident string) string {
+func (t BExprCompareOpType) toString(indent string) string {
 	switch t {
 	case BExprCompareEQ:
-		return ident + "Equals"
+		return indent + "Equals"
+	case BExprCompareLT:
+		return indent + "Less Than"
 	default:
-		return ident + "undefined"
+		return indent + "undefined"
 	}
 }
 
@@ -24,6 +27,12 @@ func (t BExprCompareOpType) String() string {
 type BExprCompare struct {
 	e1, e2 AExpr
 	op     BExprCompareOpType
+}
+
+var BExprCompareHelper *BExprCompare
+
+func (e *BExprCompare) New(e1, e2 AExpr, op BExprCompareOpType) *BExprCompare {
+	return &BExprCompare{e1: e1, e2: e2, op: op}
 }
 
 func (e *BExprCompare) bExpr() {}
@@ -54,12 +63,12 @@ const (
 	BExprBinaryEQ BExprBinaryOpType = iota
 )
 
-func (t BExprBinaryOpType) toString(ident string) string {
+func (t BExprBinaryOpType) toString(indent string) string {
 	switch t {
 	case BExprBinaryEQ:
-		return ident + "Equals"
+		return indent + "Equals"
 	default:
-		return ident + "undefined"
+		return indent + "undefined"
 	}
 }
 
@@ -67,16 +76,20 @@ func (t BExprBinaryOpType) String() string {
 	return t.toString("")
 }
 
-type BExprBinaryBool struct {
-	value bool
-}
-
 type BExprBinary struct {
 	e1, e2 BExpr
 	op     BExprBinaryOpType
 }
 
+var BExprBinaryHelper *BExprBinary
+
+func (e *BExprBinary) New(e1, e2 BExpr, op BExprBinaryOpType) *BExprBinary {
+	return &BExprBinary{e1: e1, e2: e2, op: op}
+}
+
 func (e *BExprBinary) bExpr() {}
+
+func (e *BExprBinary) funcReturnParaer() {}
 
 func (e *BExprBinary) toString(ident string) string {
 	return fmt.Sprintf(""+

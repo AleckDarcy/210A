@@ -5,28 +5,6 @@ import (
 	"testing"
 )
 
-var IFExpr1 = &IfExpr{
-	binExpr:  bExprBinary1,
-	stmtList: FuncStmtList1,
-}
-
-var IFExpr2 = &IfExpr{
-	binExpr:  bExprBinary2,
-	stmtList: nil,
-}
-
-var ElseExpr1 = &ElseExpr{
-	stmtList: FuncStmtList1,
-}
-
-var SelectionStmt1 = &SelectionStmt{
-	ifExprList: []*IfExpr{
-		IFExpr1,
-		IFExpr2,
-	},
-	elseExpr: ElseExpr1,
-}
-
 var SelectionStmt2 = &SelectionStmt{
 	ifExprList: []*IfExpr{
 		IFExpr1,

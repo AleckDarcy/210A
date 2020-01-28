@@ -6,7 +6,15 @@ type SimpleTypeSpecifier struct {
 	name string
 }
 
-func (s *SimpleTypeSpecifier) typeSpecifier() {}
+var SimpleTypeSpecifierHelper *SimpleTypeSpecifier
+
+func (s *SimpleTypeSpecifier) New(name string) *SimpleTypeSpecifier {
+	return &SimpleTypeSpecifier{name: name}
+}
+
+func (s *SimpleTypeSpecifier) typeSpecifierer() {}
+
+func (s *SimpleTypeSpecifier) listElementTypeSpecifierer() {}
 
 func (s *SimpleTypeSpecifier) toString(ident string) string {
 	return fmt.Sprintf(""+
@@ -45,11 +53,19 @@ func (t ListElementTypeSpecifierType) String() string {
 }
 
 type ListElementTypeSpecifier struct {
-	elem TypeSpecifier
+	elem TypeSpecifierer
 	typ  ListElementTypeSpecifierType
 }
 
-func (s *ListElementTypeSpecifier) typeSpecifier() {}
+var ListElementTypeSpecifierHelper *ListElementTypeSpecifier
+
+func (s *ListElementTypeSpecifier) New(elem TypeSpecifierer, typ ListElementTypeSpecifierType) *ListElementTypeSpecifier {
+	return &ListElementTypeSpecifier{elem: elem, typ: typ}
+}
+
+func (s *ListElementTypeSpecifier) typeSpecifierer() {}
+
+func (s *ListElementTypeSpecifier) listElementTypeSpecifierer() {}
 
 func (s *ListElementTypeSpecifier) toString(ident string) string {
 	return fmt.Sprintf(""+
@@ -65,7 +81,13 @@ type ListTypeSpecifier struct {
 	elem *ListElementTypeSpecifier
 }
 
-func (s *ListTypeSpecifier) typeSpecifier() {}
+var ListTypeSpecifierHelper *ListTypeSpecifier
+
+func (s *ListTypeSpecifier) New(elem *ListElementTypeSpecifier) *ListTypeSpecifier {
+	return &ListTypeSpecifier{elem: elem}
+}
+
+func (s *ListTypeSpecifier) typeSpecifierer() {}
 
 func (s *ListTypeSpecifier) toString(ident string) string {
 	return fmt.Sprintf(""+

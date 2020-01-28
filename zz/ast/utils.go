@@ -27,7 +27,7 @@ func (it IteratableListElementIndexList) Get(i int) BasicNoder {
 	return it[i]
 }
 
-type IteratableTypeSpecifierList []TypeSpecifier
+type IteratableTypeSpecifierList []TypeSpecifierer
 
 func (it IteratableTypeSpecifierList) Len() int {
 	return len(it)
@@ -74,6 +74,16 @@ func (it IteratableFuncStatementerList) Len() int {
 }
 
 func (it IteratableFuncStatementerList) Get(i int) BasicNoder {
+	return it[i]
+}
+
+type IteratableFuncReturnParaList []FuncReturnParaer
+
+func (it IteratableFuncReturnParaList) Len() int {
+	return len(it)
+}
+
+func (it IteratableFuncReturnParaList) Get(i int) BasicNoder {
 	return it[i]
 }
 

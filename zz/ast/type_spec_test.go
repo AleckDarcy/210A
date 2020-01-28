@@ -6,8 +6,8 @@ import (
 )
 
 func TestSimpleTypeSpecifier_String(t *testing.T) {
-	s := &SimpleTypeSpecifier{name:"int"}
-	s.typeSpecifier()
+	s := &SimpleTypeSpecifier{name: "int"}
+	s.typeSpecifierer()
 	s.Name()
 	fmt.Println(s)
 }
@@ -20,12 +20,12 @@ func TestListElementTypeSpecifierType_String(t *testing.T) {
 
 func TestListElementTypeSpecifier_String(t *testing.T) {
 	s := ListElementTypeSpecifier1
-	s.typeSpecifier()
+	s.typeSpecifierer()
 	fmt.Println(s)
 }
 
 func TestListTypeSpecifier_String(t *testing.T) {
 	s := ListTypeSpecifier1
-	s.typeSpecifier()
+	s.typeSpecifierer()
 	fmt.Println(s)
 }
