@@ -6,8 +6,9 @@ type AExprArithOpType int64
 
 const (
 	AExprArithAdd AExprArithOpType = iota
-	AExprArithSub
-	AExprArithMul
+	AExprArithSub AExprArithOpType = iota
+	AExprArithMul AExprArithOpType = iota
+	AExprArithDiv AExprArithOpType = iota
 )
 
 func (t AExprArithOpType) toString(ident string) string {
@@ -18,6 +19,8 @@ func (t AExprArithOpType) toString(ident string) string {
 		return ident + "Sub"
 	case AExprArithMul:
 		return ident + "Mul"
+	case AExprArithDiv:
+		return ident + "Div"
 	default:
 		return ident + "undefined"
 	}
