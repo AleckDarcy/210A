@@ -55,6 +55,10 @@ listInitExpression
     :   'list' '(' listTypeSpecifier ',' aExpr ')'
     ;
 
+matrixInitExpression
+    :   'matrix' '(' aExprList ')'
+    ;
+
 aExpr
     :   IntegerLiteral # aExp_IntergerLiteral
     |   FloatLiteral # aExp_FloatLiteral
@@ -63,6 +67,11 @@ aExpr
     |   aExpr ('*'|'/') aExpr # aExp_multiplicativeExpression
     |   aExpr ('+'|'-') aExpr # aExp_additiveExpression
     |   '(' aExpr ')' # aExp_bracketExpression
+    ;
+
+aExprList
+    :   aExpr
+    |   aExprList ',' aExpr
     ;
 
 bExpr
@@ -100,6 +109,10 @@ assignStatement
     :   declaratorList '=' assignInitList
     ;
 
+assignInitStatement
+    :   declaratorList ':=' assignInitList
+    ;
+
 ifExpr
     :   'if' bExpr '{' funcStatementList? '}'
     ;
@@ -125,16 +138,21 @@ selectionStatement
     |   ternaryIfExpr ':' ternaryElseExpr
     ;
 
-iterationAssignStatement:
+iterationAssignInitStatement
+    :   assignInitStatement
     |   assignStatement
     ;
 
+iterationAssignStatement
+    :   assignStatement
+    ;
+
 iterationStatement
-    :   'for' iterationAssignStatement? ';' bExpr? ';' iterationAssignStatement? '{' funcStatementList? '}' // todo
+    :   'for' iterationAssignInitStatement? ';' bExpr? ';' iterationAssignStatement? '{' funcStatementList? '}' // todo
     ;
 
 definition
-    :   assignStatement
+    :   assignInitStatement
     |   funcDefinition
     ;
 
@@ -193,6 +211,7 @@ funcReturnPara
     |   bExpr
     |   identifier
     |   'nil'
+    |   funcExecuteExpression
     ;
 
 funcReturnParaList
@@ -206,6 +225,7 @@ funcReturnStatement
 
 funcStatement
     :   assignStatement
+    |   assignInitStatement
     |   selectionStatement
     |   iterationStatement
     |   funcReturnStatement
@@ -228,8 +248,16 @@ funcDefinition // when define a method for a class or a static function: func fu
     :   funcTypeSpecifierWithName '{' funcBody? '}'
     ;
 
-funcExecuteExpr
+funcExecuteExpression
     :
+    ;
+
+classMethodDefinition
+    :   funcDefinition
+    ;
+
+classDefinition
+    :   'class' identifier '{' paraDeclaratorWithIdentityList classMethodDefinition* '}'
     ;
 
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

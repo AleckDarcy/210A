@@ -62,6 +62,12 @@ func (s *BaseZZListener) EnterListInitExpression(ctx *ListInitExpressionContext)
 // ExitListInitExpression is called when production listInitExpression is exited.
 func (s *BaseZZListener) ExitListInitExpression(ctx *ListInitExpressionContext) {}
 
+// EnterMatrixInitExpression is called when production matrixInitExpression is entered.
+func (s *BaseZZListener) EnterMatrixInitExpression(ctx *MatrixInitExpressionContext) {}
+
+// ExitMatrixInitExpression is called when production matrixInitExpression is exited.
+func (s *BaseZZListener) ExitMatrixInitExpression(ctx *MatrixInitExpressionContext) {}
+
 // EnterAExp_bracketExpression is called when production aExp_bracketExpression is entered.
 func (s *BaseZZListener) EnterAExp_bracketExpression(ctx *AExp_bracketExpressionContext) {}
 
@@ -105,6 +111,12 @@ func (s *BaseZZListener) EnterAExp_listElementExpression(ctx *AExp_listElementEx
 
 // ExitAExp_listElementExpression is called when production aExp_listElementExpression is exited.
 func (s *BaseZZListener) ExitAExp_listElementExpression(ctx *AExp_listElementExpressionContext) {}
+
+// EnterAExprList is called when production aExprList is entered.
+func (s *BaseZZListener) EnterAExprList(ctx *AExprListContext) {}
+
+// ExitAExprList is called when production aExprList is exited.
+func (s *BaseZZListener) ExitAExprList(ctx *AExprListContext) {}
 
 // EnterBExpr_aExpr is called when production bExpr_aExpr is entered.
 func (s *BaseZZListener) EnterBExpr_aExpr(ctx *BExpr_aExprContext) {}
@@ -166,6 +178,12 @@ func (s *BaseZZListener) EnterAssignStatement(ctx *AssignStatementContext) {}
 // ExitAssignStatement is called when production assignStatement is exited.
 func (s *BaseZZListener) ExitAssignStatement(ctx *AssignStatementContext) {}
 
+// EnterAssignInitStatement is called when production assignInitStatement is entered.
+func (s *BaseZZListener) EnterAssignInitStatement(ctx *AssignInitStatementContext) {}
+
+// ExitAssignInitStatement is called when production assignInitStatement is exited.
+func (s *BaseZZListener) ExitAssignInitStatement(ctx *AssignInitStatementContext) {}
+
 // EnterIfExpr is called when production ifExpr is entered.
 func (s *BaseZZListener) EnterIfExpr(ctx *IfExprContext) {}
 
@@ -201,6 +219,12 @@ func (s *BaseZZListener) EnterSelectionStatement(ctx *SelectionStatementContext)
 
 // ExitSelectionStatement is called when production selectionStatement is exited.
 func (s *BaseZZListener) ExitSelectionStatement(ctx *SelectionStatementContext) {}
+
+// EnterIterationAssignInitStatement is called when production iterationAssignInitStatement is entered.
+func (s *BaseZZListener) EnterIterationAssignInitStatement(ctx *IterationAssignInitStatementContext) {}
+
+// ExitIterationAssignInitStatement is called when production iterationAssignInitStatement is exited.
+func (s *BaseZZListener) ExitIterationAssignInitStatement(ctx *IterationAssignInitStatementContext) {}
 
 // EnterIterationAssignStatement is called when production iterationAssignStatement is entered.
 func (s *BaseZZListener) EnterIterationAssignStatement(ctx *IterationAssignStatementContext) {}
@@ -335,3 +359,21 @@ func (s *BaseZZListener) EnterFuncDefinition(ctx *FuncDefinitionContext) {}
 
 // ExitFuncDefinition is called when production funcDefinition is exited.
 func (s *BaseZZListener) ExitFuncDefinition(ctx *FuncDefinitionContext) {}
+
+// EnterFuncExecuteExpression is called when production funcExecuteExpression is entered.
+func (s *BaseZZListener) EnterFuncExecuteExpression(ctx *FuncExecuteExpressionContext) {}
+
+// ExitFuncExecuteExpression is called when production funcExecuteExpression is exited.
+func (s *BaseZZListener) ExitFuncExecuteExpression(ctx *FuncExecuteExpressionContext) {}
+
+// EnterClassMethodDefinition is called when production classMethodDefinition is entered.
+func (s *BaseZZListener) EnterClassMethodDefinition(ctx *ClassMethodDefinitionContext) {}
+
+// ExitClassMethodDefinition is called when production classMethodDefinition is exited.
+func (s *BaseZZListener) ExitClassMethodDefinition(ctx *ClassMethodDefinitionContext) {}
+
+// EnterClassDefinition is called when production classDefinition is entered.
+func (s *BaseZZListener) EnterClassDefinition(ctx *ClassDefinitionContext) {}
+
+// ExitClassDefinition is called when production classDefinition is exited.
+func (s *BaseZZListener) ExitClassDefinition(ctx *ClassDefinitionContext) {}
