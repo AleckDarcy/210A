@@ -16,6 +16,15 @@ type ParseTreeListener struct {
 	stack Stack
 }
 
+func (p *ParseTreeListener) Pop() (*ast.File, error) {
+	item, err := p.stack.PopByType(ast.NoderFile)
+	if err != nil {
+		return nil, err
+	}
+
+	return item.(*ast.File), nil
+}
+
 func (p *ParseTreeListener) ExitIdentifier(c *grammar.IdentifierContext) {
 	name := c.GetText()
 	p.stack.Push(ast.IdentifierHelper.New(name))
@@ -26,7 +35,12 @@ func (p *ParseTreeListener) ExitDeclarator(c *grammar.DeclaratorContext) {}
 func (p *ParseTreeListener) ExitDeclaratorList(c *grammar.DeclaratorListContext) {}
 
 func (p *ParseTreeListener) ExitSimpleTypeSpecifier(c *grammar.SimpleTypeSpecifierContext) {
-	p.stack.Push(ast.SimpleTypeSpecifierHelper.New(c.GetText()))
+	name := c.GetText()
+	if name == "float" {
+		name = "float64"
+	}
+
+	p.stack.Push(ast.SimpleTypeSpecifierHelper.New(name))
 }
 
 func (p *ParseTreeListener) ExitListElementTypeSpecifier(c *grammar.ListElementTypeSpecifierContext) {
@@ -138,7 +152,13 @@ func (p *ParseTreeListener) ExitAssignInitList(c *grammar.AssignInitListContext)
 func (p *ParseTreeListener) ExitAssignStatement(c *grammar.AssignStatementContext) {
 	initList := p.readAssignIniterList()
 	declList := p.readDeclaratorerList()
-	p.stack.Push(ast.AssignStmtHelper.New(declList, initList))
+	p.stack.Push(ast.AssignStmtHelper.New(ast.AssignStmtFlagNormal, declList, initList))
+}
+
+func (p *ParseTreeListener) ExitAssignInitStatement(c *grammar.AssignInitStatementContext) {
+	initList := p.readAssignIniterList()
+	declList := p.readDeclaratorerList()
+	p.stack.Push(ast.AssignStmtHelper.New(ast.AssignStmtFlagInit, declList, initList))
 }
 
 func (p *ParseTreeListener) ExitIfExpr(c *grammar.IfExprContext) {
@@ -158,6 +178,7 @@ func (p *ParseTreeListener) ExitElseExpr(c *grammar.ElseExprContext) {
 }
 
 func (p *ParseTreeListener) ExitTernaryIfExpr(c *grammar.TernaryIfExprContext) {
+	p.PrintStack()
 	stmt, _ := p.stack.PopByType(ast.NoderFuncStatementer) // todo: error
 	binExpr, _ := p.stack.PopByType(ast.NoderBExpr)        // todo: error
 	p.stack.Push(ast.IfExprHelper.New(binExpr.(ast.BExpr), []ast.FuncStatementer{stmt.(ast.FuncStatementer)}))
@@ -178,6 +199,15 @@ func (p *ParseTreeListener) ExitSelectionStatement(c *grammar.SelectionStatement
 	}
 }
 
+func (p *ParseTreeListener) ExitIterationAssignInitStatement(c *grammar.IterationAssignInitStatementContext) {
+	stmt, _ := p.stack.PopByType(ast.NoderAssignStatment)
+	if stmt != nil {
+		p.stack.Push(ast.IterationAssignStmtHelper.New(stmt.(*ast.AssignStmt)))
+	} else {
+		p.stack.Push(ast.IterationAssignStmtHelper.New(nil))
+	}
+}
+
 func (p *ParseTreeListener) ExitIterationAssignStatement(c *grammar.IterationAssignStatementContext) {
 	stmt, _ := p.stack.PopByType(ast.NoderAssignStatment)
 	if stmt != nil {
@@ -189,32 +219,41 @@ func (p *ParseTreeListener) ExitIterationAssignStatement(c *grammar.IterationAss
 
 func (p *ParseTreeListener) ExitIterationStatement(c *grammar.IterationStatementContext) {
 	stmtList := p.readFuncStatementerList()
-	increStmt, _ := p.stack.PopByType(ast.NoderIterationAssignStatement)
+	increStmtItf, _ := p.stack.PopByType(ast.NoderIterationAssignStatement)
 	binExprItf, _ := p.stack.PopByType(ast.NoderBExpr)
-	initStmt, _ := p.stack.PopByType(ast.NoderIterationAssignStatement)
+	initStmtItf, _ := p.stack.PopByType(ast.NoderIterationAssignStatement)
 
-	if binExprItf != nil {
-		p.stack.Push(
-			ast.IterationStmtHelper.New(
-				initStmt.(*ast.IterationAssignStmt).AssignStmt(),
-				binExprItf.(ast.BExpr),
-				increStmt.(*ast.IterationAssignStmt).AssignStmt(),
-				stmtList,
-			),
-		)
-	} else {
-		p.stack.Push(
-			ast.IterationStmtHelper.New(
-				initStmt.(*ast.IterationAssignStmt).AssignStmt(),
-				ast.BinaryLiteralHelper.New(true),
-				increStmt.(*ast.IterationAssignStmt).AssignStmt(),
-				stmtList,
-			),
-		)
+	var initStmt, increStmt *ast.AssignStmt
+	tmp, ok := initStmtItf.(*ast.IterationAssignStmt)
+	if ok {
+		initStmt = tmp.AssignStmt()
 	}
+	tmp, ok = increStmtItf.(*ast.IterationAssignStmt)
+	if ok {
+		increStmt = tmp.AssignStmt()
+	}
+
+	binExpr, ok1 := binExprItf.(ast.BExpr)
+	if !ok1 {
+		binExpr = ast.BinaryLiteralHelper.New(true)
+	}
+
+	p.stack.Push(
+		ast.IterationStmtHelper.New(
+			initStmt,
+			binExpr,
+			increStmt,
+			stmtList,
+		),
+	)
 }
 
 func (p *ParseTreeListener) ExitDefinition(c *grammar.DefinitionContext) {
+	if item, _ := p.stack.PopByType(ast.NoderAssignStatment); item != nil {
+		stmt := item.(*ast.AssignStmt)
+		stmt.AddFlag(ast.AssignStmtFlagGlobal)
+		p.stack.Push(stmt)
+	}
 }
 
 func (p *ParseTreeListener) ExitDefinitionList(c *grammar.DefinitionListContext) {
@@ -366,6 +405,8 @@ func (p *ParseTreeListener) EnterAssignInitList(c *grammar.AssignInitListContext
 
 func (p *ParseTreeListener) EnterAssignStatement(c *grammar.AssignStatementContext) {}
 
+func (p *ParseTreeListener) EnterAssignInitStatement(c *grammar.AssignInitStatementContext) {}
+
 func (p *ParseTreeListener) EnterIfExpr(c *grammar.IfExprContext) {}
 
 func (p *ParseTreeListener) EnterElsifExpr(c *grammar.ElsifExprContext) {}
@@ -377,6 +418,9 @@ func (p *ParseTreeListener) EnterTernaryIfExpr(c *grammar.TernaryIfExprContext) 
 func (p *ParseTreeListener) EnterTernaryElseExpr(c *grammar.TernaryElseExprContext) {}
 
 func (p *ParseTreeListener) EnterSelectionStatement(c *grammar.SelectionStatementContext) {}
+
+func (p *ParseTreeListener) EnterIterationAssignInitStatement(c *grammar.IterationAssignInitStatementContext) {
+}
 
 func (p *ParseTreeListener) EnterIterationAssignStatement(c *grammar.IterationAssignStatementContext) {
 }

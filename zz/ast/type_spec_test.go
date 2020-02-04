@@ -21,7 +21,6 @@ func TestListElementTypeSpecifierType_String(t *testing.T) {
 
 func TestListElementTypeSpecifier_String(t *testing.T) {
 	s := ListElementTypeSpecifier1
-	s.typeSpecifierer()
 	s.listElementTypeSpecifierer()
 	fmt.Println(s)
 }

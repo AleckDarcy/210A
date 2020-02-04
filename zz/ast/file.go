@@ -26,3 +26,7 @@ func (f *File) toString(ident string) string {
 func (f *File) String() string {
 	return f.toString("")
 }
+
+func (f *File) DefList() []Definitioner {
+	return f.defList
+}

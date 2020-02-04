@@ -60,6 +60,14 @@ func (s *ParaDeclaratorWithIdentity) String() string {
 	return s.toString("")
 }
 
+func (s *ParaDeclaratorWithIdentity) DeclList() []*Identifier {
+	return s.declList
+}
+
+func (s *ParaDeclaratorWithIdentity) TypeSpecifier() TypeSpecifierer {
+	return s.typeSpecifier
+}
+
 type FuncTypeSpecifier struct {
 	paraList   []*ParaDeclaratorWithIdentity
 	returnList []TypeSpecifierer
@@ -91,6 +99,14 @@ func (s *FuncTypeSpecifier) String() string {
 	return s.toString("")
 }
 
+func (s *FuncTypeSpecifier) ParaList() []*ParaDeclaratorWithIdentity {
+	return s.paraList
+}
+
+func (s *FuncTypeSpecifier) ReturnList() []TypeSpecifierer {
+	return s.returnList
+}
+
 type FuncInitExpr struct {
 	typeSpecifier *FuncTypeSpecifier
 	stmtList      []FuncStatementer
@@ -120,6 +136,14 @@ func (e *FuncInitExpr) toString(ident string) string {
 
 func (e *FuncInitExpr) String() string {
 	return e.toString("")
+}
+
+func (e *FuncInitExpr) TypeSpecifier() *FuncTypeSpecifier {
+	return e.typeSpecifier
+}
+
+func (e *FuncInitExpr) StmtList() []FuncStatementer {
+	return e.stmtList
 }
 
 type FuncIdentifier struct {
@@ -184,6 +208,18 @@ func (s *FuncTypeSpecifierWithName) String() string {
 	return s.toString("")
 }
 
+func (s *FuncTypeSpecifierWithName) Name() *Identifier {
+	return s.name
+}
+
+func (s *FuncTypeSpecifierWithName) ParaList() []*ParaDeclaratorWithIdentity {
+	return s.paraList
+}
+
+func (s *FuncTypeSpecifierWithName) ReturnList() []TypeSpecifierer {
+	return s.returnList
+}
+
 type FuncDefinition struct {
 	typeSpecifier *FuncTypeSpecifierWithName
 	stmtList      []FuncStatementer
@@ -215,6 +251,14 @@ func (e *FuncDefinition) String() string {
 	return e.toString("")
 }
 
+func (e *FuncDefinition) TypeSpecifier() *FuncTypeSpecifierWithName {
+	return e.typeSpecifier
+}
+
+func (e *FuncDefinition) StmtList() []FuncStatementer {
+	return e.stmtList
+}
+
 type FuncReturnStatement struct {
 	returnList []FuncReturnParaer
 }
@@ -240,6 +284,10 @@ func (s *FuncReturnStatement) toString(indent string) string {
 
 func (s *FuncReturnStatement) String() string {
 	return s.toString("")
+}
+
+func (s *FuncReturnStatement) ReturnList() []FuncReturnParaer {
+	return s.returnList
 }
 
 type FuncExecutePara struct {
@@ -284,6 +332,8 @@ func (e *FuncExecuteExpression) New(name *Identifier, paraList []FuncExecutePara
 
 func (e *FuncExecuteExpression) assignIniter() {}
 
+func (e *FuncExecuteExpression) funcReturnParaer() {}
+
 func (e *FuncExecuteExpression) toString(indent string) string {
 	return fmt.Sprintf(""+
 		"%sFuncExecuteExpression {\n"+
@@ -317,13 +367,13 @@ type FuncExecuteStatement struct {
 
 var FuncExecuteStatementHelper *FuncExecuteStatement
 
-func (e *FuncExecuteStatement) New(name *Identifier, paraList []FuncExecuteParaer) *FuncExecuteStatement {
+func (s *FuncExecuteStatement) New(name *Identifier, paraList []FuncExecuteParaer) *FuncExecuteStatement {
 	return &FuncExecuteStatement{name: name, paraList: paraList}
 }
 
-func (e *FuncExecuteStatement) funcStatementer() {}
+func (s *FuncExecuteStatement) funcStatementer() {}
 
-func (e *FuncExecuteStatement) toString(indent string) string {
+func (s *FuncExecuteStatement) toString(indent string) string {
 	return fmt.Sprintf(""+
 		"%sFuncExecuteStatement {\n"+
 		"%s..Name:\n"+
@@ -331,12 +381,20 @@ func (e *FuncExecuteStatement) toString(indent string) string {
 		"%s..ParaList:\n"+
 		"%s\n"+
 		"%s}",
-		indent, indent, e.name.toString(indent+"...."),
-		indent, IterableToString(indent+"....", IteratableFuncExecuteParaerList(e.paraList)),
+		indent, indent, s.name.toString(indent+"...."),
+		indent, IterableToString(indent+"....", IteratableFuncExecuteParaerList(s.paraList)),
 		indent,
 	)
 }
 
-func (e *FuncExecuteStatement) String() string {
-	return e.toString("")
+func (s *FuncExecuteStatement) String() string {
+	return s.toString("")
+}
+
+func (s *FuncExecuteStatement) Name() *Identifier {
+	return s.name
+}
+
+func (s *FuncExecuteStatement) ParaList() []FuncExecuteParaer {
+	return s.paraList
 }

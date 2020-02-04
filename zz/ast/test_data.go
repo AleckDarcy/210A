@@ -2,7 +2,7 @@ package ast
 
 var SimpleTypeSpecifier1 = &SimpleTypeSpecifier{name: "int"} // int
 
-var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float"} // float
+var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float64"} // float
 
 var AExprSimple1 = &AExprSimple{e: &IntegerLiteral{value: 1}}
 
@@ -56,6 +56,10 @@ var ListTypeSpecifier2 = &ListTypeSpecifier{ // []float
 	},
 }
 
+var ListTypeSpecifier3 = &ListTypeSpecifier{ // [][]int
+	elem: ListElementTypeSpecifier1,
+}
+
 var ListElementExpr1 = &ListElementExpr{ // a[1]
 	name: &Identifier{name: "a"},
 	list: []*ListElementIndex{
@@ -80,7 +84,7 @@ var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
 }
 
 var ListInitExpr1 = &ListInitExpr{ // list([][]int, 2 + 3)
-	typeSpecifier: ListTypeSpecifier1,
+	typeSpecifier: ListTypeSpecifier3,
 	size:          AExprAdd1,
 }
 

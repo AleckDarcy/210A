@@ -6,12 +6,15 @@ type AExprArithOpType int64
 
 const (
 	AExprArithAdd AExprArithOpType = iota
+	AExprArithMul AExprArithOpType = iota
 )
 
 func (t AExprArithOpType) toString(ident string) string {
 	switch t {
 	case AExprArithAdd:
 		return ident + "Add"
+	case AExprArithMul:
+		return ident + "Mul"
 	default:
 		return ident + "undefined"
 	}
@@ -19,6 +22,24 @@ func (t AExprArithOpType) toString(ident string) string {
 
 func (t AExprArithOpType) String() string {
 	return t.toString("")
+}
+
+func (t AExprArithOpType) PriorLevel() int {
+	switch t {
+	case AExprArithAdd:
+		return 0
+	case AExprArithMul:
+		return 1
+	}
+
+	panic("")
+}
+
+func (t AExprArithOpType) PriorTo(a AExprArithOpType) bool {
+	level1 := t.PriorLevel()
+	level2 := a.PriorLevel()
+
+	return level1 > level2
 }
 
 type AExprSimple struct {
@@ -52,6 +73,10 @@ func (e *AExprSimple) toString(ident string) string {
 
 func (e *AExprSimple) String() string {
 	return e.toString("")
+}
+
+func (e *AExprSimple) E() AExpr {
+	return e.e
 }
 
 type AExprArith struct {

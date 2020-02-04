@@ -132,6 +132,10 @@ func (s *Stack) PopByType(typ ast.NoderType) (ast.BasicNoder, error) {
 		if _, ok := item.(*ast.FuncExecuteExpression); !ok {
 			return nil, errors.New("item is not a FuncExecuteExpression")
 		}
+	case ast.NoderFile:
+		if _, ok := item.(*ast.File); !ok {
+			return nil, errors.New("item is not a File")
+		}
 	default:
 		panic(fmt.Sprintf("undefined NodeType %v", typ))
 	}

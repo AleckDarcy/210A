@@ -26,6 +26,10 @@ func (i *ListElementIndex) String() string {
 	return i.toString("")
 }
 
+func (i *ListElementIndex) E() AExpr {
+	return i.e
+}
+
 type ListElementExpr struct {
 	name *Identifier
 	list []*ListElementIndex
@@ -61,6 +65,18 @@ func (e *ListElementExpr) String() string {
 	return e.toString("")
 }
 
+func (e *ListElementExpr) Name() *Identifier {
+	return e.name
+}
+
+func (e *ListElementExpr) List() []*ListElementIndex {
+	return e.list
+}
+
+func (e *ListElementExpr) Identifier() *Identifier {
+	return e.name
+}
+
 type TupleSizeList struct {
 	list []AExpr
 }
@@ -94,4 +110,12 @@ func (e *ListInitExpr) toString(ident string) string {
 
 func (e *ListInitExpr) String() string {
 	return e.toString("")
+}
+
+func (e *ListInitExpr) TypeSpecifier() *ListTypeSpecifier {
+	return e.typeSpecifier
+}
+
+func (e *ListInitExpr) Size() AExpr {
+	return e.size
 }

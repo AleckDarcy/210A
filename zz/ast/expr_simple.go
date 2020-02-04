@@ -26,6 +26,14 @@ func (i *Identifier) String() string {
 	return i.toString("")
 }
 
+func (i *Identifier) Identifier() *Identifier {
+	return i
+}
+
+func (i *Identifier) Name() string {
+	return i.name
+}
+
 type IntegerLiteral struct {
 	value int64
 }
@@ -74,6 +82,10 @@ func (l *FloatLiteral) String() string {
 	return l.toString("")
 }
 
+func (l *FloatLiteral) Value() float64 {
+	return l.value
+}
+
 type BinaryLiteral struct {
 	value bool
 }
@@ -92,4 +104,8 @@ func (l *BinaryLiteral) toString(ident string) string {
 
 func (l *BinaryLiteral) String() string {
 	return l.toString("")
+}
+
+func (l *BinaryLiteral) Value() bool {
+	return l.value
 }
