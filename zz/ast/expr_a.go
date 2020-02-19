@@ -30,6 +30,24 @@ func (t AExprArithOpType) String() string {
 	return t.toString("")
 }
 
+func (t AExprArithOpType) PriorLevel() int {
+	switch t {
+	case AExprArithAdd:
+		return 0
+	case AExprArithMul:
+		return 1
+	}
+
+	panic("")
+}
+
+func (t AExprArithOpType) PriorTo(a AExprArithOpType) bool {
+	level1 := t.PriorLevel()
+	level2 := a.PriorLevel()
+
+	return level1 > level2
+}
+
 type AExprSimple struct {
 	e AExpr
 }
@@ -61,6 +79,10 @@ func (e *AExprSimple) toString(ident string) string {
 
 func (e *AExprSimple) String() string {
 	return e.toString("")
+}
+
+func (e *AExprSimple) E() AExpr {
+	return e.e
 }
 
 type AExprArith struct {
@@ -112,4 +134,37 @@ func (e *AExprArith) E2() AExpr {
 
 func (e *AExprArith) Op() AExprArithOpType {
 	return e.op
+}
+
+type ArithTranspose struct {
+	e AExpr
+}
+
+var ArithTransposeHelper *ArithTranspose
+
+func (t *ArithTranspose) aExpr() {}
+
+func (t *ArithTranspose) assignIniter() {}
+
+func (t *ArithTranspose) New(e AExpr) *ArithTranspose {
+	return &ArithTranspose{e: e}
+}
+
+func (t *ArithTranspose) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sArithTranspose {\n"+
+		"%s..Expr:\n"+
+		"%s\n"+
+		"%s}\n",
+		indent, indent, t.e.toString(indent+"...."),
+		indent,
+	)
+}
+
+func (t *ArithTranspose) String() string {
+	return t.toString("")
+}
+
+func (t *ArithTranspose) E() AExpr {
+	return t.e
 }

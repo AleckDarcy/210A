@@ -40,7 +40,7 @@ import (
 //}
 
 func TestListElementIndex_String(t *testing.T) {
-	i := &ListElementIndex{e: AExprAdd1}
+	i := &CollectionElementIndex{e: AExprAdd1}
 	fmt.Println(i)
 }
 

@@ -29,11 +29,12 @@ const (
 	NoderParaDeclarator
 	NoderParaDeclaratorWithIdentity
 	NoderFuncIdentifier
-	NoderFuncTypeSpecifier
+	//NoderFuncTypeSpecifier
 	NoderFuncTypeSpecifierWithName
 	NoderFuncExecuteParaer
 	NoderFuncExecutePara
 	NoderFuncExecuteExpression
+	NoderFile
 )
 
 type BasicNoder interface {
@@ -72,6 +73,7 @@ type ListElementTypeSpecifierer interface {
 type Declaratorer interface {
 	BasicNoder
 
+	Identifier() *Identifier
 	declaratorer()
 }
 

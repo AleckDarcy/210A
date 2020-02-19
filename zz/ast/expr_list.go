@@ -2,19 +2,41 @@ package ast
 
 import "fmt"
 
-type ListElementIndex struct {
+type CollectionType int64
+
+const (
+	CollectionList CollectionType = iota
+	CollectionMatrix
+)
+
+func (t CollectionType) toString(indent string) string {
+	switch t {
+	case CollectionList:
+		return indent + "List"
+	case CollectionMatrix:
+		return indent + "Matrix"
+	default:
+		return indent + "undefined"
+	}
+}
+
+func (t CollectionType) String() string {
+	return t.toString("")
+}
+
+type CollectionElementIndex struct {
 	e AExpr
 }
 
-var ListElementIndexHelper *ListElementIndex
+var CollectionElementIndexHelper *CollectionElementIndex
 
-func (i *ListElementIndex) New(e AExpr) *ListElementIndex {
-	return &ListElementIndex{e: e}
+func (i *CollectionElementIndex) New(e AExpr) *CollectionElementIndex {
+	return &CollectionElementIndex{e: e}
 }
 
-func (i *ListElementIndex) toString(ident string) string {
+func (i *CollectionElementIndex) toString(ident string) string {
 	return fmt.Sprintf(""+
-		"%sListElementIndex {\n"+
+		"%sCollectionElementIndex {\n"+
 		"%s\n"+
 		"%s}",
 		ident, i.e.toString(ident+".."),
@@ -22,47 +44,61 @@ func (i *ListElementIndex) toString(ident string) string {
 	)
 }
 
-func (i *ListElementIndex) String() string {
+func (i *CollectionElementIndex) String() string {
 	return i.toString("")
 }
 
-type ListElementExpr struct {
+func (i *CollectionElementIndex) E() AExpr {
+	return i.e
+}
+
+type CollectionElementExpr struct {
+	typ  CollectionType
 	name *Identifier
-	list []*ListElementIndex
+	list []*CollectionElementIndex
 }
 
-var ListElementExprHelper *ListElementExpr
+var CollectionElementExprHelper *CollectionElementExpr
 
-func (e *ListElementExpr) New(name *Identifier, list []*ListElementIndex) *ListElementExpr {
-	return &ListElementExpr{
-		name: name,
-		list: list,
-	}
+func (e *CollectionElementExpr) New(name *Identifier, list []*CollectionElementIndex) *CollectionElementExpr {
+	return &CollectionElementExpr{name: name, list: list}
 }
 
-func (e *ListElementExpr) aExpr() {}
+func (e *CollectionElementExpr) aExpr() {}
 
-func (e *ListElementExpr) declaratorer() {}
+func (e *CollectionElementExpr) declaratorer() {}
 
-func (e *ListElementExpr) toString(ident string) string {
+func (e *CollectionElementExpr) toString(ident string) string {
 	return fmt.Sprintf(""+
-		"%sListElementExpression {\n"+
+		"%sCollectionElementExpression {\n"+
 		"%s..Name: %s\n"+
 		"%s..List:\n"+
 		"%s\n"+
 		"%s}",
 		ident, ident, e.name,
-		ident, IterableToString(ident+"....", IteratableListElementIndexList(e.list)),
+		ident, IterableToString(ident+"....", IteratableCollectionElementIndexList(e.list)),
 		ident,
 	)
 }
 
-func (e *ListElementExpr) String() string {
+func (e *CollectionElementExpr) String() string {
 	return e.toString("")
 }
 
-type TupleSizeList struct {
-	list []AExpr
+func (e *CollectionElementExpr) Type() CollectionType {
+	return e.typ
+}
+
+func (e *CollectionElementExpr) Name() *Identifier {
+	return e.name
+}
+
+func (e *CollectionElementExpr) List() []*CollectionElementIndex {
+	return e.list
+}
+
+func (e *CollectionElementExpr) Identifier() *Identifier {
+	return e.name
 }
 
 type ListInitExpr struct {
@@ -94,4 +130,43 @@ func (e *ListInitExpr) toString(ident string) string {
 
 func (e *ListInitExpr) String() string {
 	return e.toString("")
+}
+
+func (e *ListInitExpr) TypeSpecifier() *ListTypeSpecifier {
+	return e.typeSpecifier
+}
+
+func (e *ListInitExpr) Size() AExpr {
+	return e.size
+}
+
+type MatrixInitExpr struct {
+	sizes []AExpr
+}
+
+var MatrixInitExprHelper *MatrixInitExpr
+
+func (e *MatrixInitExpr) New(sizes []AExpr) *MatrixInitExpr {
+	return &MatrixInitExpr{sizes: sizes}
+}
+
+func (e *MatrixInitExpr) assignIniter() {}
+
+func (e *MatrixInitExpr) toString(indent string) string {
+	return fmt.Sprintf(""+
+		"%sMatrixInitExpression {\n"+
+		"%s..Size:\n"+
+		"%s\n"+
+		"%s}",
+		indent, indent, IterableToString(indent+"....", IteratableAExprList(e.sizes)),
+		indent,
+	)
+}
+
+func (e *MatrixInitExpr) String() string {
+	return e.toString("")
+}
+
+func (e *MatrixInitExpr) Sizes() []AExpr {
+	return e.sizes
 }
