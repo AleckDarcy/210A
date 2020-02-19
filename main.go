@@ -111,10 +111,15 @@ func main() {
 
 	zzParser := grammar.NewZZParser(stream)
 	zzParser.SetErrorHandler(antlr.NewDefaultErrorStrategy())
-	zzParser.AddErrorListener(antlr.NewDefaultErrorListener())
+	zzParser.AddErrorListener(p)
 	zzParser.AddParseListener(p)
 	zzParser.BuildParseTrees = true
 	zzParser.File()
+
+	if p.ErrorFlag() {
+		fmt.Println("error occurs when parsing")
+		return
+	}
 
 	f, err := p.Pop()
 	if err != nil {

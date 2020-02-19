@@ -18,6 +18,10 @@ type ParseTreeListener struct {
 	errorFlag bool
 }
 
+func (p *ParseTreeListener) ErrorFlag() bool {
+	return p.errorFlag
+}
+
 func (p *ParseTreeListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
 	p.errorFlag = true
 }
