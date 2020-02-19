@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 
@@ -24,7 +25,7 @@ func GenerateParser(input string) (*grammar.ZZParser, *ParseTreeListener) {
 
 	zzParser := grammar.NewZZParser(stream)
 	zzParser.SetErrorHandler(antlr.NewDefaultErrorStrategy())
-	zzParser.AddErrorListener(antlr.NewDefaultErrorListener())
+	zzParser.AddErrorListener(parser)
 	zzParser.AddParseListener(parser)
 	zzParser.BuildParseTrees = true
 
@@ -32,6 +33,10 @@ func GenerateParser(input string) (*grammar.ZZParser, *ParseTreeListener) {
 }
 
 func JudgeResult(t *testing.T, parser *ParseTreeListener, expect ast.BasicNoder) (ast.BasicNoder, error) {
+	if parser.errorFlag {
+		return nil, errors.New("error occurs when parsing")
+	}
+
 	node, err := parser.stack.PopByType(ast.NoderBasic)
 	if err != nil {
 		t.Error(err)
