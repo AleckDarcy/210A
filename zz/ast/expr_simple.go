@@ -2,6 +2,16 @@ package ast
 
 import "fmt"
 
+type Declarator struct {
+	Declaratorer
+}
+
+var DeclaratorHelper *Declarator
+
+func (d *Declarator) New(decl Declaratorer) *Declarator {
+	return &Declarator{Declaratorer: decl}
+}
+
 type Identifier struct {
 	name string
 }
@@ -24,6 +34,14 @@ func (i *Identifier) toString(ident string) string {
 
 func (i *Identifier) String() string {
 	return i.toString("")
+}
+
+func (i *Identifier) Identifier() *Identifier {
+	return i
+}
+
+func (i *Identifier) Name() string {
+	return i.name
 }
 
 type IntegerLiteral struct {
@@ -74,6 +92,10 @@ func (l *FloatLiteral) String() string {
 	return l.toString("")
 }
 
+func (l *FloatLiteral) Value() float64 {
+	return l.value
+}
+
 type BinaryLiteral struct {
 	value bool
 }
@@ -92,4 +114,8 @@ func (l *BinaryLiteral) toString(ident string) string {
 
 func (l *BinaryLiteral) String() string {
 	return l.toString("")
+}
+
+func (l *BinaryLiteral) Value() bool {
+	return l.value
 }

@@ -53,17 +53,15 @@ func (t ListElementTypeSpecifierType) String() string {
 }
 
 type ListElementTypeSpecifier struct {
-	elem TypeSpecifierer
+	elem ListElementTypeSpecifierer
 	typ  ListElementTypeSpecifierType
 }
 
 var ListElementTypeSpecifierHelper *ListElementTypeSpecifier
 
-func (s *ListElementTypeSpecifier) New(elem TypeSpecifierer, typ ListElementTypeSpecifierType) *ListElementTypeSpecifier {
+func (s *ListElementTypeSpecifier) New(elem ListElementTypeSpecifierer, typ ListElementTypeSpecifierType) *ListElementTypeSpecifier {
 	return &ListElementTypeSpecifier{elem: elem, typ: typ}
 }
-
-func (s *ListElementTypeSpecifier) typeSpecifierer() {}
 
 func (s *ListElementTypeSpecifier) listElementTypeSpecifierer() {}
 
@@ -75,6 +73,10 @@ func (s *ListElementTypeSpecifier) toString(ident string) string {
 
 func (s *ListElementTypeSpecifier) String() string {
 	return s.toString("")
+}
+
+func (s *ListElementTypeSpecifier) Elem() ListElementTypeSpecifierer {
+	return s.elem
 }
 
 type ListTypeSpecifier struct {
@@ -98,6 +100,10 @@ func (s *ListTypeSpecifier) toString(ident string) string {
 		ident, ident, s.elem.toString(ident+"...."),
 		ident,
 	)
+}
+
+func (s *ListTypeSpecifier) Elem() *ListElementTypeSpecifier {
+	return s.elem
 }
 
 func (s *ListTypeSpecifier) String() string {

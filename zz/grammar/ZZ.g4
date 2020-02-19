@@ -3,6 +3,7 @@ grammar ZZ;
 Var : 'var' ;
 Int : 'int' ;
 Float : 'float' ;
+Matrix : 'matrix' ;
 
 Func : 'func' ;
 List : 'list' ;
@@ -19,7 +20,9 @@ IntegerLiteral
     ;
 
 FloatLiteral // todo
-    :   '0.0'
+    :   '0' '.' [0-9]*
+    |   [1-9] [0-9]* '.'? [0-9]*
+    |   '-' FloatLiteral
     ;
 
 identifier
@@ -40,6 +43,7 @@ simpleTypeSpecifier
     :   'int'
     |   'float'
     |   'string'
+    |   'matrix'
     ;
 
 listElementTypeSpecifier
@@ -55,6 +59,10 @@ listInitExpression
     :   'list' '(' listTypeSpecifier ',' aExpr ')'
     ;
 
+matrixInitExpression
+    :   'matrix' '(' aExprList ')'
+    ;
+
 aExpr
     :   IntegerLiteral # aExp_IntergerLiteral
     |   FloatLiteral # aExp_FloatLiteral
@@ -63,6 +71,12 @@ aExpr
     |   aExpr ('*'|'/') aExpr # aExp_multiplicativeExpression
     |   aExpr ('+'|'-') aExpr # aExp_additiveExpression
     |   '(' aExpr ')' # aExp_bracketExpression
+    |   'transpose' '(' aExpr ')' # aExp_transpose
+    ;
+
+aExprList
+    :   aExpr
+    |   aExprList ',' aExpr
     ;
 
 bExpr
@@ -88,7 +102,8 @@ listElementExpression
 assignInit
     :   aExpr
     |   listInitExpression
-    |   funcInitExpression
+    |   matrixInitExpression
+//    |   funcInitExpression
     |   funcExecuteExpression
     ;
 
@@ -99,6 +114,10 @@ assignInitList
 
 assignStatement
     :   declaratorList '=' assignInitList
+    ;
+
+assignInitStatement
+    :   declaratorList ':=' assignInitList
     ;
 
 ifExpr
@@ -126,16 +145,21 @@ selectionStatement
     |   ternaryIfExpr ':' ternaryElseExpr
     ;
 
-iterationAssignStatement:
+iterationAssignInitStatement
+    :   assignInitStatement
     |   assignStatement
     ;
 
+iterationAssignStatement
+    :   assignStatement
+    ;
+
 iterationStatement
-    :   'for' iterationAssignStatement? ';' bExpr? ';' iterationAssignStatement? '{' funcStatementList? '}' // todo
+    :   'for' iterationAssignInitStatement? ';' bExpr? ';' iterationAssignStatement? '{' funcStatementList? '}' // todo
     ;
 
 definition
-    :   assignStatement
+    :   assignInitStatement
     |   funcDefinition
     ;
 
@@ -151,7 +175,7 @@ file // todo: package import
 typeSpecifier
     :   simpleTypeSpecifier
     |   listTypeSpecifier
-    |   funcTypeSpecifier
+//    |   funcTypeSpecifier
     ;
 
 typeSpecifierList
@@ -177,9 +201,9 @@ paraDeclaratorWithIdentityList
     |   paraDeclaratorWithIdentityList ',' paraDeclaratorWithIdentity
     ;
 
-funcTypeSpecifier
-    :   'func' '(' paraDeclaratorWithIdentityList? ')' ('(' typeSpecifierList? ')')?
-    ;
+//funcTypeSpecifier
+//    :   'func' '(' paraDeclaratorWithIdentityList? ')' ('(' typeSpecifierList? ')')?
+//    ;
 
 funcIdentifier
     :   identifier
@@ -194,6 +218,7 @@ funcReturnPara
     |   bExpr
     |   identifier
     |   'nil'
+    |   funcExecuteExpression
     ;
 
 funcReturnParaList
@@ -207,10 +232,12 @@ funcReturnStatement
 
 funcStatement
     :   assignStatement
+    |   assignInitStatement
     |   selectionStatement
     |   iterationStatement
     |   funcReturnStatement
     |   funcExecuteStatement
+    |   printStatement
     ;
 
 funcStatementList
@@ -222,9 +249,9 @@ funcBody
     :   funcStatementList?
     ;
 
-funcInitExpression // when assign to a varient: function = func() {}
-    :   funcTypeSpecifier '{' funcBody? '}'
-    ;
+//funcInitExpression // when assign to a varient: function = func() {}
+//    :   funcTypeSpecifier '{' funcBody? '}'
+//    ;
 
 funcDefinition // when define a method for a class or a static function: func function() {}
     :   funcTypeSpecifierWithName '{' funcBody? '}'
@@ -246,6 +273,20 @@ funcExecuteExpression
 
 funcExecuteStatement
     :   funcExecuteExpression
+    ;
+
+fragment
+StringChar
+    :   [a-zA-Z_0-9 \r\t\n]
+    ;
+
+printList
+    :   (aExpr | bExpr)
+    |   printList ',' ( aExpr | bExpr)
+    ;
+
+printStatement
+    :   'print' '(' printList ')'
     ;
 
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

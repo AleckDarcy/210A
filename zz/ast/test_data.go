@@ -2,7 +2,7 @@ package ast
 
 var SimpleTypeSpecifier1 = &SimpleTypeSpecifier{name: "int"} // int
 
-var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float"} // float
+var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float64"} // float
 
 var AExprSimple1 = &AExprSimple{e: &IntegerLiteral{value: 1}}
 
@@ -56,16 +56,20 @@ var ListTypeSpecifier2 = &ListTypeSpecifier{ // []float
 	},
 }
 
-var ListElementExpr1 = &ListElementExpr{ // a[1]
+var ListTypeSpecifier3 = &ListTypeSpecifier{ // [][]int
+	elem: ListElementTypeSpecifier1,
+}
+
+var ListElementExpr1 = &CollectionElementExpr{ // a[1]
 	name: &Identifier{name: "a"},
-	list: []*ListElementIndex{
+	list: []*CollectionElementIndex{
 		{e: &AExprSimple{e: &IntegerLiteral{value: 1}}},
 	},
 }
 
-var ListElementExpr2 = &ListElementExpr{ // b[2 + 3][3]
+var ListElementExpr2 = &CollectionElementExpr{ // b[2 + 3][3]
 	name: &Identifier{name: "b"},
-	list: []*ListElementIndex{
+	list: []*CollectionElementIndex{
 		{e: AExprAdd1},
 		{e: &IntegerLiteral{value: 3}},
 	},
@@ -80,7 +84,7 @@ var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
 }
 
 var ListInitExpr1 = &ListInitExpr{ // list([][]int, 2 + 3)
-	typeSpecifier: ListTypeSpecifier1,
+	typeSpecifier: ListTypeSpecifier3,
 	size:          AExprAdd1,
 }
 
@@ -126,35 +130,35 @@ var AssignStmt3 = &AssignStmt{ // b = x + y
 	},
 }
 
-var AssignStmt4 = &AssignStmt{
-	declList: []Declaratorer{
-		&Identifier{name: "f"},
-	},
-	initList: []AssignIniter{
-		&FuncInitExpr{
-			typeSpecifier: &FuncTypeSpecifier{},
-		},
-	},
-}
-
-var FuncTypeSpecifier1 = &FuncTypeSpecifier{
-	paraList:   FuncParaList1,
-	returnList: FuncReturnList1,
-}
-
-var FuncInitExpr1 = &FuncInitExpr{
-	typeSpecifier: FuncTypeSpecifier1,
-	stmtList:      FuncBody1,
-}
-
-var AssignStmt5 = &AssignStmt{
-	declList: []Declaratorer{
-		&Identifier{name: "f"},
-	},
-	initList: []AssignIniter{
-		FuncInitExpr1,
-	},
-}
+//var AssignStmt4 = &AssignStmt{
+//	declList: []Declaratorer{
+//		&Identifier{name: "f"},
+//	},
+//	initList: []AssignIniter{
+//		&FuncInitExpr{
+//			typeSpecifier: &FuncTypeSpecifier{},
+//		},
+//	},
+//}
+//
+//var FuncTypeSpecifier1 = &FuncTypeSpecifier{
+//	paraList:   FuncParaList1,
+//	returnList: FuncReturnList1,
+//}
+//
+//var FuncInitExpr1 = &FuncInitExpr{
+//	typeSpecifier: FuncTypeSpecifier1,
+//	stmtList:      FuncBody1,
+//}
+//
+//var AssignStmt5 = &AssignStmt{
+//	declList: []Declaratorer{
+//		&Identifier{name: "f"},
+//	},
+//	initList: []AssignIniter{
+//		FuncInitExpr1,
+//	},
+//}
 
 /*
 	if a[1] == b {

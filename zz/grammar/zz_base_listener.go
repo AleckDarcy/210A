@@ -62,6 +62,12 @@ func (s *BaseZZListener) EnterListInitExpression(ctx *ListInitExpressionContext)
 // ExitListInitExpression is called when production listInitExpression is exited.
 func (s *BaseZZListener) ExitListInitExpression(ctx *ListInitExpressionContext) {}
 
+// EnterMatrixInitExpression is called when production matrixInitExpression is entered.
+func (s *BaseZZListener) EnterMatrixInitExpression(ctx *MatrixInitExpressionContext) {}
+
+// ExitMatrixInitExpression is called when production matrixInitExpression is exited.
+func (s *BaseZZListener) ExitMatrixInitExpression(ctx *MatrixInitExpressionContext) {}
+
 // EnterAExp_bracketExpression is called when production aExp_bracketExpression is entered.
 func (s *BaseZZListener) EnterAExp_bracketExpression(ctx *AExp_bracketExpressionContext) {}
 
@@ -88,6 +94,12 @@ func (s *BaseZZListener) EnterAExp_additiveExpression(ctx *AExp_additiveExpressi
 // ExitAExp_additiveExpression is called when production aExp_additiveExpression is exited.
 func (s *BaseZZListener) ExitAExp_additiveExpression(ctx *AExp_additiveExpressionContext) {}
 
+// EnterAExp_transpose is called when production aExp_transpose is entered.
+func (s *BaseZZListener) EnterAExp_transpose(ctx *AExp_transposeContext) {}
+
+// ExitAExp_transpose is called when production aExp_transpose is exited.
+func (s *BaseZZListener) ExitAExp_transpose(ctx *AExp_transposeContext) {}
+
 // EnterAExp_identifier is called when production aExp_identifier is entered.
 func (s *BaseZZListener) EnterAExp_identifier(ctx *AExp_identifierContext) {}
 
@@ -105,6 +117,12 @@ func (s *BaseZZListener) EnterAExp_listElementExpression(ctx *AExp_listElementEx
 
 // ExitAExp_listElementExpression is called when production aExp_listElementExpression is exited.
 func (s *BaseZZListener) ExitAExp_listElementExpression(ctx *AExp_listElementExpressionContext) {}
+
+// EnterAExprList is called when production aExprList is entered.
+func (s *BaseZZListener) EnterAExprList(ctx *AExprListContext) {}
+
+// ExitAExprList is called when production aExprList is exited.
+func (s *BaseZZListener) ExitAExprList(ctx *AExprListContext) {}
 
 // EnterBExpr_aExpr is called when production bExpr_aExpr is entered.
 func (s *BaseZZListener) EnterBExpr_aExpr(ctx *BExpr_aExprContext) {}
@@ -166,6 +184,12 @@ func (s *BaseZZListener) EnterAssignStatement(ctx *AssignStatementContext) {}
 // ExitAssignStatement is called when production assignStatement is exited.
 func (s *BaseZZListener) ExitAssignStatement(ctx *AssignStatementContext) {}
 
+// EnterAssignInitStatement is called when production assignInitStatement is entered.
+func (s *BaseZZListener) EnterAssignInitStatement(ctx *AssignInitStatementContext) {}
+
+// ExitAssignInitStatement is called when production assignInitStatement is exited.
+func (s *BaseZZListener) ExitAssignInitStatement(ctx *AssignInitStatementContext) {}
+
 // EnterIfExpr is called when production ifExpr is entered.
 func (s *BaseZZListener) EnterIfExpr(ctx *IfExprContext) {}
 
@@ -201,6 +225,12 @@ func (s *BaseZZListener) EnterSelectionStatement(ctx *SelectionStatementContext)
 
 // ExitSelectionStatement is called when production selectionStatement is exited.
 func (s *BaseZZListener) ExitSelectionStatement(ctx *SelectionStatementContext) {}
+
+// EnterIterationAssignInitStatement is called when production iterationAssignInitStatement is entered.
+func (s *BaseZZListener) EnterIterationAssignInitStatement(ctx *IterationAssignInitStatementContext) {}
+
+// ExitIterationAssignInitStatement is called when production iterationAssignInitStatement is exited.
+func (s *BaseZZListener) ExitIterationAssignInitStatement(ctx *IterationAssignInitStatementContext) {}
 
 // EnterIterationAssignStatement is called when production iterationAssignStatement is entered.
 func (s *BaseZZListener) EnterIterationAssignStatement(ctx *IterationAssignStatementContext) {}
@@ -270,12 +300,6 @@ func (s *BaseZZListener) EnterParaDeclaratorWithIdentityList(ctx *ParaDeclarator
 func (s *BaseZZListener) ExitParaDeclaratorWithIdentityList(ctx *ParaDeclaratorWithIdentityListContext) {
 }
 
-// EnterFuncTypeSpecifier is called when production funcTypeSpecifier is entered.
-func (s *BaseZZListener) EnterFuncTypeSpecifier(ctx *FuncTypeSpecifierContext) {}
-
-// ExitFuncTypeSpecifier is called when production funcTypeSpecifier is exited.
-func (s *BaseZZListener) ExitFuncTypeSpecifier(ctx *FuncTypeSpecifierContext) {}
-
 // EnterFuncIdentifier is called when production funcIdentifier is entered.
 func (s *BaseZZListener) EnterFuncIdentifier(ctx *FuncIdentifierContext) {}
 
@@ -324,12 +348,6 @@ func (s *BaseZZListener) EnterFuncBody(ctx *FuncBodyContext) {}
 // ExitFuncBody is called when production funcBody is exited.
 func (s *BaseZZListener) ExitFuncBody(ctx *FuncBodyContext) {}
 
-// EnterFuncInitExpression is called when production funcInitExpression is entered.
-func (s *BaseZZListener) EnterFuncInitExpression(ctx *FuncInitExpressionContext) {}
-
-// ExitFuncInitExpression is called when production funcInitExpression is exited.
-func (s *BaseZZListener) ExitFuncInitExpression(ctx *FuncInitExpressionContext) {}
-
 // EnterFuncDefinition is called when production funcDefinition is entered.
 func (s *BaseZZListener) EnterFuncDefinition(ctx *FuncDefinitionContext) {}
 
@@ -359,3 +377,15 @@ func (s *BaseZZListener) EnterFuncExecuteStatement(ctx *FuncExecuteStatementCont
 
 // ExitFuncExecuteStatement is called when production funcExecuteStatement is exited.
 func (s *BaseZZListener) ExitFuncExecuteStatement(ctx *FuncExecuteStatementContext) {}
+
+// EnterPrintList is called when production printList is entered.
+func (s *BaseZZListener) EnterPrintList(ctx *PrintListContext) {}
+
+// ExitPrintList is called when production printList is exited.
+func (s *BaseZZListener) ExitPrintList(ctx *PrintListContext) {}
+
+// EnterPrintStatement is called when production printStatement is entered.
+func (s *BaseZZListener) EnterPrintStatement(ctx *PrintStatementContext) {}
+
+// ExitPrintStatement is called when production printStatement is exited.
+func (s *BaseZZListener) ExitPrintStatement(ctx *PrintStatementContext) {}

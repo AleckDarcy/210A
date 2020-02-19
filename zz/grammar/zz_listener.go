@@ -28,6 +28,9 @@ type ZZListener interface {
 	// EnterListInitExpression is called when entering the listInitExpression production.
 	EnterListInitExpression(c *ListInitExpressionContext)
 
+	// EnterMatrixInitExpression is called when entering the matrixInitExpression production.
+	EnterMatrixInitExpression(c *MatrixInitExpressionContext)
+
 	// EnterAExp_bracketExpression is called when entering the aExp_bracketExpression production.
 	EnterAExp_bracketExpression(c *AExp_bracketExpressionContext)
 
@@ -40,6 +43,9 @@ type ZZListener interface {
 	// EnterAExp_additiveExpression is called when entering the aExp_additiveExpression production.
 	EnterAExp_additiveExpression(c *AExp_additiveExpressionContext)
 
+	// EnterAExp_transpose is called when entering the aExp_transpose production.
+	EnterAExp_transpose(c *AExp_transposeContext)
+
 	// EnterAExp_identifier is called when entering the aExp_identifier production.
 	EnterAExp_identifier(c *AExp_identifierContext)
 
@@ -48,6 +54,9 @@ type ZZListener interface {
 
 	// EnterAExp_listElementExpression is called when entering the aExp_listElementExpression production.
 	EnterAExp_listElementExpression(c *AExp_listElementExpressionContext)
+
+	// EnterAExprList is called when entering the aExprList production.
+	EnterAExprList(c *AExprListContext)
 
 	// EnterBExpr_aExpr is called when entering the bExpr_aExpr production.
 	EnterBExpr_aExpr(c *BExpr_aExprContext)
@@ -79,6 +88,9 @@ type ZZListener interface {
 	// EnterAssignStatement is called when entering the assignStatement production.
 	EnterAssignStatement(c *AssignStatementContext)
 
+	// EnterAssignInitStatement is called when entering the assignInitStatement production.
+	EnterAssignInitStatement(c *AssignInitStatementContext)
+
 	// EnterIfExpr is called when entering the ifExpr production.
 	EnterIfExpr(c *IfExprContext)
 
@@ -96,6 +108,9 @@ type ZZListener interface {
 
 	// EnterSelectionStatement is called when entering the selectionStatement production.
 	EnterSelectionStatement(c *SelectionStatementContext)
+
+	// EnterIterationAssignInitStatement is called when entering the iterationAssignInitStatement production.
+	EnterIterationAssignInitStatement(c *IterationAssignInitStatementContext)
 
 	// EnterIterationAssignStatement is called when entering the iterationAssignStatement production.
 	EnterIterationAssignStatement(c *IterationAssignStatementContext)
@@ -130,9 +145,6 @@ type ZZListener interface {
 	// EnterParaDeclaratorWithIdentityList is called when entering the paraDeclaratorWithIdentityList production.
 	EnterParaDeclaratorWithIdentityList(c *ParaDeclaratorWithIdentityListContext)
 
-	// EnterFuncTypeSpecifier is called when entering the funcTypeSpecifier production.
-	EnterFuncTypeSpecifier(c *FuncTypeSpecifierContext)
-
 	// EnterFuncIdentifier is called when entering the funcIdentifier production.
 	EnterFuncIdentifier(c *FuncIdentifierContext)
 
@@ -157,9 +169,6 @@ type ZZListener interface {
 	// EnterFuncBody is called when entering the funcBody production.
 	EnterFuncBody(c *FuncBodyContext)
 
-	// EnterFuncInitExpression is called when entering the funcInitExpression production.
-	EnterFuncInitExpression(c *FuncInitExpressionContext)
-
 	// EnterFuncDefinition is called when entering the funcDefinition production.
 	EnterFuncDefinition(c *FuncDefinitionContext)
 
@@ -174,6 +183,12 @@ type ZZListener interface {
 
 	// EnterFuncExecuteStatement is called when entering the funcExecuteStatement production.
 	EnterFuncExecuteStatement(c *FuncExecuteStatementContext)
+
+	// EnterPrintList is called when entering the printList production.
+	EnterPrintList(c *PrintListContext)
+
+	// EnterPrintStatement is called when entering the printStatement production.
+	EnterPrintStatement(c *PrintStatementContext)
 
 	// ExitIdentifier is called when exiting the identifier production.
 	ExitIdentifier(c *IdentifierContext)
@@ -196,6 +211,9 @@ type ZZListener interface {
 	// ExitListInitExpression is called when exiting the listInitExpression production.
 	ExitListInitExpression(c *ListInitExpressionContext)
 
+	// ExitMatrixInitExpression is called when exiting the matrixInitExpression production.
+	ExitMatrixInitExpression(c *MatrixInitExpressionContext)
+
 	// ExitAExp_bracketExpression is called when exiting the aExp_bracketExpression production.
 	ExitAExp_bracketExpression(c *AExp_bracketExpressionContext)
 
@@ -208,6 +226,9 @@ type ZZListener interface {
 	// ExitAExp_additiveExpression is called when exiting the aExp_additiveExpression production.
 	ExitAExp_additiveExpression(c *AExp_additiveExpressionContext)
 
+	// ExitAExp_transpose is called when exiting the aExp_transpose production.
+	ExitAExp_transpose(c *AExp_transposeContext)
+
 	// ExitAExp_identifier is called when exiting the aExp_identifier production.
 	ExitAExp_identifier(c *AExp_identifierContext)
 
@@ -216,6 +237,9 @@ type ZZListener interface {
 
 	// ExitAExp_listElementExpression is called when exiting the aExp_listElementExpression production.
 	ExitAExp_listElementExpression(c *AExp_listElementExpressionContext)
+
+	// ExitAExprList is called when exiting the aExprList production.
+	ExitAExprList(c *AExprListContext)
 
 	// ExitBExpr_aExpr is called when exiting the bExpr_aExpr production.
 	ExitBExpr_aExpr(c *BExpr_aExprContext)
@@ -247,6 +271,9 @@ type ZZListener interface {
 	// ExitAssignStatement is called when exiting the assignStatement production.
 	ExitAssignStatement(c *AssignStatementContext)
 
+	// ExitAssignInitStatement is called when exiting the assignInitStatement production.
+	ExitAssignInitStatement(c *AssignInitStatementContext)
+
 	// ExitIfExpr is called when exiting the ifExpr production.
 	ExitIfExpr(c *IfExprContext)
 
@@ -264,6 +291,9 @@ type ZZListener interface {
 
 	// ExitSelectionStatement is called when exiting the selectionStatement production.
 	ExitSelectionStatement(c *SelectionStatementContext)
+
+	// ExitIterationAssignInitStatement is called when exiting the iterationAssignInitStatement production.
+	ExitIterationAssignInitStatement(c *IterationAssignInitStatementContext)
 
 	// ExitIterationAssignStatement is called when exiting the iterationAssignStatement production.
 	ExitIterationAssignStatement(c *IterationAssignStatementContext)
@@ -298,9 +328,6 @@ type ZZListener interface {
 	// ExitParaDeclaratorWithIdentityList is called when exiting the paraDeclaratorWithIdentityList production.
 	ExitParaDeclaratorWithIdentityList(c *ParaDeclaratorWithIdentityListContext)
 
-	// ExitFuncTypeSpecifier is called when exiting the funcTypeSpecifier production.
-	ExitFuncTypeSpecifier(c *FuncTypeSpecifierContext)
-
 	// ExitFuncIdentifier is called when exiting the funcIdentifier production.
 	ExitFuncIdentifier(c *FuncIdentifierContext)
 
@@ -325,9 +352,6 @@ type ZZListener interface {
 	// ExitFuncBody is called when exiting the funcBody production.
 	ExitFuncBody(c *FuncBodyContext)
 
-	// ExitFuncInitExpression is called when exiting the funcInitExpression production.
-	ExitFuncInitExpression(c *FuncInitExpressionContext)
-
 	// ExitFuncDefinition is called when exiting the funcDefinition production.
 	ExitFuncDefinition(c *FuncDefinitionContext)
 
@@ -342,4 +366,10 @@ type ZZListener interface {
 
 	// ExitFuncExecuteStatement is called when exiting the funcExecuteStatement production.
 	ExitFuncExecuteStatement(c *FuncExecuteStatementContext)
+
+	// ExitPrintList is called when exiting the printList production.
+	ExitPrintList(c *PrintListContext)
+
+	// ExitPrintStatement is called when exiting the printStatement production.
+	ExitPrintStatement(c *PrintStatementContext)
 }

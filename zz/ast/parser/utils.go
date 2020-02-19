@@ -30,15 +30,29 @@ func (p *ParseTreeListener) PopAll(t *testing.T) {
 	}
 }
 
-func (p *ParseTreeListener) readListElementIndexList() []*ast.ListElementIndex {
-	var list []*ast.ListElementIndex
+func (p *ParseTreeListener) readListElementIndexList() []*ast.CollectionElementIndex {
+	var list []*ast.CollectionElementIndex
 	for {
 		item, _ := p.stack.PopByType(ast.NoderListElementIndex) // todo: error
 		if item == nil {
 			break
 		}
 
-		list = append([]*ast.ListElementIndex{item.(*ast.ListElementIndex)}, list...)
+		list = append([]*ast.CollectionElementIndex{item.(*ast.CollectionElementIndex)}, list...)
+	}
+
+	return list
+}
+
+func (p *ParseTreeListener) readAExprList() []ast.AExpr {
+	var list []ast.AExpr
+	for {
+		item, _ := p.stack.PopByType(ast.NoderAExpr) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]ast.AExpr{item.(ast.AExpr)}, list...)
 	}
 
 	return list
