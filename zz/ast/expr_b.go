@@ -37,6 +37,10 @@ func (e *BExprCompare) New(e1, e2 AExpr, op BExprCompareOpType) *BExprCompare {
 
 func (e *BExprCompare) bExpr() {}
 
+func (e *BExprCompare) funcReturnParaer() {}
+
+func (e *BExprCompare) funcExecuteParaer() {}
+
 func (e *BExprCompare) toString(ident string) string {
 	return fmt.Sprintf(""+
 		"%sBExprCompare {\n"+
@@ -55,6 +59,18 @@ func (e *BExprCompare) toString(ident string) string {
 
 func (e *BExprCompare) String() string {
 	return e.toString("")
+}
+
+func (e *BExprCompare) E1() AExpr {
+	return e.e1
+}
+
+func (e *BExprCompare) E2() AExpr {
+	return e.e2
+}
+
+func (e *BExprCompare) Op() BExprCompareOpType {
+	return e.op
 }
 
 type BExprBinaryOpType int64
@@ -91,6 +107,8 @@ func (e *BExprBinary) bExpr() {}
 
 func (e *BExprBinary) funcReturnParaer() {}
 
+func (e *BExprBinary) funcExecuteParaer() {}
+
 func (e *BExprBinary) toString(ident string) string {
 	return fmt.Sprintf(""+
 		"%sBExprBinary {\n"+
@@ -109,4 +127,16 @@ func (e *BExprBinary) toString(ident string) string {
 
 func (e *BExprBinary) String() string {
 	return e.toString("")
+}
+
+func (e *BExprBinary) E1() BExpr {
+	return e.e1
+}
+
+func (e *BExprBinary) E2() BExpr {
+	return e.e2
+}
+
+func (e *BExprBinary) Op() BExprBinaryOpType {
+	return e.op
 }

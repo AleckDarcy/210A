@@ -41,6 +41,22 @@ func (s *IterationStmt) String() string {
 	return s.toString("")
 }
 
+func (s *IterationStmt) InitStmt() *AssignStmt {
+	return s.initStmt
+}
+
+func (s *IterationStmt) BinExpr() BExpr {
+	return s.binExpr
+}
+
+func (s *IterationStmt) IncreStmt() *AssignStmt {
+	return s.increStmt
+}
+
+func (s *IterationStmt) StmtList() []FuncStatementer {
+	return s.stmtList
+}
+
 type IterationAssignStmt struct {
 	stmt *AssignStmt
 }

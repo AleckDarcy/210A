@@ -77,8 +77,8 @@ func (s *Stack) PopByType(typ ast.NoderType) (ast.BasicNoder, error) {
 			return nil, errors.New("item is not a AssignStmt")
 		}
 	case ast.NoderListElementIndex:
-		if _, ok := item.(*ast.ListElementIndex); !ok {
-			return nil, errors.New("item is not a ListElementIndex")
+		if _, ok := item.(*ast.CollectionElementIndex); !ok {
+			return nil, errors.New("item is not a CollectionElementIndex")
 		}
 	case ast.NoderListElementTypeSpecifier:
 		if _, ok := item.(*ast.ListElementTypeSpecifier); !ok {
@@ -112,13 +112,29 @@ func (s *Stack) PopByType(typ ast.NoderType) (ast.BasicNoder, error) {
 		if _, ok := item.(*ast.FuncIdentifier); !ok {
 			return nil, errors.New("item is not a FuncIdentifier")
 		}
-	case ast.NoderFuncTypeSpecifier:
-		if _, ok := item.(*ast.FuncTypeSpecifier); !ok {
-			return nil, errors.New("item is not a FuncTypeSpecifier")
-		}
+	//case ast.NoderFuncTypeSpecifier:
+	//	if _, ok := item.(*ast.FuncTypeSpecifier); !ok {
+	//		return nil, errors.New("item is not a FuncTypeSpecifier")
+	//	}
 	case ast.NoderFuncTypeSpecifierWithName:
 		if _, ok := item.(*ast.FuncTypeSpecifierWithName); !ok {
 			return nil, errors.New("item is not a FuncTypeSpecifierWithName")
+		}
+	case ast.NoderFuncExecuteParaer:
+		if _, ok := item.(ast.FuncExecuteParaer); !ok {
+			return nil, errors.New("item is not a FuncExecuteParaer")
+		}
+	case ast.NoderFuncExecutePara:
+		if _, ok := item.(*ast.FuncExecutePara); !ok {
+			return nil, errors.New("item is not a FuncExecutePara")
+		}
+	case ast.NoderFuncExecuteExpression:
+		if _, ok := item.(*ast.FuncExecuteExpression); !ok {
+			return nil, errors.New("item is not a FuncExecuteExpression")
+		}
+	case ast.NoderFile:
+		if _, ok := item.(*ast.File); !ok {
+			return nil, errors.New("item is not a File")
 		}
 	default:
 		panic(fmt.Sprintf("undefined NodeType %v", typ))

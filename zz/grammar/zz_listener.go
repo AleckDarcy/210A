@@ -43,6 +43,9 @@ type ZZListener interface {
 	// EnterAExp_additiveExpression is called when entering the aExp_additiveExpression production.
 	EnterAExp_additiveExpression(c *AExp_additiveExpressionContext)
 
+	// EnterAExp_transpose is called when entering the aExp_transpose production.
+	EnterAExp_transpose(c *AExp_transposeContext)
+
 	// EnterAExp_identifier is called when entering the aExp_identifier production.
 	EnterAExp_identifier(c *AExp_identifierContext)
 
@@ -142,9 +145,6 @@ type ZZListener interface {
 	// EnterParaDeclaratorWithIdentityList is called when entering the paraDeclaratorWithIdentityList production.
 	EnterParaDeclaratorWithIdentityList(c *ParaDeclaratorWithIdentityListContext)
 
-	// EnterFuncTypeSpecifier is called when entering the funcTypeSpecifier production.
-	EnterFuncTypeSpecifier(c *FuncTypeSpecifierContext)
-
 	// EnterFuncIdentifier is called when entering the funcIdentifier production.
 	EnterFuncIdentifier(c *FuncIdentifierContext)
 
@@ -169,20 +169,26 @@ type ZZListener interface {
 	// EnterFuncBody is called when entering the funcBody production.
 	EnterFuncBody(c *FuncBodyContext)
 
-	// EnterFuncInitExpression is called when entering the funcInitExpression production.
-	EnterFuncInitExpression(c *FuncInitExpressionContext)
-
 	// EnterFuncDefinition is called when entering the funcDefinition production.
 	EnterFuncDefinition(c *FuncDefinitionContext)
+
+	// EnterFuncExecutePara is called when entering the funcExecutePara production.
+	EnterFuncExecutePara(c *FuncExecuteParaContext)
+
+	// EnterFuncExecuteParaList is called when entering the funcExecuteParaList production.
+	EnterFuncExecuteParaList(c *FuncExecuteParaListContext)
 
 	// EnterFuncExecuteExpression is called when entering the funcExecuteExpression production.
 	EnterFuncExecuteExpression(c *FuncExecuteExpressionContext)
 
-	// EnterClassMethodDefinition is called when entering the classMethodDefinition production.
-	EnterClassMethodDefinition(c *ClassMethodDefinitionContext)
+	// EnterFuncExecuteStatement is called when entering the funcExecuteStatement production.
+	EnterFuncExecuteStatement(c *FuncExecuteStatementContext)
 
-	// EnterClassDefinition is called when entering the classDefinition production.
-	EnterClassDefinition(c *ClassDefinitionContext)
+	// EnterPrintList is called when entering the printList production.
+	EnterPrintList(c *PrintListContext)
+
+	// EnterPrintStatement is called when entering the printStatement production.
+	EnterPrintStatement(c *PrintStatementContext)
 
 	// ExitIdentifier is called when exiting the identifier production.
 	ExitIdentifier(c *IdentifierContext)
@@ -219,6 +225,9 @@ type ZZListener interface {
 
 	// ExitAExp_additiveExpression is called when exiting the aExp_additiveExpression production.
 	ExitAExp_additiveExpression(c *AExp_additiveExpressionContext)
+
+	// ExitAExp_transpose is called when exiting the aExp_transpose production.
+	ExitAExp_transpose(c *AExp_transposeContext)
 
 	// ExitAExp_identifier is called when exiting the aExp_identifier production.
 	ExitAExp_identifier(c *AExp_identifierContext)
@@ -319,9 +328,6 @@ type ZZListener interface {
 	// ExitParaDeclaratorWithIdentityList is called when exiting the paraDeclaratorWithIdentityList production.
 	ExitParaDeclaratorWithIdentityList(c *ParaDeclaratorWithIdentityListContext)
 
-	// ExitFuncTypeSpecifier is called when exiting the funcTypeSpecifier production.
-	ExitFuncTypeSpecifier(c *FuncTypeSpecifierContext)
-
 	// ExitFuncIdentifier is called when exiting the funcIdentifier production.
 	ExitFuncIdentifier(c *FuncIdentifierContext)
 
@@ -346,18 +352,24 @@ type ZZListener interface {
 	// ExitFuncBody is called when exiting the funcBody production.
 	ExitFuncBody(c *FuncBodyContext)
 
-	// ExitFuncInitExpression is called when exiting the funcInitExpression production.
-	ExitFuncInitExpression(c *FuncInitExpressionContext)
-
 	// ExitFuncDefinition is called when exiting the funcDefinition production.
 	ExitFuncDefinition(c *FuncDefinitionContext)
+
+	// ExitFuncExecutePara is called when exiting the funcExecutePara production.
+	ExitFuncExecutePara(c *FuncExecuteParaContext)
+
+	// ExitFuncExecuteParaList is called when exiting the funcExecuteParaList production.
+	ExitFuncExecuteParaList(c *FuncExecuteParaListContext)
 
 	// ExitFuncExecuteExpression is called when exiting the funcExecuteExpression production.
 	ExitFuncExecuteExpression(c *FuncExecuteExpressionContext)
 
-	// ExitClassMethodDefinition is called when exiting the classMethodDefinition production.
-	ExitClassMethodDefinition(c *ClassMethodDefinitionContext)
+	// ExitFuncExecuteStatement is called when exiting the funcExecuteStatement production.
+	ExitFuncExecuteStatement(c *FuncExecuteStatementContext)
 
-	// ExitClassDefinition is called when exiting the classDefinition production.
-	ExitClassDefinition(c *ClassDefinitionContext)
+	// ExitPrintList is called when exiting the printList production.
+	ExitPrintList(c *PrintListContext)
+
+	// ExitPrintStatement is called when exiting the printStatement production.
+	ExitPrintStatement(c *PrintStatementContext)
 }

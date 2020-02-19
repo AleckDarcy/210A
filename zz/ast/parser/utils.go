@@ -2,30 +2,57 @@ package parser
 
 import (
 	"fmt"
+	"testing"
 
 	"github.com/AleckDarcy/210A/zz/ast"
 )
 
-func (p *ParseTreeListener) printStack() {
-	if len(p.stack.list) == 0 {
+func (p *ParseTreeListener) PrintStack() {
+	length := p.stack.Depth()
+	if length == 0 {
 		fmt.Println("Empty")
 
 		return
 	}
-	for i := len(p.stack.list) - 1; i >= 0; i-- {
+	for i := length - 1; i >= 0; i-- {
 		fmt.Println(i, p.stack.list[i])
 	}
 }
 
-func (p *ParseTreeListener) readListElementIndexList() []*ast.ListElementIndex {
-	var list []*ast.ListElementIndex
+func (p *ParseTreeListener) PopAll(t *testing.T) {
+	for {
+		item, _ := p.stack.PopByType(ast.NoderBasic)
+		if item == nil {
+			return
+		}
+
+		t.Log(item)
+	}
+}
+
+func (p *ParseTreeListener) readListElementIndexList() []*ast.CollectionElementIndex {
+	var list []*ast.CollectionElementIndex
 	for {
 		item, _ := p.stack.PopByType(ast.NoderListElementIndex) // todo: error
 		if item == nil {
 			break
 		}
 
-		list = append([]*ast.ListElementIndex{item.(*ast.ListElementIndex)}, list...)
+		list = append([]*ast.CollectionElementIndex{item.(*ast.CollectionElementIndex)}, list...)
+	}
+
+	return list
+}
+
+func (p *ParseTreeListener) readAExprList() []ast.AExpr {
+	var list []ast.AExpr
+	for {
+		item, _ := p.stack.PopByType(ast.NoderAExpr) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]ast.AExpr{item.(ast.AExpr)}, list...)
 	}
 
 	return list
@@ -101,20 +128,6 @@ func (p *ParseTreeListener) readDeclaratorerList() []ast.Declaratorer {
 	return list
 }
 
-func (p *ParseTreeListener) readIdentifierList() []*ast.Identifier {
-	var list []*ast.Identifier
-	for {
-		item, _ := p.stack.PopByType(ast.NoderDeclarator) // todo: error
-		if item == nil {
-			break
-		}
-
-		list = append([]*ast.Identifier{item.(*ast.Identifier)}, list...)
-	}
-
-	return list
-}
-
 func (p *ParseTreeListener) readTypeSpecifierList() []ast.TypeSpecifierer {
 	var list []ast.TypeSpecifierer
 	for {
@@ -166,6 +179,20 @@ func (p *ParseTreeListener) readDefinitionerList() []ast.Definitioner {
 		}
 
 		list = append([]ast.Definitioner{item.(ast.Definitioner)}, list...)
+	}
+
+	return list
+}
+
+func (p *ParseTreeListener) readFuncExecuteParaListToFuncExecuteParaerList() []ast.FuncExecuteParaer {
+	var list []ast.FuncExecuteParaer
+	for {
+		item, _ := p.stack.PopByType(ast.NoderFuncExecutePara) // todo: error
+		if item == nil {
+			break
+		}
+
+		list = append([]ast.FuncExecuteParaer{item.(*ast.FuncExecutePara).Para()}, list...)
 	}
 
 	return list

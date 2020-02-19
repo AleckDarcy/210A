@@ -49,31 +49,31 @@ func JudgeResult(t *testing.T, parser *ParseTreeListener, expect ast.BasicNoder)
 	return node, err
 }
 
-func PopAll(t *testing.T, parser *ParseTreeListener) {
-	for {
-		item, _ := parser.stack.PopByType(ast.NoderBasic)
-		if item == nil {
-			return
-		}
-
-		t.Log(item)
-	}
+func TestParseTreeListener_PrintStack(t *testing.T) {
+	testCase := &TestCase{input: "a = list([]int, 4)", expect: ast.AssignStmt1}
+	zzParser, parser := GenerateParser(testCase.input)
+	zzParser.AssignStatement()
+	parser.PrintStack()
+	parser.PopAll(t)
+	parser.PrintStack()
 }
 
 func TestParseTreeListener_AssignStatement(t *testing.T) {
+	var p grammar.ZZListener = &ParseTreeListener{}
+
 	testCases := []TestCase{
 		{input: "a = list([]int, 4)", expect: ast.AssignStmt1},
-		{input: "a[1], b = 2, 3", expect: ast.AssignStmt2},
-		{input: "f = func(){}", expect: ast.AssignStmt4},
-		{
-			input: "" +
-				"f = func(x, y int, z []float) ([]int, float, int) {\n" +
-				"	a = list([]int, 4)\n" +
-				"	b = x + y\n" +
-				"	return a, b + 1, 1\n" +
-				"}",
-			expect: ast.AssignStmt5,
-		},
+		//{input: "a[1], b = 2, 3", expect: ast.AssignStmt2},
+		//{input: "f = func(){}", expect: ast.AssignStmt4},
+		//{
+		//	input: "" +
+		//		"f = func(x, y int, z []float) ([]int, float, int) {\n" +
+		//		"	a = list([]int, 4)\n" +
+		//		"	b = x + y\n" +
+		//		"	return a, b + 1, 1\n" +
+		//		"}",
+		//	expect: ast.AssignStmt5,
+		//},
 	}
 
 	for i, testCase := range testCases {
@@ -81,11 +81,6 @@ func TestParseTreeListener_AssignStatement(t *testing.T) {
 		zzParser, parser := GenerateParser(testCase.input)
 		zzParser.AssignStatement()
 		_, _ = JudgeResult(t, parser, testCase.expect)
-
-		zzParser, parser = GenerateParser(testCase.input)
-		zzParser.File()
-		_, _ = JudgeResult(t, parser, ast.FileHelper.New([]ast.Definitioner{testCase.expect.(*ast.AssignStmt)}))
-
 	}
 }
 
@@ -173,6 +168,38 @@ func TestParseTreeListener_FuncDefinition(t *testing.T) {
 		zzParser, parser = GenerateParser(testCase.input)
 		zzParser.File()
 		_, _ = JudgeResult(t, parser, ast.FileHelper.New([]ast.Definitioner{testCase.expect.(*ast.FuncDefinition)}))
+	}
+}
+
+func TestParseTreeListener_FuncExecuteExpression(t *testing.T) {
+	testCases := []TestCase{
+		{
+			input:  "function2(2+3)",
+			expect: ast.FuncExecuteExpression1,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.FuncExecuteExpression()
+		_, _ = JudgeResult(t, parser, testCase.expect)
+	}
+}
+
+func TestParseTreeListener_FuncExecuteStatement(t *testing.T) {
+	testCases := []TestCase{
+		{
+			input:  "function2(2+3)",
+			expect: ast.FuncExecuteStatement1,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.FuncExecuteStatement()
+		_, _ = JudgeResult(t, parser, testCase.expect)
 	}
 }
 

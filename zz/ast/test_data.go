@@ -2,7 +2,45 @@ package ast
 
 var SimpleTypeSpecifier1 = &SimpleTypeSpecifier{name: "int"} // int
 
-var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float"} // float
+var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float64"} // float
+
+var AExprSimple1 = &AExprSimple{e: &IntegerLiteral{value: 1}}
+
+var AExprAdd1 = &AExprArith{ // 2 + 3
+	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
+	op: AExprArithAdd,
+}
+
+var AExprAdd2 = &AExprArith{ // 1 + (2 + 3)
+	e1: &AExprSimple{e: &IntegerLiteral{value: 1}},
+	e2: AExprAdd1,
+	op: AExprArithAdd,
+}
+
+var BExprCompare1 = &BExprCompare{ // 2 + 3 == 5
+	e1: AExprAdd1,
+	e2: &AExprSimple{e: &IntegerLiteral{value: 5}},
+	op: BExprCompareEQ,
+}
+
+var BExprCompare2 = &BExprCompare{ // 2 == 2
+	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	op: BExprCompareEQ,
+}
+
+var BExprBinary1 = &BExprBinary{ // (2 + 3 == 5) == (2 == 2)
+	e1: BExprCompare1,
+	e2: BExprCompare2,
+	op: BExprBinaryEQ,
+}
+
+var BExprBinary2 = &BExprBinary{ // true == (2 == 2)
+	e1: &BinaryLiteral{value: true},
+	e2: BExprCompare2,
+	op: BExprBinaryEQ,
+}
 
 var ListTypeSpecifier1 = &ListTypeSpecifier{ // []int
 	elem: &ListElementTypeSpecifier{
@@ -18,11 +56,45 @@ var ListTypeSpecifier2 = &ListTypeSpecifier{ // []float
 	},
 }
 
-var ListElementExpr1 = &ListElementExpr{ // a[1]
+var ListTypeSpecifier3 = &ListTypeSpecifier{ // [][]int
+	elem: ListElementTypeSpecifier1,
+}
+
+var ListElementExpr1 = &CollectionElementExpr{ // a[1]
 	name: &Identifier{name: "a"},
-	list: []*ListElementIndex{
+	list: []*CollectionElementIndex{
 		{e: &AExprSimple{e: &IntegerLiteral{value: 1}}},
 	},
+}
+
+var ListElementExpr2 = &CollectionElementExpr{ // b[2 + 3][3]
+	name: &Identifier{name: "b"},
+	list: []*CollectionElementIndex{
+		{e: AExprAdd1},
+		{e: &IntegerLiteral{value: 3}},
+	},
+}
+
+var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
+	elem: &ListElementTypeSpecifier{
+		elem: &SimpleTypeSpecifier{name: "int"},
+		typ:  ListElementTypeSpecifierSimple,
+	},
+	typ: ListElementTypeSpecifierNested,
+}
+
+var ListInitExpr1 = &ListInitExpr{ // list([][]int, 2 + 3)
+	typeSpecifier: ListTypeSpecifier3,
+	size:          AExprAdd1,
+}
+
+var ListInitExpr2 = &ListInitExpr{ // list([]int, 4)
+	typeSpecifier: &ListTypeSpecifier{
+		elem: &ListElementTypeSpecifier{
+			elem: SimpleTypeSpecifier1,
+		},
+	},
+	size: &AExprSimple{e: &IntegerLiteral{value: 4}},
 }
 
 var AssignStmt1 = &AssignStmt{ // a = list([]int, 4)
@@ -30,10 +102,7 @@ var AssignStmt1 = &AssignStmt{ // a = list([]int, 4)
 		&Identifier{name: "a"},
 	},
 	initList: []AssignIniter{
-		&ListInitExpr{
-			typeSpecifier: ListTypeSpecifier1,
-			size:          &AExprSimple{e: &IntegerLiteral{value: 4}},
-		},
+		ListInitExpr2,
 	},
 }
 
@@ -61,31 +130,35 @@ var AssignStmt3 = &AssignStmt{ // b = x + y
 	},
 }
 
-var AssignStmt4 = &AssignStmt{
-	declList: []Declaratorer{
-		&Identifier{name: "f"},
-	},
-	initList: []AssignIniter{
-		&FuncInitExpr{
-			typeSpecifier: &FuncTypeSpecifier{},
-		},
-	},
-}
-
-var AssignStmt5 = &AssignStmt{
-	declList: []Declaratorer{
-		&Identifier{name: "f"},
-	},
-	initList: []AssignIniter{
-		&FuncInitExpr{
-			typeSpecifier: &FuncTypeSpecifier{
-				paraList:   FuncParaList1,
-				returnList: FuncReturnList1,
-			},
-			stmtList: FuncBody1,
-		},
-	},
-}
+//var AssignStmt4 = &AssignStmt{
+//	declList: []Declaratorer{
+//		&Identifier{name: "f"},
+//	},
+//	initList: []AssignIniter{
+//		&FuncInitExpr{
+//			typeSpecifier: &FuncTypeSpecifier{},
+//		},
+//	},
+//}
+//
+//var FuncTypeSpecifier1 = &FuncTypeSpecifier{
+//	paraList:   FuncParaList1,
+//	returnList: FuncReturnList1,
+//}
+//
+//var FuncInitExpr1 = &FuncInitExpr{
+//	typeSpecifier: FuncTypeSpecifier1,
+//	stmtList:      FuncBody1,
+//}
+//
+//var AssignStmt5 = &AssignStmt{
+//	declList: []Declaratorer{
+//		&Identifier{name: "f"},
+//	},
+//	initList: []AssignIniter{
+//		FuncInitExpr1,
+//	},
+//}
 
 /*
 	if a[1] == b {
@@ -255,20 +328,15 @@ var IterationStmt1 = &IterationStmt{
 	binExpr: &BinaryLiteral{value: true},
 }
 
-/*
-	for i = 1; i < 5; i = i + 1 {}
-*/
-var IterationStmt2 = &IterationStmt{
-	initStmt: &AssignStmt{
+var IterationAssignStmt1 = &IterationAssignStmt{
+	stmt: &AssignStmt{
 		declList: []Declaratorer{&Identifier{name: "i"}},
 		initList: []AssignIniter{&AExprSimple{e: &IntegerLiteral{value: 1}}},
 	},
-	binExpr: &BExprCompare{
-		e1: &AExprSimple{e: &Identifier{name: "i"}},
-		e2: &AExprSimple{e: &IntegerLiteral{value: 5}},
-		op: BExprCompareLT,
-	},
-	increStmt: &AssignStmt{
+}
+
+var IterationAssignStmt2 = &IterationAssignStmt{
+	stmt: &AssignStmt{
 		declList: []Declaratorer{&Identifier{name: "i"}},
 		initList: []AssignIniter{
 			&AExprArith{
@@ -281,12 +349,31 @@ var IterationStmt2 = &IterationStmt{
 }
 
 /*
+	for i = 1; i < 5; i = i + 1 {}
+*/
+var IterationStmt2 = &IterationStmt{
+	initStmt: IterationAssignStmt1.AssignStmt(),
+	binExpr: &BExprCompare{
+		e1: &AExprSimple{e: &Identifier{name: "i"}},
+		e2: &AExprSimple{e: &IntegerLiteral{value: 5}},
+		op: BExprCompareLT,
+	},
+	increStmt: IterationAssignStmt2.AssignStmt(),
+}
+
+/*
 	func function() {}
 */
 var FuncDefinition1 = &FuncDefinition{
 	typeSpecifier: &FuncTypeSpecifierWithName{
-		name: &FuncIdentifier{name: &Identifier{name: "function"}},
+		name: &Identifier{name: "function"},
 	},
+}
+
+var FuncTypeSpecifierWithName2 = &FuncTypeSpecifierWithName{
+	name:       &Identifier{name: "function1"},
+	paraList:   FuncParaList1,
+	returnList: FuncReturnList1,
 }
 
 /*
@@ -297,25 +384,25 @@ var FuncDefinition1 = &FuncDefinition{
 	}
 */
 var FuncDefinition2 = &FuncDefinition{
-	typeSpecifier: &FuncTypeSpecifierWithName{
-		name:       &FuncIdentifier{name: &Identifier{name: "function1"}},
-		paraList:   FuncParaList1,
-		returnList: FuncReturnList1,
+	typeSpecifier: FuncTypeSpecifierWithName2,
+	stmtList:      FuncBody1,
+}
+
+var ParaDeclaratorWithIdentity1 = &ParaDeclaratorWithIdentity{
+	declList: []*Identifier{
+		{name: "x"}, {name: "y"},
 	},
-	stmtList: FuncBody1,
+	typeSpecifier: SimpleTypeSpecifier1,
+}
+
+var ParaDeclaratorWithIdentity2 = &ParaDeclaratorWithIdentity{
+	declList:      []*Identifier{{name: "z"}},
+	typeSpecifier: ListTypeSpecifier2,
 }
 
 var FuncParaList1 = []*ParaDeclaratorWithIdentity{
-	{
-		declList: []*Identifier{
-			{name: "x"}, {name: "y"},
-		},
-		typeSpecifier: SimpleTypeSpecifier1,
-	},
-	{
-		declList:      []*Identifier{{name: "z"}},
-		typeSpecifier: ListTypeSpecifier2,
-	},
+	ParaDeclaratorWithIdentity1,
+	ParaDeclaratorWithIdentity2,
 }
 
 var FuncReturnList1 = []TypeSpecifierer{
@@ -324,18 +411,34 @@ var FuncReturnList1 = []TypeSpecifierer{
 	SimpleTypeSpecifier1,
 }
 
+var FuncReturnStatement1 = &FuncReturnStatement{
+	returnList: []FuncReturnParaer{
+		&AExprSimple{e: &Identifier{name: "a"}},
+		&AExprArith{
+			e1: &AExprSimple{e: &Identifier{name: "b"}},
+			e2: &AExprSimple{e: &IntegerLiteral{value: 1}},
+			op: AExprArithAdd,
+		},
+		&AExprSimple{e: &IntegerLiteral{value: 1}},
+	},
+}
+
 var FuncBody1 = []FuncStatementer{
 	AssignStmt1,
 	AssignStmt3,
-	&FuncReturnStatement{
-		returnList: []FuncReturnParaer{
-			&AExprSimple{e: &Identifier{name: "a"}},
-			&AExprArith{
-				e1: &AExprSimple{e: &Identifier{name: "b"}},
-				e2: &AExprSimple{e: &IntegerLiteral{value: 1}},
-				op: AExprArithAdd,
-			},
-			&AExprSimple{e: &IntegerLiteral{value: 1}},
-		},
-	},
+	FuncReturnStatement1,
+}
+
+var FuncExecutePara1 = &FuncExecutePara{ // 2 + 3
+	para: AExprAdd1,
+}
+
+var FuncExecuteExpression1 = &FuncExecuteExpression{ // function2(2 + 3)
+	name:     &Identifier{"function2"},
+	paraList: []FuncExecuteParaer{FuncExecutePara1.para},
+}
+
+var FuncExecuteStatement1 = &FuncExecuteStatement{ // function2(2 + 3)
+	name:     &Identifier{"function2"},
+	paraList: []FuncExecuteParaer{FuncExecutePara1.para},
 }

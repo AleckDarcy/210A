@@ -31,6 +31,14 @@ func (e *IfExpr) String() string {
 	return e.toString("")
 }
 
+func (e *IfExpr) BinExpr() BExpr {
+	return e.binExpr
+}
+
+func (e *IfExpr) StmtList() []FuncStatementer {
+	return e.stmtList
+}
+
 type ElseExpr struct {
 	stmtList []FuncStatementer
 }
@@ -66,6 +74,10 @@ func (e *ElseExpr) String() string {
 	return e.toString("")
 }
 
+func (e *ElseExpr) StmtList() []FuncStatementer {
+	return e.stmtList
+}
+
 type SelectionStmt struct {
 	ifExprList []*IfExpr
 	elseExpr   *ElseExpr
@@ -95,4 +107,12 @@ func (s *SelectionStmt) toString(ident string) string {
 
 func (s *SelectionStmt) String() string {
 	return s.toString("")
+}
+
+func (s *SelectionStmt) IfExprList() []*IfExpr {
+	return s.ifExprList
+}
+
+func (s *SelectionStmt) ElseExpr() *ElseExpr {
+	return s.elseExpr
 }

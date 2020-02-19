@@ -7,6 +7,26 @@ type Iteraterable interface {
 	Get(i int) BasicNoder
 }
 
+type IteratableAExprList []AExpr
+
+func (it IteratableAExprList) Len() int {
+	return len(it)
+}
+
+func (it IteratableAExprList) Get(i int) BasicNoder {
+	return it[i]
+}
+
+type IteratableBasicNoderList []BasicNoder
+
+func (it IteratableBasicNoderList) Len() int {
+	return len(it)
+}
+
+func (it IteratableBasicNoderList) Get(i int) BasicNoder {
+	return it[i]
+}
+
 type IteratableAssignIniterList []AssignIniter
 
 func (it IteratableAssignIniterList) Len() int {
@@ -17,13 +37,13 @@ func (it IteratableAssignIniterList) Get(i int) BasicNoder {
 	return it[i]
 }
 
-type IteratableListElementIndexList []*ListElementIndex
+type IteratableCollectionElementIndexList []*CollectionElementIndex
 
-func (it IteratableListElementIndexList) Len() int {
+func (it IteratableCollectionElementIndexList) Len() int {
 	return len(it)
 }
 
-func (it IteratableListElementIndexList) Get(i int) BasicNoder {
+func (it IteratableCollectionElementIndexList) Get(i int) BasicNoder {
 	return it[i]
 }
 
@@ -84,6 +104,16 @@ func (it IteratableFuncReturnParaList) Len() int {
 }
 
 func (it IteratableFuncReturnParaList) Get(i int) BasicNoder {
+	return it[i]
+}
+
+type IteratableFuncExecuteParaerList []FuncExecuteParaer
+
+func (it IteratableFuncExecuteParaerList) Len() int {
+	return len(it)
+}
+
+func (it IteratableFuncExecuteParaerList) Get(i int) BasicNoder {
 	return it[i]
 }
 

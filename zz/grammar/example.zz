@@ -13,6 +13,12 @@ func main() {
     } else {
 
     }
+
+    d = GetA()
+
+    e, f = GetBC()
+
+    function(a, b, c)
 }
 
 func GetA() (int) {
@@ -57,6 +63,29 @@ func MatrixMultiplication(m1, m2 [][]int) ([][]int) {
 
     return result
 }
+
+func MatrixMultiplication2() matrix {
+    m1 := matrix(3, 2)
+    m2 := matrix(2, 4)
+
+    n := 1
+    for i := 0; i < 3; i = i + 1 {
+        for j := 0; j < 2; j = j + 1 {
+            m1[i][j] = n
+            n = n + 1
+        }
+    }
+
+    for i := 0; i < 2; i = i + 1 {
+        for j := 0; j < 4; j = j + 1 {
+            m2[i][j] = n
+            n = n + 1
+        }
+    }
+
+    return m1 * m2
+}
+
 
 class Matrix {
     width, height int
