@@ -7,6 +7,10 @@ type BExprCompareOpType int64
 const (
 	BExprCompareEQ BExprCompareOpType = iota
 	BExprCompareLT
+	BExprCompareGT
+	BExprCompareLEQ
+	BExprCompareGEQ
+	BExprCompareNEQ
 )
 
 func (t BExprCompareOpType) toString(indent string) string {
@@ -15,6 +19,14 @@ func (t BExprCompareOpType) toString(indent string) string {
 		return indent + "Equals"
 	case BExprCompareLT:
 		return indent + "Less Than"
+	case BExprCompareGT:
+		return indent + "Greater Than"
+	case BExprCompareLEQ:
+		return indent + "Less or Equal"
+	case BExprCompareGEQ:
+		return indent + "Greater or Equal"
+	case BExprCompareNEQ:
+		return indent + "Not Equals"
 	default:
 		return indent + "undefined"
 	}
@@ -65,12 +77,24 @@ type BExprBinaryOpType int64
 
 const (
 	BExprBinaryEQ BExprBinaryOpType = iota
+	BExprBinaryAND
+	BExprBinaryOR
+	BExprBinaryNEQ
+	BExprBinaryNOT
 )
 
 func (t BExprBinaryOpType) toString(indent string) string {
 	switch t {
 	case BExprBinaryEQ:
 		return indent + "Equals"
+	case BExprBinaryAND:
+		return indent + "And"
+	case BExprBinaryOR:
+		return indent + "Or"
+	case BExprBinaryNEQ:
+		return indent + "Not Equals"
+	case BExprBinaryNOT:
+		return indent + "Not"
 	default:
 		return indent + "undefined"
 	}

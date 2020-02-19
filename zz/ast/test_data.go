@@ -18,6 +18,24 @@ var AExprAdd2 = &AExprArith{ // 1 + (2 + 3)
 	op: AExprArithAdd,
 }
 
+var AExprSub = &AExprArith{ // 2 - (1 + (2 + 3))
+	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	e2: AExprAdd2,
+	op: AExprArithSub,
+}
+
+var AExprMul = &AExprArith{ //  2 * (2 - (1 + (2 + 3)))
+	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	e2: AExprSub,
+	op: AExprArithMul,
+}
+
+var AExprDiv = &AExprArith{ //  2 * (2 - (1 + (2 + 3))) / 2
+	e1: AExprMul,
+	e2: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	op: AExprArithDiv,
+}
+
 var BExprCompare1 = &BExprCompare{ // 2 + 3 == 5
 	e1: AExprAdd1,
 	e2: &AExprSimple{e: &IntegerLiteral{value: 5}},
@@ -30,6 +48,37 @@ var BExprCompare2 = &BExprCompare{ // 2 == 2
 	op: BExprCompareEQ,
 }
 
+var BExprCompare3 = &BExprCompare{ // 2 < 3
+	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
+	op: BExprCompareLT,
+}
+
+var BExprCompare4 = &BExprCompare{ // 6 > 3
+	e1: &AExprSimple{e: &IntegerLiteral{value: 6}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
+	op: BExprCompareGT,
+}
+
+var BExprCompare5 = &BExprCompare{ // 3 <= 3
+	e1: &AExprSimple{e: &IntegerLiteral{value: 3}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
+	op: BExprCompareLEQ,
+}
+
+var BExprCompare6 = &BExprCompare{ // 5 >= 3
+	e1: &AExprSimple{e: &IntegerLiteral{value: 5}},
+	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
+	op: BExprCompareGEQ,
+}
+
+var BExprCompare7 = &BExprCompare{ // 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1 + (2 + 3)))
+	e1: AExprDiv,
+	e2: AExprMul,
+	op: BExprCompareNEQ,
+}
+
+
 var BExprBinary1 = &BExprBinary{ // (2 + 3 == 5) == (2 == 2)
 	e1: BExprCompare1,
 	e2: BExprCompare2,
@@ -40,6 +89,12 @@ var BExprBinary2 = &BExprBinary{ // true == (2 == 2)
 	e1: &BinaryLiteral{value: true},
 	e2: BExprCompare2,
 	op: BExprBinaryEQ,
+}
+
+var BExprBinary3 = &BExprBinary{ // (true == (2 == 2)) and 2 < 3
+	e1: BExprCompare2,
+	e2: BExprCompare3,
+	op: BExprBinaryAND,
 }
 
 var ListTypeSpecifier1 = &ListTypeSpecifier{ // []int

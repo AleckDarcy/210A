@@ -6,9 +6,9 @@ type AExprArithOpType int64
 
 const (
 	AExprArithAdd AExprArithOpType = iota
-	AExprArithSub AExprArithOpType = iota
-	AExprArithMul AExprArithOpType = iota
-	AExprArithDiv AExprArithOpType = iota
+	AExprArithSub
+	AExprArithMul
+	AExprArithDiv
 )
 
 func (t AExprArithOpType) toString(ident string) string {
