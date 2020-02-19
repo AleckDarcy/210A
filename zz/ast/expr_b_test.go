@@ -33,7 +33,7 @@ func TestBExprBinaryOpType_String(t *testing.T) {
 }
 
 func TestBExprBinary_String(t *testing.T) {
-	e := BExprBinary1
+	e := BExprCompare7
 	e.bExpr()
 	e.funcReturnParaer()
 	e.funcExecuteParaer()

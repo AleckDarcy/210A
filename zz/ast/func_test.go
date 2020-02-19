@@ -19,17 +19,17 @@ func TestParaDeclaratorWithIdentity_String(t *testing.T) {
 	fmt.Println(d)
 }
 
-func TestFuncTypeSpecifier_String(t *testing.T) {
-	s := FuncTypeSpecifier1
-	s.typeSpecifierer()
-	fmt.Println(s)
-}
-
-func TestFuncInitExpr_String(t *testing.T) {
-	e := FuncInitExpr1
-	e.assignIniter()
-	fmt.Println(e)
-}
+//func TestFuncTypeSpecifier_String(t *testing.T) {
+//	s := FuncTypeSpecifier1
+//	s.typeSpecifierer()
+//	fmt.Println(s)
+//}
+//
+//func TestFuncInitExpr_String(t *testing.T) {
+//	e := FuncInitExpr1
+//	e.assignIniter()
+//	fmt.Println(e)
+//}
 
 func TestFuncIdentifier_String(t *testing.T) {
 	i := FuncIdentifier1

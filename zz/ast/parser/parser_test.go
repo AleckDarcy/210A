@@ -59,8 +59,6 @@ func TestParseTreeListener_PrintStack(t *testing.T) {
 }
 
 func TestParseTreeListener_AssignStatement(t *testing.T) {
-	var p grammar.ZZListener = &ParseTreeListener{}
-
 	testCases := []TestCase{
 		{input: "a = list([]int, 4)", expect: ast.AssignStmt1},
 		//{input: "a[1], b = 2, 3", expect: ast.AssignStmt2},
@@ -214,5 +212,18 @@ func TestTemplate(t *testing.T) {
 		//zzParser, parser := GenerateParser(testCase.input)
 		//zzParser.AssignStatement()
 		//_, _ = JudgeResult(t, parser, testCase.expect)
+	}
+}
+
+func TestParseTreeListener_Expr_a(t *testing.T) {
+	testCases := []TestCase{
+		{input: " 2 * (2 - (1 + (2 ++ 3))) / 2 ", expect: ast.AExprDiv},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.AssignInit()
+		_, _ = JudgeResult(t, parser, testCase.expect)
 	}
 }

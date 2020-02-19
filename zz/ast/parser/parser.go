@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -31,8 +30,8 @@ func (p *ParseTreeListener) ExitIdentifier(c *grammar.IdentifierContext) {
 }
 
 func (p *ParseTreeListener) ExitDeclarator(c *grammar.DeclaratorContext) {
-	item, _ := p.stack.PopByType(ast.NoderDeclarator)
-	p.stack.Push(ast.DeclaratorHelper.New(item.(ast.Declaratorer)))
+	//item, _ := p.stack.PopByType(ast.NoderDeclarator)
+	//p.stack.Push(ast.DeclaratorHelper.New(item.(ast.Declaratorer)))
 }
 
 func (p *ParseTreeListener) ExitDeclaratorList(c *grammar.DeclaratorListContext) {}
@@ -82,7 +81,9 @@ func (p *ParseTreeListener) ExitAExp_multiplicativeExpression(c *grammar.AExp_mu
 	case "*":
 		p.stack.Push(ast.AExprArithHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.AExprArithMul))
 	case "/":
-		fmt.Println("todo ExitAExp_additiveExpression: /")
+		p.stack.Push(ast.AExprArithHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.AExprArithDiv))
+	default:
+		panic("unreachable code")
 	}
 }
 
@@ -94,7 +95,9 @@ func (p *ParseTreeListener) ExitAExp_additiveExpression(c *grammar.AExp_additive
 	case "+":
 		p.stack.Push(ast.AExprArithHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.AExprArithAdd))
 	case "-":
-		fmt.Println("todo ExitAExp_additiveExpression: -")
+		p.stack.Push(ast.AExprArithHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.AExprArithSub))
+	default:
+		panic("unreachable code")
 	}
 }
 
@@ -126,8 +129,16 @@ func (p *ParseTreeListener) ExitBExpr_aExpr(c *grammar.BExpr_aExprContext) {
 		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareEQ))
 	case "<":
 		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareLT))
+	case "<=":
+		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareLEQ))
+	case ">":
+		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareGT))
+	case ">=":
+		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareGEQ))
+	case "!=":
+		p.stack.Push(ast.BExprCompareHelper.New(e1.(ast.AExpr), e2.(ast.AExpr), ast.BExprCompareNEQ))
 	default:
-		fmt.Println("todo ExitBExpr_aExpr: < > <= >= !=")
+		panic("unreachable code")
 	}
 }
 
@@ -138,8 +149,14 @@ func (p *ParseTreeListener) ExitBExpr_bExpr(c *grammar.BExpr_bExprContext) {
 	switch c.GetChild(1).(antlr.TerminalNode).GetText() {
 	case "==":
 		p.stack.Push(ast.BExprBinaryHelper.New(e1.(ast.BExpr), e2.(ast.BExpr), ast.BExprBinaryEQ))
+	case "&&":
+		p.stack.Push(ast.BExprBinaryHelper.New(e1.(ast.BExpr), e2.(ast.BExpr), ast.BExprBinaryAND))
+	case "||":
+		p.stack.Push(ast.BExprBinaryHelper.New(e1.(ast.BExpr), e2.(ast.BExpr), ast.BExprBinaryOR))
+	case "!=":
+		p.stack.Push(ast.BExprBinaryHelper.New(e1.(ast.BExpr), e2.(ast.BExpr), ast.BExprBinaryNEQ))
 	default:
-		fmt.Println("todo ExitBExpr_bExpr: && || !=")
+		panic("unreachable code")
 	}
 }
 
