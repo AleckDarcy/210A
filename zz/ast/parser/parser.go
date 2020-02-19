@@ -14,6 +14,21 @@ type ParseTreeListener struct {
 	antlr.BaseParseTreeListener
 
 	stack Stack
+
+	errorFlag bool
+}
+
+func (p *ParseTreeListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
+	p.errorFlag = true
+}
+
+func (p *ParseTreeListener) ReportAmbiguity(recognizer antlr.Parser, dfa *antlr.DFA, startIndex, stopIndex int, exact bool, ambigAlts *antlr.BitSet, configs antlr.ATNConfigSet) {
+}
+
+func (p *ParseTreeListener) ReportAttemptingFullContext(recognizer antlr.Parser, dfa *antlr.DFA, startIndex, stopIndex int, conflictingAlts *antlr.BitSet, configs antlr.ATNConfigSet) {
+}
+
+func (p *ParseTreeListener) ReportContextSensitivity(recognizer antlr.Parser, dfa *antlr.DFA, startIndex, stopIndex, prediction int, configs antlr.ATNConfigSet) {
 }
 
 func (p *ParseTreeListener) Pop() (*ast.File, error) {
@@ -31,8 +46,8 @@ func (p *ParseTreeListener) ExitIdentifier(c *grammar.IdentifierContext) {
 }
 
 func (p *ParseTreeListener) ExitDeclarator(c *grammar.DeclaratorContext) {
-	item, _ := p.stack.PopByType(ast.NoderDeclarator)
-	p.stack.Push(ast.DeclaratorHelper.New(item.(ast.Declaratorer)))
+	//item, _ := p.stack.PopByType(ast.NoderDeclarator)
+	//p.stack.Push(ast.DeclaratorHelper.New(item.(ast.Declaratorer)))
 }
 
 func (p *ParseTreeListener) ExitDeclaratorList(c *grammar.DeclaratorListContext) {}

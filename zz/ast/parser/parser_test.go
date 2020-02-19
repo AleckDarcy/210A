@@ -24,7 +24,7 @@ func GenerateParser(input string) (*grammar.ZZParser, *ParseTreeListener) {
 
 	zzParser := grammar.NewZZParser(stream)
 	zzParser.SetErrorHandler(antlr.NewDefaultErrorStrategy())
-	zzParser.AddErrorListener(antlr.NewDefaultErrorListener())
+	zzParser.AddErrorListener(parser)
 	zzParser.AddParseListener(parser)
 	zzParser.BuildParseTrees = true
 
@@ -59,8 +59,6 @@ func TestParseTreeListener_PrintStack(t *testing.T) {
 }
 
 func TestParseTreeListener_AssignStatement(t *testing.T) {
-	var p grammar.ZZListener = &ParseTreeListener{}
-
 	testCases := []TestCase{
 		{input: "a = list([]int, 4)", expect: ast.AssignStmt1},
 		//{input: "a[1], b = 2, 3", expect: ast.AssignStmt2},
