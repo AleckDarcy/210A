@@ -155,8 +155,8 @@ func TestParseTreeListener_FuncDefinition(t *testing.T) {
 		{
 			input: "" +
 				"func function1(x, y int, z []float) ([]int, float, int) {\n" +
-				"	a = list([]int, 4)\n" +
-				"	b = x + y\n" +
+				"	a := list([]int, 4)\n" +
+				"	b := x + y\n" +
 				"	return a, b + 1, 1\n" +
 				"}",
 			expect: ast.FuncDefinition2,

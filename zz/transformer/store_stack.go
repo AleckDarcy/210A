@@ -81,7 +81,7 @@ func (s *StoreStack) SetParaDeclaratorWithIdentity(node *ast.ParaDeclaratorWithI
 
 			s.variants[name] = info
 
-			fmt.Printf("set list: %p %+v", info, info)
+			fmt.Printf("set list: %p %+v\n", info, info)
 		} else if typ.IsMatrix() {
 			info := &VariantInfo{
 				name:       name,
