@@ -98,6 +98,7 @@ var ListInitExpr2 = &ListInitExpr{ // list([]int, 4)
 }
 
 var AssignStmt1 = &AssignStmt{ // a = list([]int, 4)
+
 	declList: []Declaratorer{
 		&Identifier{name: "a"},
 	},
@@ -118,6 +119,7 @@ var AssignStmt2 = &AssignStmt{ // a[1], b = 2, 3
 }
 
 var AssignStmt3 = &AssignStmt{ // b = x + y
+	flag: AssignStmtFlagInit,
 	declList: []Declaratorer{
 		&Identifier{name: "b"},
 	},
@@ -127,6 +129,40 @@ var AssignStmt3 = &AssignStmt{ // b = x + y
 			e2: &AExprSimple{e: &Identifier{name: "y"}},
 			op: AExprArithAdd,
 		},
+	},
+}
+
+var AssignStmt4 = &AssignStmt{ // a := list([]int, 4)
+	flag: AssignStmtFlagInit,
+	declList: []Declaratorer{
+		&Identifier{name: "a"},
+	},
+	initList: []AssignIniter{
+		ListInitExpr2,
+	},
+}
+
+var AssignStmt5 = &AssignStmt{ // b := x + y
+	flag: AssignStmtFlagInit | AssignStmtFlagGlobal,
+	declList: []Declaratorer{
+		&Identifier{name: "b"},
+	},
+	initList: []AssignIniter{
+		&AExprArith{
+			e1: &AExprSimple{e: &Identifier{name: "x"}},
+			e2: &AExprSimple{e: &Identifier{name: "y"}},
+			op: AExprArithAdd,
+		},
+	},
+}
+
+var AssignStmt6 = &AssignStmt{ // a := list([]int, 4)
+	flag: AssignStmtFlagInit | AssignStmtFlagGlobal,
+	declList: []Declaratorer{
+		&Identifier{name: "a"},
+	},
+	initList: []AssignIniter{
+		ListInitExpr2,
 	},
 }
 
@@ -424,7 +460,7 @@ var FuncReturnStatement1 = &FuncReturnStatement{
 }
 
 var FuncBody1 = []FuncStatementer{
-	AssignStmt1,
+	AssignStmt4,
 	AssignStmt3,
 	FuncReturnStatement1,
 }

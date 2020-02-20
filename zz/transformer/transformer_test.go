@@ -23,7 +23,7 @@ func TestTransformer_WalkListInitExpr(t *testing.T) {
 }
 
 func TestTransformer_WalkAssignStmt(t *testing.T) {
-	Helper(t, ast.AssignStmt1)
+	Helper(t, ast.AssignStmt4)
 }
 
 func TestTransformer_WalkFuncDefinition(t *testing.T) {
@@ -32,8 +32,7 @@ func TestTransformer_WalkFuncDefinition(t *testing.T) {
 
 func TestTransformer_WalkFile(t *testing.T) {
 	Helper(t, ast.FileHelper.New([]ast.Definitioner{
-		ast.AssignStmt1,
-		ast.AssignStmt3,
+		ast.AssignStmt6,
 		ast.FuncDefinition1,
 		ast.FuncDefinition2,
 	}))
