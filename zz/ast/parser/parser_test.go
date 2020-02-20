@@ -34,6 +34,7 @@ func GenerateParser(input string) (*grammar.ZZParser, *ParseTreeListener) {
 
 func JudgeResult(t *testing.T, parser *ParseTreeListener, expect ast.BasicNoder) (ast.BasicNoder, error) {
 	if parser.errorFlag {
+		t.Error("error occurs when parsing")
 		return nil, errors.New("error occurs when parsing")
 	}
 
@@ -220,15 +221,28 @@ func TestTemplate(t *testing.T) {
 	}
 }
 
-func TestParseTreeListener_Expr_a(t *testing.T) {
+func TestParseTreeListener_ExprA(t *testing.T) {
 	testCases := []TestCase{
-		{input: " 2 * (2 - (1 + (2 ++ 3))) / 2 ", expect: ast.AExprDiv},
+		{input: " 2 * (2 - (1 + (2 + 3))) / 2 ", expect: ast.AExprDiv},
 	}
 
 	for i, testCase := range testCases {
 		t.Logf("testing %d:\n%s\n", i, testCase.input)
 		zzParser, parser := GenerateParser(testCase.input)
 		zzParser.AssignInit()
+		_, _ = JudgeResult(t, parser, testCase.expect)
+	}
+}
+
+func TestParseTreeListener_SelectionStatement1(t *testing.T) {
+	testCases := []TestCase{
+		{input: "if 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1 + (2 + 3))) {}", expect: ast.SelectionStmt5},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.SelectionStatement()
 		_, _ = JudgeResult(t, parser, testCase.expect)
 	}
 }

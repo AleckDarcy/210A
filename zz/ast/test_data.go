@@ -302,6 +302,15 @@ var IFExpr3 = &IfExpr{
 	},
 }
 
+
+/*
+	if 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1 + (2 + 3))) {}
+*/
+var IFExpr4 = &IfExpr{
+	binExpr: BExprCompare7,
+}
+
+
 /*
 	else {
 		a[1] = 0
@@ -375,6 +384,18 @@ var SelectionStmt4 = &SelectionStmt{
 		IFExpr3,
 	},
 }
+
+
+/*
+	if 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1 + (2 + 3))) {}
+*/
+var SelectionStmt5 = &SelectionStmt{
+	ifExprList: []*IfExpr{
+		IFExpr4,
+	},
+}
+
+
 
 /*
 	for ;; {}
