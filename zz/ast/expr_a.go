@@ -34,11 +34,16 @@ func (t AExprArithOpType) PriorLevel() int {
 	switch t {
 	case AExprArithAdd:
 		return 0
+	case AExprArithSub:
+		return 0
 	case AExprArithMul:
 		return 1
+	case AExprArithDiv:
+		return 1
+	default:
+		panic("undefined")
 	}
 
-	panic("")
 }
 
 func (t AExprArithOpType) PriorTo(a AExprArithOpType) bool {

@@ -16,12 +16,17 @@ type FileInfo struct {
 type Transformer struct {
 	files map[string]*FileInfo
 
+	checker *checker
 	//stack StoreStack
 }
 
 func NewTransformer() *Transformer {
 	return &Transformer{
 		files: map[string]*FileInfo{},
+
+		checker: &checker{
+			StoreStack: &StoreStack{variants: map[string]*VariantInfo{}},
+		},
 		//stack: StoreStack{variants: map[string]*VariantInfo{}},
 	}
 }
@@ -87,10 +92,14 @@ func (t *Transformer) WalkAExprArith(node *ast.AExprArith) string {
 	switch node.Op() {
 	case ast.AExprArithAdd:
 		opStr = "+"
+	case ast.AExprArithSub:
+		opStr = "-"
 	case ast.AExprArithMul:
 		opStr = "*"
+	case ast.AExprArithDiv:
+		opStr = "/"
 	default:
-		panic("todo")
+		panic("undefined")
 	}
 
 	// todo
@@ -148,8 +157,16 @@ func (t *Transformer) WalkBExprCompare(node *ast.BExprCompare) string {
 		opStr = "=="
 	case ast.BExprCompareLT:
 		opStr = "<"
+	case ast.BExprCompareLEQ:
+		opStr = "<="
+	case ast.BExprCompareGT:
+		opStr = ">"
+	case ast.BExprCompareGEQ:
+		opStr = ">="
+	case ast.BExprCompareNEQ:
+		opStr = "!="
 	default:
-		panic("todo")
+		panic("undefined")
 	}
 
 	str1, str2 := t.WalkAExpr(node.E1()), t.WalkAExpr(node.E2())
@@ -162,8 +179,14 @@ func (t *Transformer) WalkBExprBinary(node *ast.BExprBinary) string {
 	switch node.Op() {
 	case ast.BExprBinaryEQ:
 		opStr = "=="
+	case ast.BExprBinaryNEQ:
+		opStr = "!="
+	case ast.BExprBinaryAND:
+		opStr = "&&"
+	case ast.BExprBinaryOR:
+		opStr = "||"
 	default:
-		panic("todo")
+		panic("undefined")
 	}
 
 	str1, str2 := t.WalkBExpr(node.E1()), t.WalkBExpr(node.E2())

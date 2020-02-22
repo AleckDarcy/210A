@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/big"
 
 	"github.com/AleckDarcy/210A/zz/runtime"
 
@@ -14,14 +13,6 @@ import (
 )
 
 func main() {
-	iii := &big.Int{}
-	_, ok := iii.SetString("3", 10)
-	fmt.Println(iii, ok)
-
-	iii.Mul(iii, iii)
-	fmt.Println(iii)
-	function1()
-
 	//input := `
 	//	length := 3
 	//
@@ -130,7 +121,6 @@ func main() {
 		fmt.Println(tr.WalkFile(f))
 	}
 }
-
 func function(m1 *runtime.Data) {
 	m2 := m1.Transpose()
 	_ = m2

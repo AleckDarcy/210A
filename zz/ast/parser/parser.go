@@ -49,8 +49,8 @@ func (p *ParseTreeListener) ExitIdentifier(c *grammar.IdentifierContext) {
 }
 
 func (p *ParseTreeListener) ExitDeclarator(c *grammar.DeclaratorContext) {
-	//item, _ := p.stack.PopByType(ast.NoderDeclarator)
-	//p.stack.Push(ast.DeclaratorHelper.New(item.(ast.Declaratorer)))
+	item, _ := p.stack.PopByType(ast.NoderDeclarator)
+	p.stack.Push(ast.DeclaratorHelper.New(item.(ast.Declaratorer)))
 }
 
 func (p *ParseTreeListener) ExitDeclaratorList(c *grammar.DeclaratorListContext) {}

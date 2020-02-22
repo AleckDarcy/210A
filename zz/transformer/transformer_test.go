@@ -15,7 +15,7 @@ func Helper(t *testing.T, noder ast.BasicNoder) {
 }
 
 func TestTransformer_WalkAExprArith(t *testing.T) {
-	Helper(t, ast.AExprAdd2)
+	Helper(t, ast.AExprDiv)
 }
 
 func TestTransformer_WalkListInitExpr(t *testing.T) {

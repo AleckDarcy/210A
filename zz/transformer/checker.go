@@ -417,6 +417,10 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 			initNodeList = append(initNodeList, noders...)
 		}
 	} else {
+		fmt.Println("=============================")
+		fmt.Println(node)
+		fmt.Println("=============================")
+
 		return nil, nil, errors.New(fmt.Sprintf("values not match %d != %d", lenDeclList, lenInitList))
 	}
 

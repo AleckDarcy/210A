@@ -4,13 +4,20 @@ var SimpleTypeSpecifier1 = &SimpleTypeSpecifier{name: "int"} // int
 
 var SimpleTypeSpecifier2 = &SimpleTypeSpecifier{name: "float64"} // float
 
-var AExprSimple1 = &AExprSimple{e: &IntegerLiteral{value: 1}}
+var AExprSimple1 = AExprSimpleHelper.New(&IntegerLiteral{value: 1})
 
-var AExprAdd1 = &AExprArith{ // 2 + 3
-	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
-	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
-	op: AExprArithAdd,
-}
+var AExprTranspose1 = ArithTransposeHelper.New(&AExprSimple{e: &IntegerLiteral{value: 2}})
+
+var AExprAdd1 = AExprArithHelper.New(
+	&AExprSimple{e: &IntegerLiteral{value: 2}},
+	&AExprSimple{e: &IntegerLiteral{value: 3}},
+	AExprArithAdd)
+
+//var AExprAdd1 = &AExprArith{ // 2 + 3
+//	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
+//	e2: &AExprSimple{e: &IntegerLiteral{value: 3}},
+//	op: AExprArithAdd,
+//}
 
 var AExprAdd2 = &AExprArith{ // 1 + (2 + 3)
 	e1: &AExprSimple{e: &IntegerLiteral{value: 1}},
@@ -77,7 +84,6 @@ var BExprCompare7 = &BExprCompare{ // 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1
 	e2: AExprMul,
 	op: BExprCompareNEQ,
 }
-
 
 var BExprBinary1 = &BExprBinary{ // (2 + 3 == 5) == (2 == 2)
 	e1: BExprCompare1,
@@ -153,9 +159,8 @@ var ListInitExpr2 = &ListInitExpr{ // list([]int, 4)
 }
 
 var AssignStmt1 = &AssignStmt{ // a = list([]int, 4)
-
 	declList: []Declaratorer{
-		&Identifier{name: "a"},
+		&Declarator{Declaratorer: &Identifier{name: "a"}},
 	},
 	initList: []AssignIniter{
 		ListInitExpr2,
@@ -164,8 +169,8 @@ var AssignStmt1 = &AssignStmt{ // a = list([]int, 4)
 
 var AssignStmt2 = &AssignStmt{ // a[1], b = 2, 3
 	declList: []Declaratorer{
-		ListElementExpr1,
-		&Identifier{name: "b"},
+		&Declarator{Declaratorer: ListElementExpr1},
+		&Declarator{Declaratorer: &Identifier{name: "b"}},
 	},
 	initList: []AssignIniter{
 		&AExprSimple{e: &IntegerLiteral{value: 2}},
@@ -173,10 +178,10 @@ var AssignStmt2 = &AssignStmt{ // a[1], b = 2, 3
 	},
 }
 
-var AssignStmt3 = &AssignStmt{ // b = x + y
+var AssignStmt3 = &AssignStmt{ // b := x + y
 	flag: AssignStmtFlagInit,
 	declList: []Declaratorer{
-		&Identifier{name: "b"},
+		&Declarator{Declaratorer: &Identifier{name: "b"}},
 	},
 	initList: []AssignIniter{
 		&AExprArith{
@@ -190,7 +195,7 @@ var AssignStmt3 = &AssignStmt{ // b = x + y
 var AssignStmt4 = &AssignStmt{ // a := list([]int, 4)
 	flag: AssignStmtFlagInit,
 	declList: []Declaratorer{
-		&Identifier{name: "a"},
+		&Declarator{Declaratorer: &Identifier{name: "a"}},
 	},
 	initList: []AssignIniter{
 		ListInitExpr2,
@@ -200,7 +205,7 @@ var AssignStmt4 = &AssignStmt{ // a := list([]int, 4)
 var AssignStmt5 = &AssignStmt{ // b := x + y
 	flag: AssignStmtFlagInit | AssignStmtFlagGlobal,
 	declList: []Declaratorer{
-		&Identifier{name: "b"},
+		&Declarator{Declaratorer: &Identifier{name: "b"}},
 	},
 	initList: []AssignIniter{
 		&AExprArith{
@@ -211,10 +216,10 @@ var AssignStmt5 = &AssignStmt{ // b := x + y
 	},
 }
 
-var AssignStmt6 = &AssignStmt{ // a := list([]int, 4)
+var AssignStmt6 = &AssignStmt{ // c := list([]int, 4)
 	flag: AssignStmtFlagInit | AssignStmtFlagGlobal,
 	declList: []Declaratorer{
-		&Identifier{name: "a"},
+		&Declarator{Declaratorer: &Identifier{name: "ccccc"}},
 	},
 	initList: []AssignIniter{
 		ListInitExpr2,
@@ -265,7 +270,7 @@ var IFExpr1 = &IfExpr{
 	stmtList: []FuncStatementer{ // a[1] = a[1] + 1
 		&AssignStmt{
 			declList: []Declaratorer{
-				ListElementExpr1,
+				&Declarator{Declaratorer: ListElementExpr1},
 			},
 			initList: []AssignIniter{
 				&AExprArith{
@@ -294,7 +299,7 @@ var IFExpr2 = &IfExpr{
 	stmtList: []FuncStatementer{ // a[1] = a[1] + 2
 		&AssignStmt{
 			declList: []Declaratorer{
-				ListElementExpr1,
+				&Declarator{Declaratorer: ListElementExpr1},
 			},
 			initList: []AssignIniter{
 				&AExprArith{
@@ -325,7 +330,7 @@ var IFExpr3 = &IfExpr{
 	stmtList: []FuncStatementer{ // a[1] = a[1] + 1
 		&AssignStmt{
 			declList: []Declaratorer{
-				ListElementExpr1,
+				&Declarator{Declaratorer: ListElementExpr1},
 			},
 			initList: []AssignIniter{
 				&AExprArith{
@@ -338,14 +343,12 @@ var IFExpr3 = &IfExpr{
 	},
 }
 
-
 /*
 	if 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1 + (2 + 3))) {}
 */
 var IFExpr4 = &IfExpr{
 	binExpr: BExprCompare7,
 }
-
 
 /*
 	else {
@@ -356,7 +359,7 @@ var ElseExpr1 = &ElseExpr{
 	stmtList: []FuncStatementer{ // a[1] = 0
 		&AssignStmt{
 			declList: []Declaratorer{
-				ListElementExpr1,
+				&Declarator{Declaratorer: ListElementExpr1},
 			},
 			initList: []AssignIniter{
 				&AExprSimple{e: &IntegerLiteral{value: 0}},
@@ -421,7 +424,6 @@ var SelectionStmt4 = &SelectionStmt{
 	},
 }
 
-
 /*
 	if 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1 + (2 + 3))) {}
 */
@@ -430,8 +432,6 @@ var SelectionStmt5 = &SelectionStmt{
 		IFExpr4,
 	},
 }
-
-
 
 /*
 	for ;; {}
@@ -442,14 +442,14 @@ var IterationStmt1 = &IterationStmt{
 
 var IterationAssignStmt1 = &IterationAssignStmt{
 	stmt: &AssignStmt{
-		declList: []Declaratorer{&Identifier{name: "i"}},
+		declList: []Declaratorer{&Declarator{Declaratorer: &Identifier{name: "i"}}},
 		initList: []AssignIniter{&AExprSimple{e: &IntegerLiteral{value: 1}}},
 	},
 }
 
 var IterationAssignStmt2 = &IterationAssignStmt{
 	stmt: &AssignStmt{
-		declList: []Declaratorer{&Identifier{name: "i"}},
+		declList: []Declaratorer{&Declarator{Declaratorer: &Identifier{name: "i"}}},
 		initList: []AssignIniter{
 			&AExprArith{
 				e1: &AExprSimple{e: &Identifier{name: "i"}},
