@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 )
+
 //
 //var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
 //	elem: &ListElementTypeSpecifier{ // []int
@@ -39,20 +40,45 @@ import (
 //	size: &IntegerLiteral{value: 3},
 //}
 
-func TestListElementIndex_String(t *testing.T) {
-	i := &CollectionElementIndex{e: AExprAdd1}
+func TestCollectionType_String(t *testing.T) {
+	fmt.Println(CollectionList)
+	fmt.Println(CollectionMatrix)
+	fmt.Println(CollectionType(-1))
+}
+
+func TestCollectionElementIndex_String(t *testing.T) {
+	i := CollectionElementIndex1
+	i.E()
 	fmt.Println(i)
 }
+
+//func TestListElementIndex_String(t *testing.T) {
+//	i := &CollectionElementIndex{e: AExprAdd1}
+//	fmt.Println(i)
+//}
 
 func TestListElementExpr_String(t *testing.T) {
 	e := ListElementExpr2
 	e.aExpr()
 	e.declaratorer()
+	e.Type()
+	e.Name()
+	e.List()
+	e.Identifier()
 	fmt.Println(e)
 }
 
 func TestListInitExpr_String(t *testing.T) {
 	e := ListInitExpr1
 	e.assignIniter()
+	e.TypeSpecifier()
+	e.Size()
+	fmt.Println(e)
+}
+
+func TestMatrixInitExpr_String(t *testing.T) {
+	e := MatrixInitExpr1
+	e.assignIniter()
+	e.Sizes()
 	fmt.Println(e)
 }

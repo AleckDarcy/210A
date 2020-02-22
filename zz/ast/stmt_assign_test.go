@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 )
+
 //
 //var AssignStmt1 = &AssignStmt{
 //	declList: []Declaratorer{
@@ -19,8 +20,21 @@ import (
 //}
 
 func TestAssignStmt_String(t *testing.T) {
-	s := AssignStmt1
+	s := AssignStmt3
 	s.funcStatementer()
 	s.definitioner()
-	fmt.Println(s.String())
+	s.Flag()
+	s.DeclList()
+	s.InitList()
+	s.AddFlag(AssignStmtFlagNormal)
+	fmt.Println(s)
+	fmt.Println((*AssignStmt)(nil))
+}
+
+func TestAssignStmtFlag_String(t *testing.T) {
+	fmt.Println(AssignStmtFlagNormal)
+	fmt.Println(AssignStmtFlagInit)
+	fmt.Println(AssignStmtFlagGlobal)
+	fmt.Println(AssignStmtFlagMatrix)
+
 }

@@ -8,6 +8,10 @@ import (
 func TestIterationStmt_String(t *testing.T) {
 	s := IterationStmt1
 	s.funcStatementer()
+	s.InitStmt()
+	s.BinExpr()
+	s.IncreStmt()
+	s.StmtList()
 	fmt.Println(s)
 }
 

@@ -61,11 +61,14 @@ func TestFuncExecutePara_String(t *testing.T) {
 func TestFuncExecuteExpression_String(t *testing.T) {
 	e := FuncExecuteExpression1
 	e.assignIniter()
+	e.funcReturnParaer()
 	fmt.Println(e)
 }
 
 func TestFuncExecuteStatement_String(t *testing.T) {
 	e := FuncExecuteStatement1
 	e.funcStatementer()
+	e.Name()
+	e.ParaList()
 	fmt.Println(e)
 }

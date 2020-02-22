@@ -22,14 +22,16 @@ func TestIntegerLiteral_String(t *testing.T) {
 }
 
 func TestFloatLiteral_String(t *testing.T) {
-	l := &FloatLiteral{value: 2}
+	l := FloatLiteralHelper.New(2)
 	l.aExpr()
 	l.assignIniter()
+	l.Value()
 	fmt.Println(l)
 }
 
 func TestBinaryLiteral_String(t *testing.T) {
 	l := &BinaryLiteral{value: true}
 	l.bExpr()
+	l.Value()
 	fmt.Println(l)
 }

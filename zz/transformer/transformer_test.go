@@ -7,6 +7,25 @@ import (
 	"github.com/AleckDarcy/210A/zz/ast"
 )
 
+func (t *Transformer) Walk(noder ast.BasicNoder) string {
+	switch node := noder.(type) {
+	case *ast.AExprArith:
+		return t.WalkAExprArith(node)
+	case ast.BExpr:
+		return t.WalkBExpr(node)
+	case *ast.ListInitExpr:
+		return t.WalkListInitExpr(node)
+	case *ast.AssignStmt:
+		return t.WalkAssignStmt(node, true)
+	case *ast.FuncDefinition:
+		return t.WalkFuncDefinition(node)
+	case *ast.File:
+		return t.WalkFile(node)
+	default:
+		panic("undefined")
+	}
+}
+
 func Helper(t *testing.T, noder ast.BasicNoder) {
 	tr := NewTransformer()
 
@@ -15,7 +34,11 @@ func Helper(t *testing.T, noder ast.BasicNoder) {
 }
 
 func TestTransformer_WalkAExprArith(t *testing.T) {
-	Helper(t, ast.AExprDiv)
+	Helper(t, ast.AExprDiv2)
+}
+
+func TestTransformer_WalkBExprBinary(t *testing.T) {
+	Helper(t, ast.BExprBinary2)
 }
 
 func TestTransformer_WalkListInitExpr(t *testing.T) {

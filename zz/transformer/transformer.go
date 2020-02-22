@@ -31,26 +31,9 @@ func NewTransformer() *Transformer {
 	}
 }
 
-func (t *Transformer) AddFile(name string, file *FileInfo) {
-	t.files[name] = file
-}
-
-func (t *Transformer) Walk(noder ast.BasicNoder) string {
-	switch node := noder.(type) {
-	case *ast.AExprArith:
-		return t.WalkAExprArith(node)
-	case *ast.ListInitExpr:
-		return t.WalkListInitExpr(node)
-	case *ast.AssignStmt:
-		return t.WalkAssignStmt(node, true)
-	case *ast.FuncDefinition:
-		return t.WalkFuncDefinition(node)
-	case *ast.File:
-		return t.WalkFile(node)
-	}
-
-	panic("todo Walk")
-}
+//func (t *Transformer) AddFile(name string, file *FileInfo) {
+//	t.files[name] = file
+//}
 
 func (t *Transformer) WalkIdentifier(node *ast.Identifier) string {
 	return node.Name()

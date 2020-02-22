@@ -8,7 +8,7 @@ var AExprSimple1 = AExprSimpleHelper.New(&IntegerLiteral{value: 1})
 
 var AExprTranspose1 = ArithTransposeHelper.New(&AExprSimple{e: &IntegerLiteral{value: 2}})
 
-var AExprAdd1 = AExprArithHelper.New(
+var AExprAdd1 = AExprArithHelper.New( // 2 + 3
 	&AExprSimple{e: &IntegerLiteral{value: 2}},
 	&AExprSimple{e: &IntegerLiteral{value: 3}},
 	AExprArithAdd)
@@ -43,11 +43,16 @@ var AExprDiv = &AExprArith{ //  2 * (2 - (1 + (2 + 3))) / 2
 	op: AExprArithDiv,
 }
 
-var BExprCompare1 = &BExprCompare{ // 2 + 3 == 5
-	e1: AExprAdd1,
-	e2: &AExprSimple{e: &IntegerLiteral{value: 5}},
-	op: BExprCompareEQ,
+var AExprDiv2 = &AExprArith{ //  2 * (2 - (1 + (2 + 3))) / 2.2
+	e1: AExprMul,
+	e2: &AExprSimple{e: &FloatLiteral{value: 2.2}},
+	op: AExprArithDiv,
 }
+
+var BExprCompare1 = BExprCompareHelper.New( // 2 + 3 == 5
+	AExprAdd1,
+	&AExprSimple{e: &IntegerLiteral{value: 5}},
+	BExprCompareEQ)
 
 var BExprCompare2 = &BExprCompare{ // 2 == 2
 	e1: &AExprSimple{e: &IntegerLiteral{value: 2}},
@@ -85,11 +90,10 @@ var BExprCompare7 = &BExprCompare{ // 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1
 	op: BExprCompareNEQ,
 }
 
-var BExprBinary1 = &BExprBinary{ // (2 + 3 == 5) == (2 == 2)
-	e1: BExprCompare1,
-	e2: BExprCompare2,
-	op: BExprBinaryEQ,
-}
+var BExprBinary1 = BExprBinaryHelper.New( // (2 + 3 == 5) == (2 == 2)
+	BExprCompare1,
+	BExprCompare2,
+	BExprBinaryEQ)
 
 var BExprBinary2 = &BExprBinary{ // true == (2 == 2)
 	e1: &BinaryLiteral{value: true},
@@ -121,12 +125,12 @@ var ListTypeSpecifier3 = &ListTypeSpecifier{ // [][]int
 	elem: ListElementTypeSpecifier1,
 }
 
-var ListElementExpr1 = &CollectionElementExpr{ // a[1]
-	name: &Identifier{name: "a"},
-	list: []*CollectionElementIndex{
-		{e: &AExprSimple{e: &IntegerLiteral{value: 1}}},
-	},
-}
+var CollectionElementIndex1 = CollectionElementIndexHelper.New(
+	&AExprSimple{&IntegerLiteral{value: 1}}) // 1
+
+var ListElementExpr1 = CollectionElementExprHelper.New( // a[1]
+	&Identifier{name: "a"},
+	[]*CollectionElementIndex{CollectionElementIndex1})
 
 var ListElementExpr2 = &CollectionElementExpr{ // b[2 + 3][3]
 	name: &Identifier{name: "b"},
@@ -144,10 +148,9 @@ var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
 	typ: ListElementTypeSpecifierNested,
 }
 
-var ListInitExpr1 = &ListInitExpr{ // list([][]int, 2 + 3)
-	typeSpecifier: ListTypeSpecifier3,
-	size:          AExprAdd1,
-}
+var ListInitExpr1 = ListInitExprHelper.New( // list([][]int, 2 + 3)
+	ListTypeSpecifier3,
+	AExprAdd1)
 
 var ListInitExpr2 = &ListInitExpr{ // list([]int, 4)
 	typeSpecifier: &ListTypeSpecifier{
@@ -157,6 +160,10 @@ var ListInitExpr2 = &ListInitExpr{ // list([]int, 4)
 	},
 	size: &AExprSimple{e: &IntegerLiteral{value: 4}},
 }
+
+var MatrixInitExpr1 = MatrixInitExprHelper.New( // matrix([]int, [2,2])
+	[]AExpr{&IntegerLiteral{value: 2},
+		&IntegerLiteral{value: 2}})
 
 var AssignStmt1 = &AssignStmt{ // a = list([]int, 4)
 	declList: []Declaratorer{
@@ -178,19 +185,28 @@ var AssignStmt2 = &AssignStmt{ // a[1], b = 2, 3
 	},
 }
 
-var AssignStmt3 = &AssignStmt{ // b := x + y
-	flag: AssignStmtFlagInit,
-	declList: []Declaratorer{
-		&Declarator{Declaratorer: &Identifier{name: "b"}},
-	},
-	initList: []AssignIniter{
-		&AExprArith{
-			e1: &AExprSimple{e: &Identifier{name: "x"}},
-			e2: &AExprSimple{e: &Identifier{name: "y"}},
-			op: AExprArithAdd,
-		},
-	},
-}
+var AssignStmt3 = AssignStmtHelper.New( // b := x + y
+	AssignStmtFlagInit,
+	[]Declaratorer{
+		&Declarator{Declaratorer: &Identifier{name: "b"}}},
+	[]AssignIniter{&AExprArith{
+		e1: &AExprSimple{e: &Identifier{name: "x"}},
+		e2: &AExprSimple{e: &Identifier{name: "y"}},
+		op: AExprArithAdd}})
+
+////var AssignStmt3 = &AssignStmt{ // b := x + y
+////	flag: AssignStmtFlagInit,
+//	declList: []Declaratorer{
+//		&Declarator{Declaratorer: &Identifier{name: "b"}},
+////	},
+//	initList: []AssignIniter{
+//		&AExprArith{
+//			e1: &AExprSimple{e: &Identifier{name: "x"}},
+//			e2: &AExprSimple{e: &Identifier{name: "y"}},
+//			op: AExprArithAdd,
+//		},
+//	},
+//}
 
 var AssignStmt4 = &AssignStmt{ // a := list([]int, 4)
 	flag: AssignStmtFlagInit,

@@ -17,11 +17,17 @@ func (f AssignStmtFlag) toString(indent string) string {
 	}
 
 	var result string
+	//if f.IsNormal() {
+	//	result += "Normal "
+	//}
 	if f.IsInit() {
 		result += "Init "
 	}
 	if f.IsGlobal() {
 		result += "Global "
+	}
+	if f.IsMatrix() {
+		result += "Matrix "
 	}
 
 	return indent + result
