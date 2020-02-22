@@ -110,7 +110,7 @@ func (t *Transformer) WalkAExprArith(node *ast.AExprArith) string {
 		str1 = fmt.Sprintf("(%s)", str1)
 	}
 	if e, ok := node.E2().(*ast.AExprArith); ok && node.Op().PriorTo(e.Op()) {
-		str1 = fmt.Sprintf("(%s)", str2)
+		str2 = fmt.Sprintf("(%s)", str2)
 	}
 
 	return fmt.Sprintf("%s %s %s", str1, opStr, str2)
@@ -174,6 +174,12 @@ func (t *Transformer) WalkBExprBinary(node *ast.BExprBinary) string {
 
 	str1, str2 := t.WalkBExpr(node.E1()), t.WalkBExpr(node.E2())
 
+	if _, ok := node.E1().(*ast.BExprCompare); ok {
+		str1 = fmt.Sprintf("(%s)", str1)
+	}
+	if _, ok := node.E2().(*ast.BExprCompare); ok {
+		str2 = fmt.Sprintf("(%s)", str2)
+	}
 	return fmt.Sprintf("%s %s %s", str1, opStr, str2)
 }
 

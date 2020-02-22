@@ -39,6 +39,7 @@ func TestTransformer_WalkAExprArith(t *testing.T) {
 
 func TestTransformer_WalkBExprBinary(t *testing.T) {
 	Helper(t, ast.BExprBinary2)
+	Helper(t, ast.BExprCompare7)
 }
 
 func TestTransformer_WalkListInitExpr(t *testing.T) {
