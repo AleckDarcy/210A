@@ -339,7 +339,7 @@ var AssignStmt13 = &AssignStmt{ // b13, c13 := 2, 3
 }
 
 var PrintStatement1 = PrintStatementHelper.New(
-	[]BasicNoder{AExprDiv2},
+	[]BasicNoder{BExprCompare7, BExprBinary5},
 )
 
 //var AssignStmt4 = &AssignStmt{
@@ -636,6 +636,11 @@ var FuncDefinition4 = &FuncDefinition{
 	stmtList:      FuncBody2,
 }
 
+var FuncDefinition5 = &FuncDefinition{
+	typeSpecifier: FuncTypeSpecifierWithName4,
+	stmtList:      FuncBody2,
+}
+
 var ParaDeclaratorWithIdentity1 = &ParaDeclaratorWithIdentity{
 	declList: []*Identifier{
 		{name: "x"}, {name: "y"},
@@ -699,6 +704,10 @@ var FuncBody2 = []FuncStatementer{
 	&FuncReturnStatement{
 		returnList: []FuncReturnParaer{
 			&AExprSimple{e: &Identifier{name: "b"}},
+			&Identifier{name: "c"},
+			BExprCompare1,
+			BExprBinary1,
+			FuncExecuteExpression1,
 		},
 	},
 }
@@ -707,13 +716,20 @@ var FuncExecutePara1 = &FuncExecutePara{ // 2 + 3
 	para: AExprAdd1,
 }
 
-var FuncExecuteExpression1 = &FuncExecuteExpression{ // function2(2 + 3)
+var FuncExecuteExpression1 = &FuncExecuteExpression{ // function2(2 + 3, 1)
 	name: &Identifier{"function2"},
 	paraList: []FuncExecuteParaer{FuncExecutePara1.para,
 		AExprSimpleHelper.New(IntegerLiteralHelper.New(1)),
 	},
 }
 
+var FuncExecuteExpression2 = &FuncExecuteExpression{ // function3(2 + 3, 1)
+	name: &Identifier{"function3"},
+	paraList: []FuncExecuteParaer{
+		BExprCompare1,
+		BExprBinary1,
+	},
+}
 var FuncExecuteStatement1 = &FuncExecuteStatement{ // function2(2 + 3, 1)
 	name: &Identifier{"function2"},
 	paraList: []FuncExecuteParaer{FuncExecutePara1.para,

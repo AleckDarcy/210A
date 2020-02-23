@@ -25,8 +25,12 @@ func (t *Transformer) Walk(noder ast.BasicNoder) string {
 		return t.WalkFuncDefinition(node)
 	case *ast.FuncExecuteExpression:
 		return t.WalkFuncExecuteExpression(node)
+	case *ast.FuncExecuteStatement:
+		return t.WalkFuncStatementer(node)
+	case *ast.PrintStatement:
+		return t.WalkFuncStatementer(node)
 	case *ast.SelectionStmt:
-		return t.WalkSelectionStmt(node)
+		return t.WalkFuncStatementer(node)
 	case *ast.File:
 		return t.WalkFile(node)
 	default:
@@ -195,9 +199,12 @@ func TestTransformer_WalkAssignStmt(t *testing.T) {
 }
 
 func TestTransformer_WalkFuncDefinition(t *testing.T) {
+	Helper(t, ast.FuncDefinition1)
 	Helper(t, ast.FuncDefinition2)
 	Helper(t, ast.FuncDefinition3)
 	Helper(t, ast.FuncDefinition4)
+	Helper(t, ast.FuncExecuteStatement1)
+	Helper(t, ast.FuncExecuteExpression2)
 	Helper(t, ast.AssignStmtHelper.New(
 		ast.AssignStmtFlagInit,
 		[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("out_1"))},
@@ -221,6 +228,25 @@ func TestTransformer_WalkFuncDefinition(t *testing.T) {
 			ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(2)),
 			ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(2)),
 		}))
+	Helper(t, ast.AssignStmtHelper.New(
+		ast.AssignStmtFlagInit,
+		[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("out_4"))},
+		[]ast.AssignIniter{ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(2))}))
+	Helper(t, ast.AssignStmtHelper.New(
+		ast.AssignStmtFlagInit,
+		[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("out_5"))},
+		[]ast.AssignIniter{ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(2))}))
+	Helper(t, ast.AssignStmtHelper.New(
+		ast.AssignStmtFlagNormal,
+		[]ast.Declaratorer{
+			ast.DeclaratorHelper.New(ast.IdentifierHelper.New("out_4")),
+			ast.DeclaratorHelper.New(ast.IdentifierHelper.New("out_5")),
+		},
+		//[]ast.AssignIniter{ast.FuncExecuteExpression1}))
+		[]ast.AssignIniter{
+			ast.AExprSimpleHelper.New(ast.FloatLiteralHelper.New(2)),
+			ast.AExprSimpleHelper.New(ast.FloatLiteralHelper.New(2)),
+		}))
 }
 
 func TestTransformer_WalkSelectionStmt(t *testing.T) {
@@ -231,8 +257,12 @@ func TestTransformer_WalkSelectionStmt(t *testing.T) {
 	)
 	Helper(t, ast.AssignStmt2)
 	Helper(t, ast.SelectionStmt1)
+	Helper(t, ast.SelectionStmt3)
 }
 
+func TestTransformer_WalkPrintStatement(t *testing.T) {
+	Helper(t, ast.PrintStatement1)
+}
 func TestTransformer_WalkFile(t *testing.T) {
 	Helper(t, ast.FileHelper.New([]ast.Definitioner{
 		ast.AssignStmt6,
