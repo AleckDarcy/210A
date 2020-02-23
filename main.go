@@ -32,6 +32,8 @@ func main() {
 	//
 	//fmt.Println(f1)
 	//fmt.Println(f)
+
+	//function1()
 	gua()
 }
 
@@ -75,9 +77,11 @@ func gua() {
 	//`
 
 	input := `
-	func function(m1 matrix) {
+	func function(m1 matrix) (matrix) {
 		m := m1 * transpose(m1)
 		print(m)
+
+		return m
 	}
 
 	func function1() {
@@ -90,7 +94,8 @@ func gua() {
 			}
 		}
 
-		function(m)
+		m1 := function(m)
+		print(m1)
 	}
 	`
 
@@ -142,14 +147,12 @@ func gua() {
 		fmt.Println(tr.WalkFile(f))
 	}
 }
-
-func function(m1 *runtime.Data) {
-	m2 := m1.Transpose()
-	_ = m2
-	m := m1.MulMatrix(m2)
+func function(m1 *runtime.Data) *runtime.Data {
+	m := m1.MulMatrix(m1.Transpose())
 	_ = m
-	fmt.Println(m1, m2)
 	fmt.Println(m)
+
+	return m
 }
 
 func function1() {
@@ -165,5 +168,7 @@ func function1() {
 			n = n + 1
 		}
 	}
-	function(m)
+	m1 := function(m)
+	_ = m1
+	fmt.Println(m1)
 }

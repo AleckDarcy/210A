@@ -3,6 +3,7 @@ package transformer
 import (
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 
 	"github.com/AleckDarcy/210A/zz/ast"
@@ -156,7 +157,7 @@ func (t *Transformer) WalkBExprCompare(node *ast.BExprCompare) string {
 
 	str1, str2 := t.WalkAExpr(node.E1()), t.WalkAExpr(node.E2())
 
-	return fmt.Sprintf("%s %s %s", str1, opStr, str2)
+	return fmt.Sprintf("(%s %s %s)", str1, opStr, str2)
 }
 
 func (t *Transformer) WalkBExprBinary(node *ast.BExprBinary) string {
@@ -176,13 +177,13 @@ func (t *Transformer) WalkBExprBinary(node *ast.BExprBinary) string {
 
 	str1, str2 := t.WalkBExpr(node.E1()), t.WalkBExpr(node.E2())
 
-	if _, ok := node.E1().(*ast.BExprCompare); ok {
-		str1 = fmt.Sprintf("(%s)", str1)
-	}
-	if _, ok := node.E2().(*ast.BExprCompare); ok {
-		str2 = fmt.Sprintf("(%s)", str2)
-	}
-	return fmt.Sprintf("%s %s %s", str1, opStr, str2)
+	//if _, ok := node.E1().(*ast.BExprCompare); ok {
+	//	str1 = fmt.Sprintf("(%s)", str1)
+	//}
+	//if _, ok := node.E2().(*ast.BExprCompare); ok {
+	//	str2 = fmt.Sprintf("(%s)", str2)
+	//}
+	return fmt.Sprintf("(%s %s %s)", str1, opStr, str2)
 }
 
 func (t *Transformer) WalkTypeSpecifierer(noder ast.TypeSpecifierer) string {
@@ -277,16 +278,16 @@ func (t *Transformer) WalkDeclaratorer(noder ast.Declaratorer) string {
 
 func (t *Transformer) WalkAssignIniter(noder ast.AssignIniter) string {
 	switch node := noder.(type) {
-	case *ast.IntegerLiteral:
-		return t.WalkIntegerLiteral(node)
-	case *ast.FloatLiteral:
-		return t.WalkFloatLiteral(node)
+	//case *ast.IntegerLiteral:
+	//	return t.WalkIntegerLiteral(node)
+	//case *ast.FloatLiteral:
+	//	return t.WalkFloatLiteral(node)
 	case *ast.AExprSimple:
 		return t.WalkAExpr(node.E())
 	case *ast.AExprArith:
 		return t.WalkAExprArith(node)
-	case *ast.ArithTranspose:
-		return t.WalkArithTranspose(node)
+	//case *ast.ArithTranspose:
+	//	return t.WalkArithTranspose(node)
 	case *ast.ListInitExpr:
 		return t.WalkListInitExpr(node)
 	case *ast.MatrixInitExpr:
@@ -321,7 +322,15 @@ func (t *Transformer) ProtectCurrentBlock() string {
 	var protectAssignee, protectAssignor string
 	protectCount := 0
 
-	for name, info := range Checker.GetCurrentStack().variants {
+	names := make([]string, 0, len(Checker.GetCurrentStack().variants))
+	for name := range Checker.GetCurrentStack().variants {
+		names = append(names, name)
+	}
+
+	sort.Strings(names)
+
+	for _, name := range names {
+		info := Checker.GetCurrentStack().variants[name]
 		if !info.used {
 			if protectCount == 0 {
 				protectAssignee = "_"
@@ -330,7 +339,6 @@ func (t *Transformer) ProtectCurrentBlock() string {
 				protectAssignee += ", _"
 				protectAssignor += ", " + name
 			}
-
 			protectCount++
 		}
 	}
@@ -448,14 +456,24 @@ func (t *Transformer) WalkSelectionStmt(node *ast.SelectionStmt) string {
 func (t *Transformer) WalkIterationStmt(node *ast.IterationStmt) string {
 	Checker.EnterBlock()
 
+	var initStmtStr, bExprStr, increStmtStr string
+	if node.InitStmt() != nil {
+		initStmtStr = t.WalkAssignStmt(node.InitStmt(), false)
+	}
+	if node.BinExpr() != nil {
+		bExprStr = t.WalkBExpr(node.BinExpr())
+	}
+	if node.IncreStmt() != nil {
+		increStmtStr = t.WalkAssignStmt(node.IncreStmt(), false)
+	}
 	result := fmt.Sprintf(""+
 		"for %s; %s; %s {\n"+
 		"%s"+
 		"%s\n"+
 		"}",
-		t.WalkAssignStmt(node.InitStmt(), false),
-		t.WalkBExpr(node.BinExpr()),
-		t.WalkAssignStmt(node.IncreStmt(), false),
+		initStmtStr,
+		bExprStr,
+		increStmtStr,
 		t.ProtectCurrentBlock(),
 		t.WalkFuncStatementerList(node.StmtList()),
 	)
@@ -607,6 +625,12 @@ func (t *Transformer) WalkFuncDefinition(node *ast.FuncDefinition) string {
 	)
 
 	Checker.ExitBlock()
+
+	Checker.variants[node.TypeSpecifier().Name().Name()] = &VariantInfo{
+		name: node.TypeSpecifier().Name().Name(),
+		typ:  VariantFunction,
+		// todo: para return
+	}
 
 	return result
 }

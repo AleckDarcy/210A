@@ -413,6 +413,8 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 			if err != nil {
 				return nil, nil, err
 			}
+
+			return []VariantType{VariantMatrix}, []VariantType{VariantMatrix}, nil // todo: zhahu
 		}
 	}
 

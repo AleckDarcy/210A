@@ -178,7 +178,7 @@ func TestParseTreeListener_FuncDefinition(t *testing.T) {
 func TestParseTreeListener_FuncExecuteExpression(t *testing.T) {
 	testCases := []TestCase{
 		{
-			input:  "function2(2+3)",
+			input:  "function2(2+3, 1)",
 			expect: ast.FuncExecuteExpression1,
 		},
 	}
@@ -194,7 +194,7 @@ func TestParseTreeListener_FuncExecuteExpression(t *testing.T) {
 func TestParseTreeListener_FuncExecuteStatement(t *testing.T) {
 	testCases := []TestCase{
 		{
-			input:  "function2(2+3)",
+			input:  "function2(2+3,1)",
 			expect: ast.FuncExecuteStatement1,
 		},
 	}

@@ -113,15 +113,20 @@ var BExprBinary2 = &BExprBinary{ // true == (2 == 2)
 	op: BExprBinaryEQ,
 }
 
-var BExprBinary3 = &BExprBinary{ // (true == (2 == 2)) and 2 < 3
+var BExprBinary3 = &BExprBinary{ // (true == (2 == 2)) || (2 < 3)
 	e1: BExprBinary2,
 	e2: BExprCompare3,
 	op: BExprBinaryOR,
 }
-var BExprBinary4 = &BExprBinary{ // (true == (2 == 2)) and 2 < 3
+var BExprBinary4 = &BExprBinary{ //  ((true == (2 == 2)) != ((true == (2 == 2)) || (2 < 3)))
 	e1: BExprBinary2,
 	e2: BExprBinary3,
 	op: BExprBinaryNEQ,
+}
+var BExprBinary5 = &BExprBinary{ //  (true && true)
+	e1: &BinaryLiteral{value: true},
+	e2: &BinaryLiteral{value: true},
+	op: BExprBinaryAND,
 }
 var ListTypeSpecifier1 = &ListTypeSpecifier{ // []int
 	elem: &ListElementTypeSpecifier{
@@ -318,6 +323,18 @@ var AssignStmt12 = &AssignStmt{ // h := 12
 	},
 	initList: []AssignIniter{
 		&AExprSimple{e: &IntegerLiteral{value: 12}},
+	},
+}
+
+var AssignStmt13 = &AssignStmt{ // b13, c13 := 2, 3
+	flag: AssignStmtFlagInit,
+	declList: []Declaratorer{
+		&Declarator{Declaratorer: &Identifier{name: "b13"}},
+		&Declarator{Declaratorer: &Identifier{name: "c13"}},
+	},
+	initList: []AssignIniter{
+		&AExprSimple{e: &IntegerLiteral{value: 2}},
+		&AExprSimple{e: &IntegerLiteral{value: 3}},
 	},
 }
 
@@ -587,6 +604,17 @@ var FuncTypeSpecifierWithName2 = &FuncTypeSpecifierWithName{
 	returnList: FuncReturnList1,
 }
 
+var FuncTypeSpecifierWithName3 = &FuncTypeSpecifierWithName{
+	name:     &Identifier{name: "function_matrix"},
+	paraList: FuncParaList2,
+}
+
+var FuncTypeSpecifierWithName4 = &FuncTypeSpecifierWithName{
+	name:       &Identifier{name: "function2"},
+	paraList:   FuncParaList3,
+	returnList: FuncReturnList2,
+}
+
 /*
 	func function1(x, y int, z []float) ([]int, float, int) {
 		a = list([]int, 4)
@@ -597,6 +625,15 @@ var FuncTypeSpecifierWithName2 = &FuncTypeSpecifierWithName{
 var FuncDefinition2 = &FuncDefinition{
 	typeSpecifier: FuncTypeSpecifierWithName2,
 	stmtList:      FuncBody1,
+}
+
+var FuncDefinition3 = &FuncDefinition{
+	typeSpecifier: FuncTypeSpecifierWithName3,
+}
+
+var FuncDefinition4 = &FuncDefinition{
+	typeSpecifier: FuncTypeSpecifierWithName4,
+	stmtList:      FuncBody2,
 }
 
 var ParaDeclaratorWithIdentity1 = &ParaDeclaratorWithIdentity{
@@ -611,14 +648,31 @@ var ParaDeclaratorWithIdentity2 = &ParaDeclaratorWithIdentity{
 	typeSpecifier: ListTypeSpecifier2,
 }
 
+var ParaDeclaratorWithIdentity3 = &ParaDeclaratorWithIdentity{
+	declList:      []*Identifier{{name: "mat"}},
+	typeSpecifier: SimpleTypeSpecifierHelper.New("matrix"),
+}
+
 var FuncParaList1 = []*ParaDeclaratorWithIdentity{
 	ParaDeclaratorWithIdentity1,
 	ParaDeclaratorWithIdentity2,
 }
 
+var FuncParaList2 = []*ParaDeclaratorWithIdentity{
+	ParaDeclaratorWithIdentity3,
+}
+
+var FuncParaList3 = []*ParaDeclaratorWithIdentity{
+	ParaDeclaratorWithIdentity1,
+}
+
 var FuncReturnList1 = []TypeSpecifierer{
 	ListTypeSpecifier1,
 	SimpleTypeSpecifier2,
+	SimpleTypeSpecifier1,
+}
+
+var FuncReturnList2 = []TypeSpecifierer{
 	SimpleTypeSpecifier1,
 }
 
@@ -640,16 +694,29 @@ var FuncBody1 = []FuncStatementer{
 	FuncReturnStatement1,
 }
 
+var FuncBody2 = []FuncStatementer{
+	AssignStmt3,
+	&FuncReturnStatement{
+		returnList: []FuncReturnParaer{
+			&AExprSimple{e: &Identifier{name: "b"}},
+		},
+	},
+}
+
 var FuncExecutePara1 = &FuncExecutePara{ // 2 + 3
 	para: AExprAdd1,
 }
 
 var FuncExecuteExpression1 = &FuncExecuteExpression{ // function2(2 + 3)
-	name:     &Identifier{"function2"},
-	paraList: []FuncExecuteParaer{FuncExecutePara1.para},
+	name: &Identifier{"function2"},
+	paraList: []FuncExecuteParaer{FuncExecutePara1.para,
+		AExprSimpleHelper.New(IntegerLiteralHelper.New(1)),
+	},
 }
 
-var FuncExecuteStatement1 = &FuncExecuteStatement{ // function2(2 + 3)
-	name:     &Identifier{"function2"},
-	paraList: []FuncExecuteParaer{FuncExecutePara1.para},
+var FuncExecuteStatement1 = &FuncExecuteStatement{ // function2(2 + 3, 1)
+	name: &Identifier{"function2"},
+	paraList: []FuncExecuteParaer{FuncExecutePara1.para,
+		AExprSimpleHelper.New(IntegerLiteralHelper.New(1)),
+	},
 }
