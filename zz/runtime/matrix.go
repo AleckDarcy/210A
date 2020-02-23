@@ -62,7 +62,7 @@ func (d FloatData) ToFloatData() FloatData {
 }
 
 func New(sizes ...int) *Data {
-	if len(sizes) == 0 {
+	if len(sizes) == 1 && sizes[0] == 0 {
 		return nil
 	}
 

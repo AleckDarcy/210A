@@ -52,12 +52,12 @@ func BenchmarkData_MulMatrix(b *testing.B) {
 }
 func BenchmarkShape(b *testing.B) {
 	m := New(2, 4, 6)
-
+	m.Set(0, m.Get(0))
 	for i := 0; i < b.N; i++ {
 		m.Shape(6, 4, 2)
-		//m.Shape(1, 48)
-		//m.Shape(48)
-		//m.Shape(48, 1)
+		m.Shape(1, 48)
+		m.Shape(48)
+		m.Shape(48, 1)
 	}
 }
 
