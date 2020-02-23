@@ -433,7 +433,6 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 					typ:      typ,
 					listNode: initNodeList[i].(*ast.ListInitExpr).TypeSpecifier(),
 				}
-
 			} else if typ.IsMatrix() {
 				var matrixNode *ast.MatrixInitExpr
 
@@ -472,10 +471,10 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 	return declTypeList, initTypeList, nil
 }
 
-func (c *checker) CheckCollectionElementExprType(node *ast.CollectionElementExpr) (VariantType, error) {
+func (c *checker) CheckCollectionElementExprType(node *ast.CollectionElementExpr) (VariantType, VariantType, error) {
 	info, ok := c.Get(node.Identifier().Name())
 	if !ok {
-		return VariantInvalid, errors.New(fmt.Sprintf("variant %s not defined", node.Identifier().Name()))
+		return VariantInvalid, VariantInvalid, errors.New(fmt.Sprintf("variant %s not defined", node.Identifier().Name()))
 	}
 
 	t := info.typ
@@ -483,23 +482,23 @@ func (c *checker) CheckCollectionElementExprType(node *ast.CollectionElementExpr
 	if t.IsList() {
 		depth := c.GetDepthOfCollectionElementExpr(info.listNode.Elem())
 		if depth > len(node.List()) {
-			return t, nil
+			return VariantList, t, nil
 		} else if depth == len(node.List()) {
 			if t.IsInterger() {
-				return VariantInteger, nil
+				return VariantList, VariantInteger, nil
 			}
 
-			return VariantFloat, nil
+			return VariantList, VariantFloat, nil
 		}
 
-		return VariantInvalid, errors.New("invalid list expression")
+		return VariantInvalid, VariantInvalid, errors.New("invalid list expression")
 	}
 
 	if len(info.matrixNode.Sizes()) != len(node.List()) {
-		return VariantInvalid, errors.New("invalid matrix expression")
+		return VariantInvalid, VariantInvalid, errors.New("invalid matrix expression")
 	}
 
-	return VariantFloat, nil
+	return VariantMatrix, VariantFloat, nil
 }
 
 func (c *checker) CheckDeclaratorType(noder ast.Declaratorer) (VariantType, error) {
@@ -507,7 +506,8 @@ func (c *checker) CheckDeclaratorType(noder ast.Declaratorer) (VariantType, erro
 	case *ast.Identifier:
 		return c.CheckIdentifierType(node)
 	case *ast.CollectionElementExpr:
-		return c.CheckCollectionElementExprType(node)
+		_, typ, err := c.CheckCollectionElementExprType(node)
+		return typ, err
 	case *ast.Declarator:
 		return c.CheckDeclaratorType(node.Declaratorer)
 	default:

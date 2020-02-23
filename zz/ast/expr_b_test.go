@@ -37,6 +37,7 @@ func TestBExprBinaryOpType_String(t *testing.T) {
 
 func TestBExprBinary_String(t *testing.T) {
 	e := BExprBinary1
+	e2 := BExprBinary2
 	e.bExpr()
 	e.funcReturnParaer()
 	e.funcExecuteParaer()
@@ -44,4 +45,5 @@ func TestBExprBinary_String(t *testing.T) {
 	e.E2()
 	e.Op()
 	fmt.Println(e)
+	fmt.Println(e2)
 }

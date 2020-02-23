@@ -49,6 +49,12 @@ var AExprDiv2 = &AExprArith{ //  2 * (2 - (1 + (2 + 3))) / 2.2
 	op: AExprArithDiv,
 }
 
+var AExprAdd3 = &AExprArith{ //  d[1][1] + d[1][1]
+	e1: ListElementExpr5,
+	e2: ListElementExpr5,
+	op: AExprArithAdd,
+}
+
 var BExprCompare1 = BExprCompareHelper.New( // 2 + 3 == 5
 	AExprAdd1,
 	&AExprSimple{e: &IntegerLiteral{value: 5}},
@@ -102,7 +108,7 @@ var BExprBinary2 = &BExprBinary{ // true == (2 == 2)
 }
 
 var BExprBinary3 = &BExprBinary{ // (true == (2 == 2)) and 2 < 3
-	e1: BExprCompare2,
+	e1: BExprBinary2,
 	e2: BExprCompare3,
 	op: BExprBinaryAND,
 }
@@ -140,6 +146,21 @@ var ListElementExpr2 = &CollectionElementExpr{ // b[2 + 3][3]
 	},
 }
 
+var ListElementExpr3 = CollectionElementExprHelper.New( // c[1]
+	&Identifier{name: "c"},
+	[]*CollectionElementIndex{CollectionElementIndex1},
+)
+
+var ListElementExpr4 = CollectionElementExprHelper.New( // d[1]
+	&Identifier{name: "d"},
+	[]*CollectionElementIndex{CollectionElementIndex1},
+)
+
+var ListElementExpr5 = CollectionElementExprHelper.New( // d[1][1]
+	&Identifier{name: "d"},
+	[]*CollectionElementIndex{CollectionElementIndex1, CollectionElementIndex1},
+)
+
 var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
 	elem: &ListElementTypeSpecifier{
 		elem: &SimpleTypeSpecifier{name: "int"},
@@ -161,7 +182,7 @@ var ListInitExpr2 = &ListInitExpr{ // list([]int, 4)
 	size: &AExprSimple{e: &IntegerLiteral{value: 4}},
 }
 
-var MatrixInitExpr1 = MatrixInitExprHelper.New( // matrix([]int, [2,2])
+var MatrixInitExpr1 = MatrixInitExprHelper.New( // matrix(2,2)
 	[]AExpr{&IntegerLiteral{value: 2},
 		&IntegerLiteral{value: 2}})
 
@@ -235,10 +256,47 @@ var AssignStmt5 = &AssignStmt{ // b := x + y
 var AssignStmt6 = &AssignStmt{ // c := list([]int, 4)
 	flag: AssignStmtFlagInit | AssignStmtFlagGlobal,
 	declList: []Declaratorer{
-		&Declarator{Declaratorer: &Identifier{name: "ccccc"}},
+		&Declarator{Declaratorer: &Identifier{name: "c"}},
 	},
 	initList: []AssignIniter{
 		ListInitExpr2,
+	},
+}
+
+var AssignStmt7 = &AssignStmt{ // c[1] = 10
+	declList: []Declaratorer{
+		&Declarator{Declaratorer: ListElementExpr3},
+	},
+	initList: []AssignIniter{
+		&AExprSimple{e: &IntegerLiteral{value: 10}},
+	},
+}
+
+var AssignStmt8 = &AssignStmt{ // d := list([][]int, 2+3)
+	flag: AssignStmtFlagInit,
+	declList: []Declaratorer{
+		&Declarator{Declaratorer: &Identifier{name: "d"}},
+	},
+	initList: []AssignIniter{
+		ListInitExpr1,
+	},
+}
+
+var AssignStmt9 = &AssignStmt{ // d[1] = list([]int, 4)
+	declList: []Declaratorer{
+		&Declarator{Declaratorer: ListElementExpr4},
+	},
+	initList: []AssignIniter{
+		ListInitExpr2,
+	},
+}
+
+var AssignStmt10 = &AssignStmt{ // d[1][1] = 10086
+	declList: []Declaratorer{
+		&Declarator{Declaratorer: ListElementExpr5},
+	},
+	initList: []AssignIniter{
+		&AExprSimple{e: &IntegerLiteral{value: 10086}},
 	},
 }
 

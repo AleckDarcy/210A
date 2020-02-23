@@ -16,6 +16,8 @@ func TestParaDeclarator_String(t *testing.T) {
 
 func TestParaDeclaratorWithIdentity_String(t *testing.T) {
 	d := ParaDeclaratorWithIdentity1
+	d.DeclList()
+	d.TypeSpecifier()
 	fmt.Println(d)
 }
 
@@ -38,18 +40,24 @@ func TestFuncIdentifier_String(t *testing.T) {
 
 func TestFuncTypeSpecifierWithName_String(t *testing.T) {
 	s := FuncTypeSpecifierWithName2
+	s.Name()
+	s.ParaList()
+	s.ReturnList()
 	fmt.Println(s)
 }
 
 func TestFuncDefinition_String(t *testing.T) {
 	d := FuncDefinition2
 	d.definitioner()
+	d.TypeSpecifier()
+	d.StmtList()
 	fmt.Println(d)
 }
 
 func TestFuncReturnStatement_String(t *testing.T) {
 	s := FuncReturnStatement1
 	s.funcStatementer()
+	s.ReturnList()
 	fmt.Println(s)
 }
 

@@ -22,11 +22,13 @@ func TestListElementTypeSpecifierType_String(t *testing.T) {
 func TestListElementTypeSpecifier_String(t *testing.T) {
 	s := ListElementTypeSpecifier1
 	s.listElementTypeSpecifierer()
+	s.Elem()
 	fmt.Println(s)
 }
 
 func TestListTypeSpecifier_String(t *testing.T) {
 	s := ListTypeSpecifier1
 	s.typeSpecifierer()
+	s.Elem()
 	fmt.Println(s)
 }

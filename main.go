@@ -121,6 +121,7 @@ func main() {
 		fmt.Println(tr.WalkFile(f))
 	}
 }
+
 func function(m1 *runtime.Data) {
 	m2 := m1.Transpose()
 	_ = m2

@@ -15,6 +15,8 @@ func (t *Transformer) Walk(noder ast.BasicNoder) string {
 		return t.WalkBExpr(node)
 	case *ast.ListInitExpr:
 		return t.WalkListInitExpr(node)
+	case *ast.CollectionElementExpr:
+		return t.WalkCollectionElementExpr(node, false)
 	case *ast.AssignStmt:
 		return t.WalkAssignStmt(node, true)
 	case *ast.FuncDefinition:
@@ -35,10 +37,14 @@ func Helper(t *testing.T, noder ast.BasicNoder) {
 
 func TestTransformer_WalkAExprArith(t *testing.T) {
 	Helper(t, ast.AExprDiv2)
+	Helper(t, ast.AssignStmt8)
+	Helper(t, ast.AssignStmt9)
+	Helper(t, ast.AssignStmt10)
+	Helper(t, ast.AExprAdd3)
 }
 
 func TestTransformer_WalkBExprBinary(t *testing.T) {
-	Helper(t, ast.BExprBinary2)
+	Helper(t, ast.BExprBinary3)
 	Helper(t, ast.BExprCompare7)
 }
 
@@ -61,3 +67,10 @@ func TestTransformer_WalkFile(t *testing.T) {
 		ast.FuncDefinition2,
 	}))
 }
+
+//
+//func dd() {
+//	var c = make([]int, 4)
+//	c.Set(1, 10)
+//	c.Get(1) + c.Get(1)
+//}

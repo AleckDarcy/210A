@@ -10,6 +10,8 @@ func TestIdentifier_String(t *testing.T) {
 	i.aExpr()
 	i.declaratorer()
 	i.funcReturnParaer()
+	i.Identifier()
+	i.Name()
 	fmt.Println(i)
 }
 

@@ -112,24 +112,6 @@ func (t BExprBinaryOpType) toString(indent string) string {
 	}
 }
 
-func PriorLevel(t interface{}) int {
-	switch t.(type) {
-	case BExprCompare:
-		return 1
-	case BExprBinary:
-		return 0
-	default:
-		panic("undefined")
-	}
-}
-
-func PriorTo(t interface{}, a interface{}) bool {
-	level1 := PriorLevel(t)
-	level2 := PriorLevel(a)
-
-	return level1 > level2
-}
-
 func (t BExprBinaryOpType) String() string {
 	return t.toString("")
 }
@@ -144,7 +126,6 @@ var BExprBinaryHelper *BExprBinary
 func (e *BExprBinary) New(e1, e2 BExpr, op BExprBinaryOpType) *BExprBinary {
 	return &BExprBinary{e1: e1, e2: e2, op: op}
 }
-
 func (e *BExprBinary) bExpr() {}
 
 func (e *BExprBinary) funcReturnParaer() {}

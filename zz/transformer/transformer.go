@@ -203,11 +203,12 @@ func (t *Transformer) WalkTypeSpecifierer(noder ast.TypeSpecifierer) string {
 func (t *Transformer) WalkCollectionElementExpr(node *ast.CollectionElementExpr, assignFlag bool) string {
 	var listStr string
 
-	typ, err := Checker.CheckCollectionElementExprType(node)
+	typ, _, err := Checker.CheckCollectionElementExprType(node)
 	if err != nil {
 		panic(err)
 	}
 	list := node.List()
+
 	if typ.IsList() {
 		for _, index := range list {
 			listStr += fmt.Sprintf("[%s]", t.WalkCollectionElementIndex(index))
