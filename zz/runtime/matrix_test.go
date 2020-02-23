@@ -83,6 +83,8 @@ func TestData_Transpose1(t *testing.T) {
 
 func TestFloatData(t *testing.T) {
 	a := FloatData(2.2)
+	fmt.Println(a.Sizes())
+	fmt.Println(a.toString("Test toString: "))
 	fmt.Println(a.AddFloat(FloatData(1.1)))
 	fmt.Println(a.MulFloat(FloatData(1.1)))
 	fmt.Println(a.ToDatar())
