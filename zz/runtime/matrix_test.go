@@ -8,7 +8,7 @@ import (
 func TestData_String(t *testing.T) {
 	m1 := New(6)
 	m2 := New(8)
-
+	fmt.Println(m1)
 	n := 1.0
 	for i := 0; i < 6; i++ {
 		m1.Set(i, FloatData(n))
@@ -18,9 +18,10 @@ func TestData_String(t *testing.T) {
 		m2.Set(i, FloatData(n))
 		n++
 	}
+	fmt.Println(m1.Transpose())
 	m1.Shape(3, 2)
 	m2.Shape(2, 4)
-
+	fmt.Println(m1.Transpose())
 	fmt.Println(m1.MulMatrix(m2))
 
 	fmt.Println(m2.Shape(8))
@@ -57,3 +58,32 @@ func BenchmarkShape(b *testing.B) {
 		//m.Shape(48, 1)
 	}
 }
+
+func TestData_Transpose1(t *testing.T) {
+
+	m := New(3, 2)
+	n := 1
+	for i := 0; i < 3; i = i + 1 {
+		_ = i
+		for j := 0; j < 2; j = j + 1 {
+			_ = j
+			m.Get(i).Set(j, FloatData(n))
+			n = n + 1
+		}
+	}
+	m1 := m.MulMatrix(m.Transpose())
+	fmt.Println(m1)
+}
+
+//func TestData_Transpose2(t *testing.T) {
+//
+//	m := New(3)
+//	n := 1
+//	for i := 0; i < 3; i = i + 1 {
+//		m.Set(i,FloatData(n))
+//		n = n + 1
+//		}
+//	}
+//	m1 := m.MulMatrix(m.Transpose())
+//	fmt.Println(m1)
+//}

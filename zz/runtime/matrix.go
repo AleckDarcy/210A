@@ -296,8 +296,8 @@ func (m *Data) AddMatrix(data *Data) *Data {
 
 func (m *Data) Transpose() *Data {
 	if len(m.sizes) == 1 {
-		newM := New(1, m.sizes[1])
-		for i := 0; i < m.sizes[1]; i++ {
+		newM := New(m.sizes[0], 1)
+		for i := 0; i < m.sizes[0]; i++ {
 			newM.Get(i).Set(0, m.Get(i))
 		}
 
