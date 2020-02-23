@@ -300,6 +300,16 @@ var AssignStmt10 = &AssignStmt{ // d[1][1] = 10086
 	},
 }
 
+var AssignStmt11 = &AssignStmt{ // e := matrix(2,2)
+	flag: AssignStmtFlagInit,
+	declList: []Declaratorer{
+		&Declarator{Declaratorer: &Identifier{name: "e"}},
+	},
+	initList: []AssignIniter{
+		MatrixInitExpr1,
+	},
+}
+
 var PrintStatement1 = PrintStatementHelper.New(
 	[]BasicNoder{AExprDiv2},
 )

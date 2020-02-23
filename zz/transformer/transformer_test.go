@@ -41,6 +41,7 @@ func TestTransformer_WalkAExprArith(t *testing.T) {
 	Helper(t, ast.AssignStmt9)
 	Helper(t, ast.AssignStmt10)
 	Helper(t, ast.AExprAdd3)
+	Helper(t, ast.AssignStmt11)
 }
 
 func TestTransformer_WalkBExprBinary(t *testing.T) {
