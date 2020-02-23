@@ -109,9 +109,9 @@ func (m *Data) Shape(sizes ...int) *Data {
 		}
 	}
 
-	if numSize == 0 {
-		panic("")
-	}
+	//if numSize == 0 {
+	//	panic("")
+	//}
 
 	//fmt.Println("Shape subMSizes:", subMSizes, "subMSize", subMSize, "numSizes", numSizes, "numSize:", numSize)
 	if m.numSize == 0 { // init

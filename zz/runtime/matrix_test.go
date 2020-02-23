@@ -6,6 +6,8 @@ import (
 )
 
 func TestData_String(t *testing.T) {
+	m0 := New(0)
+	fmt.Println(m0)
 	m1 := New(6)
 	m2 := New(8)
 	fmt.Println(m1)
@@ -71,8 +73,44 @@ func TestData_Transpose1(t *testing.T) {
 			n = n + 1
 		}
 	}
-	m1 := m.MulMatrix(m.Transpose())
-	fmt.Println(m1)
+
+	fmt.Println(m.MulMatrix(m.Transpose()))
+	fmt.Println(m.AddMatrix(m))
+	fmt.Println(m.AddFloat(3.2))
+	fmt.Println(m.MulFloat(3.2))
+	fmt.Println(m.Sizes())
+}
+
+func TestFloatData(t *testing.T) {
+	a := FloatData(2.2)
+	fmt.Println(a.AddFloat(FloatData(1.1)))
+	fmt.Println(a.MulFloat(FloatData(1.1)))
+	fmt.Println(a.ToDatar())
+	fmt.Println(a.ToFloatData())
+
+	test1 := func() {
+		defer func() {
+			if err := recover(); err == nil {
+				panic("fail")
+			} else {
+				t.Log(err)
+			}
+		}()
+		a.Get(1)
+	}
+	test1()
+	test2 := func() {
+		defer func() {
+			if err := recover(); err == nil {
+				panic("fail")
+			} else {
+				t.Log(err)
+			}
+		}()
+		a.Set(1, FloatData(1.1))
+	}
+	test2()
+
 }
 
 //func TestData_Transpose2(t *testing.T) {
