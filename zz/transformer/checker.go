@@ -3,6 +3,7 @@ package transformer
 import (
 	"errors"
 	"fmt"
+	"reflect"
 
 	"github.com/AleckDarcy/210A/zz/ast"
 )
@@ -183,6 +184,7 @@ func (c *checker) CheckAExprType(noder ast.AExpr) (VariantType, error) {
 
 		return VariantInvalid, errors.New("variant is not a collection")
 	default:
+		fmt.Println("ssssss", reflect.TypeOf(noder).Elem().Name())
 		panic("unreachable code")
 	}
 }

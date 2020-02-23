@@ -161,6 +161,11 @@ var ListElementExpr5 = CollectionElementExprHelper.New( // d[1][1]
 	[]*CollectionElementIndex{CollectionElementIndex1, CollectionElementIndex1},
 )
 
+var ListElementExpr6 = CollectionElementExprHelper.New( // e[1]
+	&Identifier{name: "e"},
+	[]*CollectionElementIndex{CollectionElementIndex1},
+)
+
 var ListElementTypeSpecifier1 = &ListElementTypeSpecifier{ // [][]int
 	elem: &ListElementTypeSpecifier{
 		elem: &SimpleTypeSpecifier{name: "int"},
@@ -214,20 +219,6 @@ var AssignStmt3 = AssignStmtHelper.New( // b := x + y
 		e1: &AExprSimple{e: &Identifier{name: "x"}},
 		e2: &AExprSimple{e: &Identifier{name: "y"}},
 		op: AExprArithAdd}})
-
-////var AssignStmt3 = &AssignStmt{ // b := x + y
-////	flag: AssignStmtFlagInit,
-//	declList: []Declaratorer{
-//		&Declarator{Declaratorer: &Identifier{name: "b"}},
-////	},
-//	initList: []AssignIniter{
-//		&AExprArith{
-//			e1: &AExprSimple{e: &Identifier{name: "x"}},
-//			e2: &AExprSimple{e: &Identifier{name: "y"}},
-//			op: AExprArithAdd,
-//		},
-//	},
-//}
 
 var AssignStmt4 = &AssignStmt{ // a := list([]int, 4)
 	flag: AssignStmtFlagInit,

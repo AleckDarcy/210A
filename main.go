@@ -13,6 +13,20 @@ import (
 )
 
 func main() {
+
+	e := runtime.New(2, 2)
+	_ = e
+	for i := 0; i < 2; i = i + 1 {
+		_ = i
+		for j := 0; j < 2; j = j + 1 {
+			_ = j
+			e.Get(i).Set(j, runtime.FloatData(i*2+j))
+		}
+	}
+
+	ff := e.MulMatrix(e)
+	_ = ff
+	fmt.Println(ff)
 	//input := `
 	//	length := 3
 	//

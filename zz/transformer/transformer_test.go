@@ -19,6 +19,8 @@ func (t *Transformer) Walk(noder ast.BasicNoder) string {
 		return t.WalkCollectionElementExpr(node, false)
 	case *ast.AssignStmt:
 		return t.WalkAssignStmt(node, true)
+	case *ast.IterationStmt:
+		return t.WalkIterationStmt(node)
 	case *ast.FuncDefinition:
 		return t.WalkFuncDefinition(node)
 	case *ast.File:
@@ -42,6 +44,92 @@ func TestTransformer_WalkAExprArith(t *testing.T) {
 	Helper(t, ast.AssignStmt10)
 	Helper(t, ast.AExprAdd3)
 	Helper(t, ast.AssignStmt11)
+
+	Helper(t, ast.IterationStmtHelper.New(
+		ast.AssignStmtHelper.New(
+			ast.AssignStmtFlagInit,
+			[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("i"))},
+			[]ast.AssignIniter{ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(0))}),
+		ast.BExprCompareHelper.New(
+			ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("i")),
+			ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(2)),
+			ast.BExprCompareLT,
+		),
+		ast.AssignStmtHelper.New(
+			ast.AssignStmtFlagNormal,
+			[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("i"))},
+			[]ast.AssignIniter{ast.AExprArithHelper.New(
+				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("i")),
+				ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(1)),
+				ast.AExprArithAdd,
+			)},
+		),
+
+		[]ast.FuncStatementer{
+			ast.IterationStmtHelper.New(
+				ast.AssignStmtHelper.New(
+					ast.AssignStmtFlagInit,
+					[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("j"))},
+					[]ast.AssignIniter{ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(0))}),
+				ast.BExprCompareHelper.New(
+					ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("j")),
+					ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(2)),
+					ast.BExprCompareLT,
+				),
+				ast.AssignStmtHelper.New(
+					ast.AssignStmtFlagNormal,
+					[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("j"))},
+					[]ast.AssignIniter{ast.AExprArithHelper.New(
+						ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("j")),
+						ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(1)),
+						ast.AExprArithAdd,
+					)},
+				),
+
+				[]ast.FuncStatementer{
+					ast.AssignStmtHelper.New(
+						ast.AssignStmtFlagNormal,
+						[]ast.Declaratorer{
+							ast.CollectionElementExprHelper.New(
+								ast.IdentifierHelper.New("e"),
+								[]*ast.CollectionElementIndex{
+									ast.CollectionElementIndexHelper.New(
+										ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("i")),
+									),
+									ast.CollectionElementIndexHelper.New(
+										ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("j")),
+									),
+								},
+							),
+						},
+						[]ast.AssignIniter{
+							ast.AExprArithHelper.New(
+								ast.AExprArithHelper.New(
+									ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("i")),
+									ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(2)),
+									ast.AExprArithMul,
+								),
+								ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("j")),
+								ast.AExprArithAdd,
+							),
+						},
+					),
+				},
+			),
+		},
+	))
+
+	Helper(t, ast.AssignStmtHelper.New(
+		ast.AssignStmtFlagInit,
+		[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("f"))},
+		[]ast.AssignIniter{
+			ast.AExprArithHelper.New(
+				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("e")),
+				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("e")),
+				ast.AExprArithMul,
+			),
+		},
+	))
 }
 
 func TestTransformer_WalkBExprBinary(t *testing.T) {
