@@ -46,6 +46,7 @@ func Helper(t *testing.T, noder ast.BasicNoder) {
 }
 
 func TestTransformer_WalkAExprArith(t *testing.T) {
+
 	Helper(t, ast.AExprDiv2)
 	Helper(t, ast.AssignStmt8)
 	Helper(t, ast.AssignStmt9)
@@ -163,6 +164,42 @@ func TestTransformer_WalkAExprArith(t *testing.T) {
 			),
 		},
 	))
+
+	test0 := func() {
+		defer func() {
+			if err := recover(); err == nil {
+				panic("fail")
+			} else {
+				t.Log(err)
+			}
+		}()
+		Helper(t, ast.AssignStmtHelper.New(
+			ast.AssignStmtFlagInit,
+			[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("i0"))},
+			[]ast.AssignIniter{ast.IntegerLiteralHelper.New(0)}))
+
+	}
+	test0()
+	test1 := func() {
+		defer func() {
+			if err := recover(); err == nil {
+				panic("fail")
+			} else {
+				t.Log(err)
+			}
+		}()
+		Helper(t, ast.AssignStmtHelper.New(
+			ast.AssignStmtFlagInit,
+			[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("i"))},
+			[]ast.AssignIniter{
+				ast.AExprArithHelper.New(
+					ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(0)),
+					ast.AExprSimpleHelper.New(ast.IntegerLiteralHelper.New(0)),
+					ast.AExprArithOpType(-1),
+				)}))
+	}
+	test1()
+
 }
 
 func TestTransformer_WalkBExprBinary(t *testing.T) {
