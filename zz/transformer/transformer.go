@@ -63,6 +63,8 @@ func (t *Transformer) WalkAExpr(noder ast.AExpr) string {
 		return t.WalkAExpr(node.E())
 	case *ast.AExprArith:
 		return t.WalkAExprArith(node)
+	case *ast.ArithTranspose:
+		return t.WalkArithTranspose(node)
 	case *ast.CollectionElementExpr:
 		return t.WalkCollectionElementExpr(node, false)
 	default:

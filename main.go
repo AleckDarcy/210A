@@ -14,19 +14,28 @@ import (
 
 func main() {
 
-	e := runtime.New(2, 2)
-	_ = e
-	for i := 0; i < 2; i = i + 1 {
-		_ = i
-		for j := 0; j < 2; j = j + 1 {
-			_ = j
-			e.Get(i).Set(j, runtime.FloatData(i*2+j))
-		}
-	}
+	//e := runtime.New(2, 2)
+	//_ = e
+	//h := 12
+	//_ = h
+	//for i := 0; i < 2; i = i + 1 {
+	//	_ = i
+	//	for j := 0; j < 2; j = j + 1 {
+	//		_ = j
+	//		e.Get(i).Set(j, runtime.FloatData(i*2+j))
+	//	}
+	//}
+	//f := e.MulMatrix(e)
+	//_ = f
+	//f1 := e.MulFloat(runtime.FloatData(h))
+	//_ = f1
+	//
+	//fmt.Println(f1)
+	//fmt.Println(f)
+	gua()
+}
 
-	ff := e.MulMatrix(e)
-	_ = ff
-	fmt.Println(ff)
+func gua() {
 	//input := `
 	//	length := 3
 	//
@@ -67,11 +76,7 @@ func main() {
 
 	input := `
 	func function(m1 matrix) {
-		m2 := transpose(m1)
-	
-		m := m1 * m2
-	
-		print(m1, m2)
+		m := m1 * transpose(m1)
 		print(m)
 	}
 
@@ -127,6 +132,8 @@ func main() {
 	}
 
 	f, err := p.Pop()
+
+	fmt.Println(f)
 	if err != nil {
 		fmt.Println(err)
 	} else {

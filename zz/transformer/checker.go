@@ -172,6 +172,18 @@ func (c *checker) CheckAExprType(noder ast.AExpr) (VariantType, error) {
 		return c.CheckAExprType(node.E())
 	case *ast.AExprArith:
 		return c.CheckAExprArithType(node)
+	case *ast.ArithTranspose:
+		if m, ok := node.E().(*ast.AExprSimple); !ok {
+			return VariantInvalid, errors.New("variant is not a matrix 1")
+		} else if id, ok := m.E().(*ast.Identifier); !ok {
+			return VariantInvalid, errors.New("variant is not a matrix 2")
+		} else if typ, err := c.CheckIdentifierType(id); err != nil {
+			return VariantInvalid, err
+		} else if !typ.IsMatrix() {
+			return VariantInvalid, errors.New("variant is not a matrix 3")
+		}
+
+		return VariantMatrix, nil
 	case *ast.CollectionElementExpr:
 		t, err := c.CheckIdentifierType(node.Identifier())
 		if err != nil {
@@ -442,18 +454,42 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 				case *ast.MatrixInitExpr:
 					matrixNode = tmp
 				case *ast.AExprArith:
-					info1, _ := c.Get(tmp.E1().(*ast.AExprSimple).E().(*ast.Identifier).Name())
-					info2, _ := c.Get(tmp.E1().(*ast.AExprSimple).E().(*ast.Identifier).Name())
+					var info1, info2 *VariantInfo
 
-					sizes1, sizes2 := info1.matrixNode.Sizes(), info2.matrixNode.Sizes()
-					if len(sizes1) != 2 || len(sizes2) != 2 {
-						if sizes1 == nil && sizes2 == nil { // matrix as parameter
-							matrixNode = ast.MatrixInitExprHelper.New(nil)
-						} else {
-							return nil, nil, errors.New("todo")
-						}
+					ase1, ase2 := tmp.E1().(*ast.AExprSimple).E(), tmp.E2().(*ast.AExprSimple).E()
+
+					if id1, ok := ase1.(*ast.Identifier); ok {
+						info1, _ = c.Get(id1.Name())
 					} else {
-						matrixNode = ast.MatrixInitExprHelper.New([]ast.AExpr{sizes1[0], sizes2[1]})
+						info1, _ = c.Get(ase1.(*ast.ArithTranspose).E().(*ast.AExprSimple).E().(*ast.Identifier).Name())
+					}
+					if id2, ok := ase2.(*ast.Identifier); ok {
+						info2, _ = c.Get(id2.Name())
+					} else {
+						info2, _ = c.Get(ase2.(*ast.ArithTranspose).E().(*ast.AExprSimple).E().(*ast.Identifier).Name())
+					}
+
+					if info1.typ.IsMatrix() && info2.typ.IsMatrix() {
+						if info1.matrixNode != nil && info2.matrixNode != nil {
+							sizes1, sizes2 := info1.matrixNode.Sizes(), info2.matrixNode.Sizes()
+							if len(sizes1) != 2 || len(sizes2) != 2 {
+								if sizes1 == nil && sizes2 == nil { // matrix as parameter
+									matrixNode = ast.MatrixInitExprHelper.New(nil)
+								} else {
+									return nil, nil, errors.New("todo")
+								}
+							} else {
+								matrixNode = ast.MatrixInitExprHelper.New([]ast.AExpr{sizes1[0], sizes2[1]})
+							}
+						} else {
+							matrixNode = ast.MatrixInitExprHelper.New(nil)
+						}
+					} else if info1.typ.IsMatrix() {
+						matrixNode = ast.MatrixInitExprHelper.New(info1.matrixNode.Sizes())
+					} else if info2.typ.IsMatrix() {
+						matrixNode = ast.MatrixInitExprHelper.New(info2.matrixNode.Sizes())
+					} else {
+						panic("unreachable code")
 					}
 				}
 

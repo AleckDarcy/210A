@@ -44,6 +44,7 @@ func TestTransformer_WalkAExprArith(t *testing.T) {
 	Helper(t, ast.AssignStmt10)
 	Helper(t, ast.AExprAdd3)
 	Helper(t, ast.AssignStmt11)
+	Helper(t, ast.AssignStmt12)
 
 	Helper(t, ast.IterationStmtHelper.New(
 		ast.AssignStmtHelper.New(
@@ -125,6 +126,30 @@ func TestTransformer_WalkAExprArith(t *testing.T) {
 		[]ast.AssignIniter{
 			ast.AExprArithHelper.New(
 				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("e")),
+				ast.AExprSimpleHelper.New(ast.ArithTransposeHelper.New(ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("e")))),
+				ast.AExprArithMul,
+			),
+		},
+	))
+
+	Helper(t, ast.AssignStmtHelper.New(
+		ast.AssignStmtFlagInit,
+		[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("f1"))},
+		[]ast.AssignIniter{
+			ast.AExprArithHelper.New(
+				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("e")),
+				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("h")),
+				ast.AExprArithMul,
+			),
+		},
+	))
+
+	Helper(t, ast.AssignStmtHelper.New(
+		ast.AssignStmtFlagInit,
+		[]ast.Declaratorer{ast.DeclaratorHelper.New(ast.IdentifierHelper.New("f2"))},
+		[]ast.AssignIniter{
+			ast.AExprArithHelper.New(
+				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("h")),
 				ast.AExprSimpleHelper.New(ast.IdentifierHelper.New("e")),
 				ast.AExprArithMul,
 			),
@@ -133,7 +158,10 @@ func TestTransformer_WalkAExprArith(t *testing.T) {
 }
 
 func TestTransformer_WalkBExprBinary(t *testing.T) {
-	Helper(t, ast.BExprBinary3)
+	Helper(t, ast.BExprBinary4)
+	Helper(t, ast.BExprCompare4)
+	Helper(t, ast.BExprCompare5)
+	Helper(t, ast.BExprCompare6)
 	Helper(t, ast.BExprCompare7)
 }
 

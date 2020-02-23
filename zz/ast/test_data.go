@@ -43,15 +43,21 @@ var AExprDiv = &AExprArith{ //  2 * (2 - (1 + (2 + 3))) / 2
 	op: AExprArithDiv,
 }
 
-var AExprDiv2 = &AExprArith{ //  2 * (2 - (1 + (2 + 3))) / 2.2
-	e1: AExprMul,
-	e2: &AExprSimple{e: &FloatLiteral{value: 2.2}},
+var AExprDiv2 = &AExprArith{ // 2 * (2 - (1 + (2 + 3))) / 2.2
+	e1: AExprAdd4,
+	e2: AExprAdd4,
 	op: AExprArithDiv,
 }
 
 var AExprAdd3 = &AExprArith{ //  d[1][1] + d[1][1]
 	e1: ListElementExpr5,
 	e2: ListElementExpr5,
+	op: AExprArithAdd,
+}
+
+var AExprAdd4 = &AExprArith{ //  2.2 + 2.2
+	e1: &AExprSimple{e: &FloatLiteral{value: 2.2}},
+	e2: &AExprSimple{e: &FloatLiteral{value: 2.2}},
 	op: AExprArithAdd,
 }
 
@@ -110,9 +116,13 @@ var BExprBinary2 = &BExprBinary{ // true == (2 == 2)
 var BExprBinary3 = &BExprBinary{ // (true == (2 == 2)) and 2 < 3
 	e1: BExprBinary2,
 	e2: BExprCompare3,
-	op: BExprBinaryAND,
+	op: BExprBinaryOR,
 }
-
+var BExprBinary4 = &BExprBinary{ // (true == (2 == 2)) and 2 < 3
+	e1: BExprBinary2,
+	e2: BExprBinary3,
+	op: BExprBinaryNEQ,
+}
 var ListTypeSpecifier1 = &ListTypeSpecifier{ // []int
 	elem: &ListElementTypeSpecifier{
 		elem: SimpleTypeSpecifier1,
@@ -298,6 +308,16 @@ var AssignStmt11 = &AssignStmt{ // e := matrix(2,2)
 	},
 	initList: []AssignIniter{
 		MatrixInitExpr1,
+	},
+}
+
+var AssignStmt12 = &AssignStmt{ // h := 12
+	flag: AssignStmtFlagInit,
+	declList: []Declaratorer{
+		&Declarator{Declaratorer: &Identifier{name: "h"}},
+	},
+	initList: []AssignIniter{
+		&AExprSimple{e: &IntegerLiteral{value: 12}},
 	},
 }
 

@@ -135,7 +135,7 @@ func (p *ParseTreeListener) ExitAExp_listElementExpression(c *grammar.AExp_listE
 
 func (p *ParseTreeListener) ExitAExp_transpose(c *grammar.AExp_transposeContext) {
 	item, _ := p.stack.PopByType(ast.NoderAExpr)
-	p.stack.Push(ast.ArithTransposeHelper.New(item.(ast.AExpr)))
+	p.stack.Push(ast.AExprSimpleHelper.New(ast.ArithTransposeHelper.New(item.(ast.AExpr))))
 }
 
 func (p *ParseTreeListener) ExitAExprList(c *grammar.AExprListContext) {}
