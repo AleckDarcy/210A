@@ -300,6 +300,10 @@ var AssignStmt10 = &AssignStmt{ // d[1][1] = 10086
 	},
 }
 
+var PrintStatement1 = PrintStatementHelper.New(
+	[]BasicNoder{AExprDiv2},
+)
+
 //var AssignStmt4 = &AssignStmt{
 //	declList: []Declaratorer{
 //		&Identifier{name: "f"},
