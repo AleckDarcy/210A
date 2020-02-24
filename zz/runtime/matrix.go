@@ -62,7 +62,7 @@ func (d FloatData) ToFloatData() FloatData {
 }
 
 func New(sizes ...int) *Data {
-	if len(sizes) == 0 {
+	if len(sizes) == 1 && sizes[0] == 0 {
 		return nil
 	}
 
@@ -109,9 +109,9 @@ func (m *Data) Shape(sizes ...int) *Data {
 		}
 	}
 
-	if numSize == 0 {
-		panic("")
-	}
+	//if numSize == 0 {
+	//	panic("")
+	//}
 
 	//fmt.Println("Shape subMSizes:", subMSizes, "subMSize", subMSize, "numSizes", numSizes, "numSize:", numSize)
 	if m.numSize == 0 { // init
@@ -282,10 +282,22 @@ func (m *Data) MulMatrix(data *Data) *Data {
 	panic("size not match for matrix multiplication")
 }
 
+func (m *Data) AddMatrix(data *Data) *Data {
+	// todo
+
+	newM := New(m.sizes...)
+
+	for i := range m.array {
+		newM.array[i] = m.array[i] + data.array[i]
+	}
+
+	return newM
+}
+
 func (m *Data) Transpose() *Data {
 	if len(m.sizes) == 1 {
-		newM := New(1, m.sizes[1])
-		for i := 0; i < m.sizes[1]; i++ {
+		newM := New(m.sizes[0], 1)
+		for i := 0; i < m.sizes[0]; i++ {
 			newM.Get(i).Set(0, m.Get(i))
 		}
 

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/big"
 
 	"github.com/AleckDarcy/210A/zz/runtime"
 
@@ -14,14 +13,31 @@ import (
 )
 
 func main() {
-	iii := &big.Int{}
-	_, ok := iii.SetString("3", 10)
-	fmt.Println(iii, ok)
 
-	iii.Mul(iii, iii)
-	fmt.Println(iii)
-	function1()
+	//e := runtime.New(2, 2)
+	//_ = e
+	//h := 12
+	//_ = h
+	//for i := 0; i < 2; i = i + 1 {
+	//	_ = i
+	//	for j := 0; j < 2; j = j + 1 {
+	//		_ = j
+	//		e.Get(i).Set(j, runtime.FloatData(i*2+j))
+	//	}
+	//}
+	//f := e.MulMatrix(e)
+	//_ = f
+	//f1 := e.MulFloat(runtime.FloatData(h))
+	//_ = f1
+	//
+	//fmt.Println(f1)
+	//fmt.Println(f)
 
+	//function1()
+	gua()
+}
+
+func gua() {
 	//input := `
 	//	length := 3
 	//
@@ -61,13 +77,11 @@ func main() {
 	//`
 
 	input := `
-	func function(m1 matrix) {
-		m2 := transpose(m1)
-	
-		m := m1 * m2
-	
-		print(m1, m2)
+	func function(m1 matrix) (matrix) {
+		m := m1 * transpose(m1)
 		print(m)
+
+		return m
 	}
 
 	func function1() {
@@ -80,7 +94,8 @@ func main() {
 			}
 		}
 
-		function(m)
+		m1 := function(m)
+		print(m1)
 	}
 	`
 
@@ -111,12 +126,19 @@ func main() {
 
 	zzParser := grammar.NewZZParser(stream)
 	zzParser.SetErrorHandler(antlr.NewDefaultErrorStrategy())
-	zzParser.AddErrorListener(antlr.NewDefaultErrorListener())
+	zzParser.AddErrorListener(p)
 	zzParser.AddParseListener(p)
 	zzParser.BuildParseTrees = true
 	zzParser.File()
 
+	if p.ErrorFlag() {
+		fmt.Println("error occurs when parsing")
+		return
+	}
+
 	f, err := p.Pop()
+
+	fmt.Println(f)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -125,14 +147,12 @@ func main() {
 		fmt.Println(tr.WalkFile(f))
 	}
 }
-
-func function(m1 *runtime.Data) {
-	m2 := m1.Transpose()
-	_ = m2
-	m := m1.MulMatrix(m2)
+func function(m1 *runtime.Data) *runtime.Data {
+	m := m1.MulMatrix(m1.Transpose())
 	_ = m
-	fmt.Println(m1, m2)
 	fmt.Println(m)
+
+	return m
 }
 
 func function1() {
@@ -148,5 +168,7 @@ func function1() {
 			n = n + 1
 		}
 	}
-	function(m)
+	m1 := function(m)
+	_ = m1
+	fmt.Println(m1)
 }

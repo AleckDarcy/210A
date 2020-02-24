@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 
@@ -24,7 +25,7 @@ func GenerateParser(input string) (*grammar.ZZParser, *ParseTreeListener) {
 
 	zzParser := grammar.NewZZParser(stream)
 	zzParser.SetErrorHandler(antlr.NewDefaultErrorStrategy())
-	zzParser.AddErrorListener(antlr.NewDefaultErrorListener())
+	zzParser.AddErrorListener(parser)
 	zzParser.AddParseListener(parser)
 	zzParser.BuildParseTrees = true
 
@@ -32,6 +33,11 @@ func GenerateParser(input string) (*grammar.ZZParser, *ParseTreeListener) {
 }
 
 func JudgeResult(t *testing.T, parser *ParseTreeListener, expect ast.BasicNoder) (ast.BasicNoder, error) {
+	if parser.errorFlag {
+		t.Error("error occurs when parsing")
+		return nil, errors.New("error occurs when parsing")
+	}
+
 	node, err := parser.stack.PopByType(ast.NoderBasic)
 	if err != nil {
 		t.Error(err)
@@ -59,8 +65,6 @@ func TestParseTreeListener_PrintStack(t *testing.T) {
 }
 
 func TestParseTreeListener_AssignStatement(t *testing.T) {
-	var p grammar.ZZListener = &ParseTreeListener{}
-
 	testCases := []TestCase{
 		{input: "a = list([]int, 4)", expect: ast.AssignStmt1},
 		//{input: "a[1], b = 2, 3", expect: ast.AssignStmt2},
@@ -151,8 +155,8 @@ func TestParseTreeListener_FuncDefinition(t *testing.T) {
 		{
 			input: "" +
 				"func function1(x, y int, z []float) ([]int, float, int) {\n" +
-				"	a = list([]int, 4)\n" +
-				"	b = x + y\n" +
+				"	a := list([]int, 4)\n" +
+				"	b := x + y\n" +
 				"	return a, b + 1, 1\n" +
 				"}",
 			expect: ast.FuncDefinition2,
@@ -174,7 +178,7 @@ func TestParseTreeListener_FuncDefinition(t *testing.T) {
 func TestParseTreeListener_FuncExecuteExpression(t *testing.T) {
 	testCases := []TestCase{
 		{
-			input:  "function2(2+3)",
+			input:  "function2(2+3, 1)",
 			expect: ast.FuncExecuteExpression1,
 		},
 	}
@@ -190,7 +194,7 @@ func TestParseTreeListener_FuncExecuteExpression(t *testing.T) {
 func TestParseTreeListener_FuncExecuteStatement(t *testing.T) {
 	testCases := []TestCase{
 		{
-			input:  "function2(2+3)",
+			input:  "function2(2+3,1)",
 			expect: ast.FuncExecuteStatement1,
 		},
 	}
@@ -214,5 +218,31 @@ func TestTemplate(t *testing.T) {
 		//zzParser, parser := GenerateParser(testCase.input)
 		//zzParser.AssignStatement()
 		//_, _ = JudgeResult(t, parser, testCase.expect)
+	}
+}
+
+func TestParseTreeListener_ExprA(t *testing.T) {
+	testCases := []TestCase{
+		{input: " 2 * (2 - (1 + (2 + 3))) / 2 ", expect: ast.AExprDiv},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.AssignInit()
+		_, _ = JudgeResult(t, parser, testCase.expect)
+	}
+}
+
+func TestParseTreeListener_SelectionStatement1(t *testing.T) {
+	testCases := []TestCase{
+		{input: "if 2 * (2 - (1 + (2 + 3))) / 2 != 2 * (2 - (1 + (2 + 3))) {}", expect: ast.SelectionStmt5},
+	}
+
+	for i, testCase := range testCases {
+		t.Logf("testing %d:\n%s\n", i, testCase.input)
+		zzParser, parser := GenerateParser(testCase.input)
+		zzParser.SelectionStatement()
+		_, _ = JudgeResult(t, parser, testCase.expect)
 	}
 }

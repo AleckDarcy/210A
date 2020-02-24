@@ -3,6 +3,7 @@ package transformer
 import (
 	"errors"
 	"fmt"
+	"reflect"
 
 	"github.com/AleckDarcy/210A/zz/ast"
 )
@@ -171,6 +172,18 @@ func (c *checker) CheckAExprType(noder ast.AExpr) (VariantType, error) {
 		return c.CheckAExprType(node.E())
 	case *ast.AExprArith:
 		return c.CheckAExprArithType(node)
+	case *ast.ArithTranspose:
+		if m, ok := node.E().(*ast.AExprSimple); !ok {
+			return VariantInvalid, errors.New("variant is not a matrix 1")
+		} else if id, ok := m.E().(*ast.Identifier); !ok {
+			return VariantInvalid, errors.New("variant is not a matrix 2")
+		} else if typ, err := c.CheckIdentifierType(id); err != nil {
+			return VariantInvalid, err
+		} else if !typ.IsMatrix() {
+			return VariantInvalid, errors.New("variant is not a matrix 3")
+		}
+
+		return VariantMatrix, nil
 	case *ast.CollectionElementExpr:
 		t, err := c.CheckIdentifierType(node.Identifier())
 		if err != nil {
@@ -183,6 +196,7 @@ func (c *checker) CheckAExprType(noder ast.AExpr) (VariantType, error) {
 
 		return VariantInvalid, errors.New("variant is not a collection")
 	default:
+		fmt.Println("ssssss", reflect.TypeOf(noder).Elem().Name())
 		panic("unreachable code")
 	}
 }
@@ -399,6 +413,8 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 			if err != nil {
 				return nil, nil, err
 			}
+
+			return []VariantType{VariantMatrix}, []VariantType{VariantMatrix}, nil // todo: zhahu
 		}
 	}
 
@@ -417,6 +433,10 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 			initNodeList = append(initNodeList, noders...)
 		}
 	} else {
+		fmt.Println("=============================")
+		fmt.Println(node)
+		fmt.Println("=============================")
+
 		return nil, nil, errors.New(fmt.Sprintf("values not match %d != %d", lenDeclList, lenInitList))
 	}
 
@@ -429,7 +449,6 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 					typ:      typ,
 					listNode: initNodeList[i].(*ast.ListInitExpr).TypeSpecifier(),
 				}
-
 			} else if typ.IsMatrix() {
 				var matrixNode *ast.MatrixInitExpr
 
@@ -437,18 +456,42 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 				case *ast.MatrixInitExpr:
 					matrixNode = tmp
 				case *ast.AExprArith:
-					info1, _ := c.Get(tmp.E1().(*ast.AExprSimple).E().(*ast.Identifier).Name())
-					info2, _ := c.Get(tmp.E1().(*ast.AExprSimple).E().(*ast.Identifier).Name())
+					var info1, info2 *VariantInfo
 
-					sizes1, sizes2 := info1.matrixNode.Sizes(), info2.matrixNode.Sizes()
-					if len(sizes1) != 2 || len(sizes2) != 2 {
-						if sizes1 == nil && sizes2 == nil { // matrix as parameter
-							matrixNode = ast.MatrixInitExprHelper.New(nil)
-						} else {
-							return nil, nil, errors.New("todo")
-						}
+					ase1, ase2 := tmp.E1().(*ast.AExprSimple).E(), tmp.E2().(*ast.AExprSimple).E()
+
+					if id1, ok := ase1.(*ast.Identifier); ok {
+						info1, _ = c.Get(id1.Name())
 					} else {
-						matrixNode = ast.MatrixInitExprHelper.New([]ast.AExpr{sizes1[0], sizes2[1]})
+						info1, _ = c.Get(ase1.(*ast.ArithTranspose).E().(*ast.AExprSimple).E().(*ast.Identifier).Name())
+					}
+					if id2, ok := ase2.(*ast.Identifier); ok {
+						info2, _ = c.Get(id2.Name())
+					} else {
+						info2, _ = c.Get(ase2.(*ast.ArithTranspose).E().(*ast.AExprSimple).E().(*ast.Identifier).Name())
+					}
+
+					if info1.typ.IsMatrix() && info2.typ.IsMatrix() {
+						if info1.matrixNode != nil && info2.matrixNode != nil {
+							sizes1, sizes2 := info1.matrixNode.Sizes(), info2.matrixNode.Sizes()
+							if len(sizes1) != 2 || len(sizes2) != 2 {
+								if sizes1 == nil && sizes2 == nil { // matrix as parameter
+									matrixNode = ast.MatrixInitExprHelper.New(nil)
+								} else {
+									return nil, nil, errors.New("todo")
+								}
+							} else {
+								matrixNode = ast.MatrixInitExprHelper.New([]ast.AExpr{sizes1[0], sizes2[1]})
+							}
+						} else {
+							matrixNode = ast.MatrixInitExprHelper.New(nil)
+						}
+					} else if info1.typ.IsMatrix() {
+						matrixNode = ast.MatrixInitExprHelper.New(info1.matrixNode.Sizes())
+					} else if info2.typ.IsMatrix() {
+						matrixNode = ast.MatrixInitExprHelper.New(info2.matrixNode.Sizes())
+					} else {
+						panic("unreachable code")
 					}
 				}
 
@@ -468,10 +511,10 @@ func (c *checker) CheckAssignStmtType(node *ast.AssignStmt) ([]VariantType, []Va
 	return declTypeList, initTypeList, nil
 }
 
-func (c *checker) CheckCollectionElementExprType(node *ast.CollectionElementExpr) (VariantType, error) {
+func (c *checker) CheckCollectionElementExprType(node *ast.CollectionElementExpr) (VariantType, VariantType, error) {
 	info, ok := c.Get(node.Identifier().Name())
 	if !ok {
-		return VariantInvalid, errors.New(fmt.Sprintf("variant %s not defined", node.Identifier().Name()))
+		return VariantInvalid, VariantInvalid, errors.New(fmt.Sprintf("variant %s not defined", node.Identifier().Name()))
 	}
 
 	t := info.typ
@@ -479,23 +522,23 @@ func (c *checker) CheckCollectionElementExprType(node *ast.CollectionElementExpr
 	if t.IsList() {
 		depth := c.GetDepthOfCollectionElementExpr(info.listNode.Elem())
 		if depth > len(node.List()) {
-			return t, nil
+			return VariantList, t, nil
 		} else if depth == len(node.List()) {
 			if t.IsInterger() {
-				return VariantInteger, nil
+				return VariantList, VariantInteger, nil
 			}
 
-			return VariantFloat, nil
+			return VariantList, VariantFloat, nil
 		}
 
-		return VariantInvalid, errors.New("invalid list expression")
+		return VariantInvalid, VariantInvalid, errors.New("invalid list expression")
 	}
 
 	if len(info.matrixNode.Sizes()) != len(node.List()) {
-		return VariantInvalid, errors.New("invalid matrix expression")
+		return VariantInvalid, VariantInvalid, errors.New("invalid matrix expression")
 	}
 
-	return VariantFloat, nil
+	return VariantMatrix, VariantFloat, nil
 }
 
 func (c *checker) CheckDeclaratorType(noder ast.Declaratorer) (VariantType, error) {
@@ -503,7 +546,8 @@ func (c *checker) CheckDeclaratorType(noder ast.Declaratorer) (VariantType, erro
 	case *ast.Identifier:
 		return c.CheckIdentifierType(node)
 	case *ast.CollectionElementExpr:
-		return c.CheckCollectionElementExprType(node)
+		_, typ, err := c.CheckCollectionElementExprType(node)
+		return typ, err
 	case *ast.Declarator:
 		return c.CheckDeclaratorType(node.Declaratorer)
 	default:

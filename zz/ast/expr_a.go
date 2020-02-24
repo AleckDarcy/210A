@@ -15,8 +15,12 @@ func (t AExprArithOpType) toString(ident string) string {
 	switch t {
 	case AExprArithAdd:
 		return ident + "Add"
+	case AExprArithSub:
+		return ident + "Sub"
 	case AExprArithMul:
 		return ident + "Mul"
+	case AExprArithDiv:
+		return ident + "Div"
 	default:
 		return ident + "undefined"
 	}
@@ -30,11 +34,16 @@ func (t AExprArithOpType) PriorLevel() int {
 	switch t {
 	case AExprArithAdd:
 		return 0
+	case AExprArithSub:
+		return 0
 	case AExprArithMul:
 		return 1
+	case AExprArithDiv:
+		return 1
+	default:
+		panic("undefined")
 	}
 
-	panic("")
 }
 
 func (t AExprArithOpType) PriorTo(a AExprArithOpType) bool {
