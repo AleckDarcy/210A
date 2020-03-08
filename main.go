@@ -33,6 +33,7 @@ func main() {
 	//fmt.Println(f1)
 	//fmt.Println(f)
 
+	fmt.Println(basic_function(1))
 	//function1()
 	gua()
 }
@@ -77,27 +78,39 @@ func gua() {
 	//`
 
 	input := `
-	func function(m1 matrix) (matrix) {
-		m := m1 * transpose(m1)
-		print(m)
-
-		return m
-	}
-
-	func function1() {
-		m := matrix(3, 2)
-		n := 1
-		for i := 0; i < 3; i = i + 1 {
-			for j := 0; j < 2; j = j + 1 {
-				m[i][j] = n
-				n = n + 1
-			}
-		}
-
-		m1 := function(m)
-		print(m1)
+	func basic_function(a float) (float) {
+		c := a/3
+		return c
 	}
 	`
+	//
+	//func basic_function(a int) (int) {
+	//	a = a * 2
+	//	b := a * 2
+	//	print(a)
+	//
+	//	return a
+	//}
+	//func function(m1 matrix) (matrix) {
+	//	m := m1 * transpose(m1)
+	//	print(m)
+	//
+	//	return m
+	//}
+
+	//func function1() {
+	//	m := matrix(3, 2)
+	//	n := 1
+	//	for i := 0; i < 3; i = i + 1 {
+	//		for j := 0; j < 2; j = j + 1 {
+	//			m[i][j] = n
+	//			n = n + 1
+	//		}
+	//	}
+	//
+	//	m1 := function(m)
+	//	print(m1)
+	//}
 
 	//m2 := matrix(2, 4)
 	//
@@ -171,4 +184,10 @@ func function1() {
 	m1 := function(m)
 	_ = m1
 	fmt.Println(m1)
+}
+
+func basic_function(a float64) float64 {
+	c := a / 3
+	_ = c
+	return c
 }

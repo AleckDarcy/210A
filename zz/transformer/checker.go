@@ -298,7 +298,7 @@ func (c *checker) CheckSimpleTypeSpecifierType(node *ast.SimpleTypeSpecifier) (V
 	switch node.Name() {
 	case "int":
 		return VariantInteger, nil
-	case "float":
+	case "float64":
 		return VariantFloat, nil
 	case "matrix":
 		return VariantMatrix, nil
