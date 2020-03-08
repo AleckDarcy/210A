@@ -93,19 +93,41 @@ func (t *Transformer) WalkAExprArith(node *ast.AExprArith) string {
 	type2, _ := Checker.CheckAExprType(node.E2())
 
 	str1, str2 := t.WalkAExpr(node.E1()), t.WalkAExpr(node.E2())
-	if type1.IsMatrix() && type2.IsMatrix() {
-		return fmt.Sprintf("%s.MulMatrix(%s)", str1, str2)
-	} else if type1.IsMatrix() {
-		if type2.IsInterger() || type2.IsFloat() {
-			return fmt.Sprintf("%s.MulFloat(runtime.FloatData(%s))", str1, str2)
-		} else {
-			panic("")
+	// Mul
+	if opStr == "*" {
+		if type1.IsMatrix() && type2.IsMatrix() {
+			return fmt.Sprintf("%s.MulMatrix(%s)", str1, str2)
+		} else if type1.IsMatrix() {
+			if type2.IsInterger() || type2.IsFloat() {
+				return fmt.Sprintf("%s.MulFloat(runtime.FloatData(%s))", str1, str2)
+			} else {
+				panic("")
+			}
+		} else if type2.IsMatrix() {
+			if type1.IsInterger() || type1.IsFloat() {
+				return fmt.Sprintf("%s.MulFloat(runtime.FloatData(%s))", str2, str1)
+			} else {
+				panic("")
+			}
 		}
-	} else if type2.IsMatrix() {
-		if type1.IsInterger() || type1.IsFloat() {
-			return fmt.Sprintf("%s.MulFloat(runtime.FloatData(%s))", str2, str1)
-		} else {
-			panic("")
+	}
+
+	// Add
+	if opStr == "+" {
+		if type1.IsMatrix() && type2.IsMatrix() {
+			return fmt.Sprintf("%s.AddMatrix(%s)", str1, str2)
+		} else if type1.IsMatrix() {
+			if type2.IsInterger() || type2.IsFloat() {
+				return fmt.Sprintf("%s.AddFloat(runtime.FloatData(%s))", str1, str2)
+			} else {
+				panic("")
+			}
+		} else if type2.IsMatrix() {
+			if type1.IsInterger() || type1.IsFloat() {
+				return fmt.Sprintf("%s.AddFloat(runtime.FloatData(%s))", str2, str1)
+			} else {
+				panic("")
+			}
 		}
 	}
 
