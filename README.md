@@ -27,7 +27,7 @@ antlr4 -Dlanguage=Go -package grammar zz/grammar/ZZ.g4
 ## Compile ZZ
 ### Windows
 ```shell script
-cd $GOPATH\src\github.com\AleckDarcy\210A
+cd %GOPATH%\src\github.com\AleckDarcy\210A
 go build -o main.exe
 ```
 
