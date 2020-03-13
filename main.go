@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	gRuntime "runtime"
 	"strings"
 
 	"github.com/AleckDarcy/210A/zz/ast/parser"
@@ -112,14 +113,19 @@ var _ = runtime.FloatData(0)
 		fmt.Printf("output:\n%s\nfinished\n", string(bytes))
 	} else {
 		fmt.Println("compiling ZZ as a Compiled Language")
-		cmd := exec.Command("go", "build", "-o", "output/main", "output/zz.go")
+
+		output := "output/main"
+		if strings.Contains(gRuntime.GOOS, "windows") {
+			output = "output/main.exe"
+		}
+		cmd := exec.Command("go", "build", "-o", output, "output/zz.go")
 		_, err := cmd.Output()
 		if err != nil {
 			fmt.Printf("executing ZZ as an Interpreted Language err: %s\n", err)
 			return
 		}
 
-		fmt.Println("executable file: output/main")
+		fmt.Printf("executable file: %s\n", output)
 		fmt.Println("finished")
 	}
 }
