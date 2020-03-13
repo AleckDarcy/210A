@@ -1,8 +1,6 @@
 package transformer
 
 import (
-	"fmt"
-
 	"github.com/AleckDarcy/210A/zz/ast"
 )
 
@@ -70,7 +68,7 @@ func (s *StoreStack) SetParaDeclaratorWithIdentity(node *ast.ParaDeclaratorWithI
 
 	for _, decl := range node.DeclList() {
 		name := decl.Name()
-		fmt.Println("para name:", name, ", type:", typ)
+		//fmt.Println("para name:", name, ", type:", typ)
 		if typ.IsList() {
 			info := &VariantInfo{
 				name:     name,
@@ -81,7 +79,7 @@ func (s *StoreStack) SetParaDeclaratorWithIdentity(node *ast.ParaDeclaratorWithI
 
 			s.variants[name] = info
 
-			fmt.Printf("set list: %p %+v\n", info, info)
+			//fmt.Printf("set list: %p %+v\n", info, info)
 		} else if typ.IsMatrix() {
 			info := &VariantInfo{
 				name:       name,

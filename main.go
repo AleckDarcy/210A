@@ -1,52 +1,172 @@
 package main
 
 import (
+	"errors"
+	"flag"
 	"fmt"
-
-	"github.com/AleckDarcy/210A/zz/runtime"
-
-	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 
 	"github.com/AleckDarcy/210A/zz/ast/parser"
 	"github.com/AleckDarcy/210A/zz/grammar"
+	"github.com/AleckDarcy/210A/zz/runtime"
 	"github.com/AleckDarcy/210A/zz/transformer"
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 func main() {
+	var implType string
+	var filePath string
 
-	//e := runtime.New(2, 2)
-	//_ = e
-	//h := 12
-	//_ = h
-	//for i := 0; i < 2; i = i + 1 {
-	//	_ = i
-	//	for j := 0; j < 2; j = j + 1 {
-	//		_ = j
-	//		e.Get(i).Set(j, runtime.FloatData(i*2+j))
-	//	}
-	//}
-	//f := e.MulMatrix(e)
-	//_ = f
-	//f1 := e.MulFloat(runtime.FloatData(h))
-	//_ = f1
-	//
-	//fmt.Println(f1)
+	flag.StringVar(&implType, "t", "i", "i: interpreted; c: complied")
+	flag.StringVar(&filePath, "f", "", "file path for .zz file")
+	flag.Parse()
+
+	fmt.Printf("arguments: [-t %s] [-f %s]\n", implType, filePath)
+
+	if !strings.HasSuffix(filePath, ".zz") {
+		fmt.Println("invalid file path")
+		return
+	} else if implType != "i" && implType != "c" {
+		fmt.Println("invalid implement type")
+		return
+	}
+
+	fmt.Println("reading .zz file")
+	bytes, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
+
+	fmt.Println("transforming code")
+	code, err := generate(string(bytes))
+
+	code = fmt.Sprintf(
+		`package main
+
+import(
+	"fmt"
+
+	"github.com/AleckDarcy/210A/zz/runtime"
+)
+
+var _ = fmt.Formatter(nil)
+var _ = runtime.FloatData(0)
+
+%s
+`,
+		code,
+	)
+
+	absPath, _ := filepath.Abs("output")
+	if ok, err := pathExists("output"); err != nil {
+		fmt.Printf("check output directory err: %s\n", err)
+	} else if ok {
+		if err = filepath.Walk(absPath, func(path string, fi os.FileInfo, err error) error {
+			if nil == fi {
+				return err
+			} else if fi.IsDir() {
+				return nil
+			}
+
+			if strings.HasSuffix(path, ".go") {
+				os.Remove(path)
+			}
+
+			return nil
+		}); err != nil {
+			fmt.Printf("clear output directory err: %s\n", err)
+			return
+		}
+	} else if err = os.Mkdir("output", os.ModePerm); err != nil {
+		fmt.Printf("make output directory err: %s\n", err)
+		return
+	}
+
+	f, err := os.OpenFile("output/zz.go", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, os.ModePerm)
+	if err != nil {
+		fmt.Printf("make output file err: %s\n", err)
+		return
+	}
+
+	fmt.Println("writing code")
+
+	if _, err = f.Write([]byte(code)); err != nil {
+		fmt.Printf("write output file err: %s\n", err)
+		return
+	}
+
+	if implType == "i" {
+		fmt.Println("executing ZZ as an Interpreted Language")
+		cmd := exec.Command("go", "run", "output/zz.go")
+		bytes, err := cmd.Output()
+		if err != nil {
+			fmt.Printf("executing ZZ as an Interpreted Language err: %s\n", err)
+			return
+		}
+
+		fmt.Printf("output:\n%s\nfinished\n", string(bytes))
+	} else {
+		fmt.Println("compiling ZZ as a Compiled Language")
+		cmd := exec.Command("go", "build", "-o", "output/main", "output/zz.go")
+		_, err := cmd.Output()
+		if err != nil {
+			fmt.Printf("executing ZZ as an Interpreted Language err: %s\n", err)
+			return
+		}
+
+		fmt.Println("executable file: output/main")
+		fmt.Println("finished")
+	}
+}
+
+func pathExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+
+	return false, err
+}
+
+func generate(input string) (string, error) {
+	inputStream := antlr.NewInputStream(input)
+	lexer := grammar.NewZZLexer(inputStream)
+	stream := antlr.NewCommonTokenStream(lexer, 0)
+
+	p := &parser.ParseTreeListener{}
+
+	zzParser := grammar.NewZZParser(stream)
+	zzParser.SetErrorHandler(antlr.NewDefaultErrorStrategy())
+	zzParser.AddErrorListener(p)
+	zzParser.AddParseListener(p)
+	zzParser.BuildParseTrees = true
+	zzParser.File()
+
+	if p.ErrorFlag() {
+		fmt.Println("error occurs when parsing")
+		return "", errors.New("error occurs when parsing")
+	}
+
+	f, err := p.Pop()
+
 	//fmt.Println(f)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
 
-	//fmt.Println(basicFunction(1))
-	//fmt.Println(testInt1(1))
-	//fmt.Println(testInt2(1))
-	//fmt.Println(testFloat(1))
-	//fmt.Println("Mat1: ", matrixNew1())
-	fmt.Println("Mat0: ", matrixNew0())
-	//fmt.Println("Mat2: ", matrixNew2())
-	//fmt.Println("Mat3: ", matrixNew3())
-	//fmt.Println("Mat3 * Mat3: ", matrixAdd(matrixNew3(), matrixNew3()))
-	//fmt.Println("Mat0 * Mat2: ", matrixMul(matrixNew0(), matrixNew2()))
-	//fmt.Println("Mat2 * Mat0: ", matrixMul(matrixNew2(), matrixNew0()))
-	fmt.Println("Transpose of Mat0: ", matrixT(matrixNew0()))
-
-	gua()
+	tr := transformer.NewTransformer()
+	//fmt.Println(f)
+	return tr.WalkFile(f), nil
 }
 
 func gua() {
